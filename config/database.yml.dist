@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 3
+
+development:
+  <<: *default
+  host: localhost
+  database: deeprec_dev
+
+test:
+  <<: *default
+  host: localhost
+  database: deeprec_test
+
+production:
+  <<: *default
+  database: deep_recursion
+  username: deep_recursion
+  password: <%= ENV['PROD_DATABASE_PASSWORD'] %>
