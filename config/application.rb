@@ -31,5 +31,8 @@ module DeepRecursion
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # bootstrap-sass requires minimum Sass number precision of 8 (default is 5)
+    ::Sass::Script::Value::Number.precision = [8, ::Sass::Script::Value::Number.precision].max
   end
 end
