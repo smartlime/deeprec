@@ -1,0 +1,22 @@
+AllCops:
+  TargetRubyVersion: 2.3
+  Include:
+    - '**/config.ru'
+    - '**/Rakefile'
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - !ruby/regexp /legacy\.rb$/
+    - 'spec/spec_helper.rb'
+    - 'spec/rails_helper.rb'
+Rails:
+  Enabled: true
+Documentation:
+  Enabled: false
+Style/Encoding:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Metrics/LineLength:
+  Max: 100

@@ -12,5 +12,5 @@ RSpec.describe Question, type: :model do
   it { should validate_numericality_of(:rating).only_integer }
   it { should validate_numericality_of(:rating).is_equal_to(0).on(:create) }
 
-  it { should have_db_index :rating}
+  it { should have_db_index :rating }
 end
