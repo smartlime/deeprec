@@ -3,9 +3,10 @@ class CreateAnswers < ActiveRecord::Migration
     create_table :answers do |t|
       t.references :question, index: true, foreign_key: true
       t.text :body, null: false, limit: 8192
-      t.integer :rating, null: false, default: 0, index: true
+      t.integer :rating, null: false, default: 0
 
       t.timestamps null: false
     end
+    add_index :answers, [:question_id, :rating]
   end
 end
