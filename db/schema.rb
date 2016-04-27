@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 20160427000650) do
     t.datetime "updated_at",              null: false
   end
 
-  add_index "answers", ["question_id", "rating"], name: "index_answers_on_question_id_and_rating", using: :btree
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
 
   create_table "questions", force: :cascade do |t|
@@ -34,8 +33,6 @@ ActiveRecord::Schema.define(version: 20160427000650) do
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
   end
-
-  add_index "questions", ["rating"], name: "index_questions_on_rating", using: :btree
 
   add_foreign_key "answers", "questions"
 end
