@@ -27,11 +27,10 @@ pickle-email-*.html
 # config/initializers/secret_token.rb
 # config/secrets.yml
 
-
 ## Environment normalization
-.ruby-gemset
-.ruby-version
-Gemfile.lock
+#.ruby-gemset
+#.ruby-version
+#Gemfile.lock
 /.bundle
 /vendor/bundle
 
