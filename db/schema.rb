@@ -28,11 +28,11 @@ ActiveRecord::Schema.define(version: 20160427000650) do
   add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
 
   create_table "questions", force: :cascade do |t|
-    t.string   "topic",      limit: 50,             null: false
-    t.text     "body",                              null: false
-    t.integer  "rating",                default: 0, null: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.string   "topic",      limit: 200,             null: false
+    t.text     "body",                               null: false
+    t.integer  "rating",                 default: 0, null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "questions", ["rating"], name: "index_questions_on_rating", using: :btree
