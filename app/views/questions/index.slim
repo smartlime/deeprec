@@ -1,0 +1,19 @@
+- if @questions.any?
+  = link_to new_question_path, class: "btn btn-primary pull-right"
+    ' Задать свой вопрос
+
+  h2 Вопросы
+- else
+  p.lead.text-center Пока не задано ни одного вопроса
+
+.row
+  .col-xs-12
+    hr
+      - @questions.each do |question|
+        = link_to question_path(question)
+          p.lead
+            = question.topic
+        hr
+
+= link_to new_question_path, class: "btn btn-primary pull-right"
+  ' Задать свой вопрос

@@ -14,10 +14,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
 
+gem 'faker'
+
 # gem 'unicorn'
 
 group :development, :test do
-  gem 'byebug'
+  gem 'byebug', '~>8.0'
   gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails', '~> 4.0'
 end
@@ -32,6 +34,7 @@ group :development do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'better_errors'
+  gem 'meta_request'
 
   gem 'quiet_assets'
 

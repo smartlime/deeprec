@@ -5,3 +5,31 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import url(https://fonts.googleapis.com/css?family=PT+Serif+Caption&subset=latin,cyrillic);
+
+body {
+  font-family: 'PT Serif Caption', serif;
+}
+
+#main {
+  min-height: 80em;
+  background: #f9f9f9;
+  margin: 20px 0;
+}
+
+p {
+  font-size: 1.2em;
+}
+
+#error_explanation {
+  ul {
+    color: red;
+  }
+}
+
+.field_with_errors {
+  @extend .has-error;
+  .form-control {
+    color: $state-danger-text;
+  }
+}
