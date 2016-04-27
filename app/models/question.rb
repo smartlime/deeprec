@@ -1,4 +1,6 @@
 class Question < ActiveRecord::Base
+  has_many :answers, dependent: :destroy
+
   validates :topic, presence: true, length: (10..50)
   validates :body, presence: true, length: (20..8192)
   validates :rating, numericality: {only_integer: true}
