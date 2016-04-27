@@ -14,14 +14,16 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
 
-
 # gem 'unicorn'
 
 group :development, :test do
   gem 'byebug'
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'factory_girl_rails', '~> 4.0'
+end
 
+group :test do
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
 group :development do
@@ -38,4 +40,3 @@ group :development do
 
   gem 'spring'
 end
-
