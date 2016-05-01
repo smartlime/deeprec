@@ -34,5 +34,15 @@ module DeepRecursion
 
     # bootstrap-sass requires minimum Sass number precision of 8 (default is 5)
     ::Sass::Script::Value::Number.precision = [8, ::Sass::Script::Value::Number.precision].max
+
+    config.generators do |g|
+      g.test_framework :rspec,
+          fixtures: true,
+          view_specs: false,
+          helper_specs: false,
+          routing_specs: false,
+          request_specs: false,
+          controller_specs: true
+    end
   end
 end
