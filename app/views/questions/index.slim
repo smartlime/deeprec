@@ -1,9 +1,10 @@
-- if @questions.any?
+- if user_signed_in? && @questions.any?
   = link_to new_question_path, class: "btn btn-primary pull-right"
     ' Задать свой вопрос
 
-  h2 Вопросы
-- else
+h2 Вопросы
+
+- unless @questions.any?
   p.lead.text-center Пока не задано ни одного вопроса
 
 .row
@@ -15,5 +16,7 @@
             = question.topic
         hr
 
-= link_to new_question_path, class: "btn btn-primary pull-right"
-  ' Задать свой вопрос
+- if user_signed_in?
+  = link_to new_question_path, class: "btn btn-primary pull-right"
+    ' Задать свой вопрос
+

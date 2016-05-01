@@ -13,9 +13,13 @@
   .col-sm-12
     hr
       p.lead.pull-left Ответов: #{@question.answers.count}
-      - if @question.answers.any?
-        = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
-          ' Дать свой ответ
+      - if user_signed_in?
+        .pull-right
+          - if @question.user_id == current_user.id
+            => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
+              ' Удалить вопрос
+          = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
+            ' Дать свой ответ
 - cnt = 0
 - @question.answers.each do |answer|
   - cnt += 1
@@ -25,9 +29,17 @@
     .col-xs-11
       blockquote
         = answer.body
+        - if user_signed_in? && answer.user_id == current_user.id
+          .pull-right style='margin-top:-10px'
+            br
+            = link_to question_answer_path(@question, answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete
+              ' Удалить ответ
       hr
 
-.row
-  .col-sm-12
-    = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
-      ' Дать свой ответ
+- if user_signed_in? && @question.answers.any?
+  .row
+    .col-sm-12
+      .pull-right
+        = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
+          ' Дать свой ответ
+

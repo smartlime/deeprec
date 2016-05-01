@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
-  before_action :load_question
+  before_action :authenticate_user!
+  before_action :load_question, only: [:new, :create]
 
   def new
     @answer = @question.answers.new
@@ -7,10 +8,21 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user_id = current_user.id
     if @answer.save
-      redirect_to question_path(@question)
+      redirect_to question_path(@question), notice: "Ответ успешно размещен."
     else
       render :new
+    end
+  end
+
+  def destroy
+    answer = Answer.find(params[:id])
+    if answer.user_id == current_user.id
+      answer.destroy!
+      redirect_to answer.question, notice: "Ответ успешно удален."
+    else
+      redirect_to answer.question, alert: "Нельзя удалить чужой ответ."
     end
   end
 

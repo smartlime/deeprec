@@ -9,11 +9,16 @@ html lang="ru"
       ' [ Deep Recurssion]
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => false
     = javascript_include_tag 'application', 'data-turbolinks-track' => false
+    link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"
+    link rel="icon" href="/favicon.ico" type="image/x-icon"
     = csrf_meta_tags
 
   body
+    = render 'shared/navbar'
 
-    div.container
-      .well#main
-        = render 'shared/alerts'
-        == yield
+    .container
+      .row
+        .col-xs-12
+          .well#main
+            = render 'shared/alerts'
+            == yield

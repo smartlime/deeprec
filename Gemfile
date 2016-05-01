@@ -14,6 +14,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
 
+gem 'devise'
+
 gem 'faker'
 
 # gem 'unicorn'
@@ -26,6 +28,8 @@ end
 
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
