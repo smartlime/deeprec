@@ -6,7 +6,8 @@ class QuestionsController < ApplicationController
   def show
     @question = Question.find_by_id(params[:id])
     @answers = Answer.where(question: @question) # TODO: scoping with .eager_load im model (?)
-    @answer = Answer.new
+    @answer = Answer.new(question: @question)
+    pp @answer
   end
 
   def new

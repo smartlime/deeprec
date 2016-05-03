@@ -1,1 +1,33 @@
-h2 Stub4 questions#show
+.row
+  .col-sm-12
+    = link_to questions_path, class: "btn btn-info btn-xs pull-right"
+      ' Вернуться к вопросам
+
+.row
+  .col-sm-12
+    h3 = @question.topic
+    hr
+    p
+      = @question.body
+.row
+  .col-sm-12
+    hr
+      p.lead Ответов: #{@answers.count}
+
+- cnt = 0
+- @answers.each do |answer|
+  - cnt += 1
+  .row
+    .col-xs-1
+      p.lead.pull-right = cnt
+    .col-xs-11
+      blockquote
+        = answer.body
+      hr
+.row
+  .col-sm-12
+    = form_for @answer, url: question_answers_path(@question) do |f|
+      .form-group
+        label.lead for="answerBody" Ваш ответ:
+        textarea.form-control#answerBody rows="10" style="width:100%" placeholder="Введите ответ здесь"
+      button.btn.btn-primary.pull-right type="submit" Отправить ответ

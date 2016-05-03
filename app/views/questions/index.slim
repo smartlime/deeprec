@@ -1,1 +1,7 @@
-h2 Stub4 questions index
+h2 Вопросы
+hr
+  - @questions.each do |question|
+    = link_to question_path(question)
+      p.lead
+        = question.topic
+    hr
