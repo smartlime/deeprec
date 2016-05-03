@@ -4,4 +4,10 @@ FactoryGirl.define do
     body 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
     rating 0
   end
+
+  factory :invalid_question, class: "Question" do
+    topic nil
+    body nil
+    rating nil
+  end
 end
