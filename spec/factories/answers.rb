@@ -5,7 +5,7 @@ FactoryGirl.define do
     rating 0
   end
 
-  factory :invalid_answer, class: "Answer" do
+  factory :invalid_answer, class: 'Answer' do
     body nil
     rating nil
   end

@@ -23,7 +23,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       it 'stores new Answer in the database' do
         expect { post :create, question_id: question.id, answer: attributes_for(:answer) }.
-            to change(Answer, :count).by(1)
+          to change(Answer, :count).by(1)
       end
 
       it 'redirects to #show Questions view' do
@@ -35,7 +35,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do
       it 'doesn\'t store the Answer' do
         expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }.
-            to_not change(Answer, :count)
+          to_not change(Answer, :count)
       end
 
       it 're-renders #new view' do
@@ -43,6 +43,5 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :new
       end
     end
-
   end
 end

@@ -13,8 +13,9 @@
   .col-sm-12
     hr
       p.lead.pull-left Ответов: #{@question.answers.count}
-      = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
-        ' Дать свой ответ
+      - if @question.answers.any?
+        = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
+          ' Дать свой ответ
 - cnt = 0
 - @question.answers.each do |answer|
   - cnt += 1

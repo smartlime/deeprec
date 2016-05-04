@@ -1,7 +1,10 @@
-= link_to new_question_path, class: "btn btn-primary pull-right"
-  ' Задать свой вопрос
+- if @questions.any?
+  = link_to new_question_path, class: "btn btn-primary pull-right"
+    ' Задать свой вопрос
 
-h2 Вопросы
+  h2 Вопросы
+- else
+  p.lead.text-center Пока не задано ни одного вопроса
 
 .row
   .col-xs-12
