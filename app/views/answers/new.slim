@@ -5,11 +5,14 @@ h2 Ответить на вопрос
     p
       = @answer.question.body
     hr
+.row
+  .col-sm-12
+    = render partial: 'shared/form_errors', locals: {object: @answer}
 
 .row
   .col-sm-12
     = form_for @answer, url: question_answers_path(@answer.question_id) do |f|
       .form-group
         label.lead for="answerBody" Ваш ответ:
-        = f.text_area :body, id: 'answerBody', class: 'form-control', rows: 10, placeholder: 'Введите ответ здесь'
+        = f.text_area :body, id: 'answerBody', class: 'form-control input', rows: 10, placeholder: 'Введите ответ здесь'
       button.btn.btn-primary.pull-right type="submit" Отправить ответ
