@@ -27,5 +27,7 @@
         = answer.body
       hr
 
-= link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
-  ' Дать свой ответ
+.row
+  .col-sm-12
+    = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
+      ' Дать свой ответ
