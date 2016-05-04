@@ -1,15 +1,17 @@
-# Using http://www.lipsum.com/ for random texts
+questions = []
 
-q1 = Question.create(topic: 'Nam at nisl dignissim, suscipit felis sed, sodales ligula', body: 'Etiam sodales rhoncus neque, id imperdiet libero fermentum nec. Donec mauris nisi, tempor non lacinia ut, rhoncus vel est. Nunc facilisis pellentesque accumsan. Praesent cursus sit amet ante sit amet molestie?')
-q2 = Question.create(topic: 'Sed consequat urna ac velit commodo fermentum', body: 'Suspendisse potenti. Nullam neque ligula, luctus ac elit auctor, gravida feugiat ipsum. Donec ac ipsum dapibus, dignissim elit vitae, posuere est. Vivamus tristique, elit at consequat consequat, diam tortor interdum diam, nec rhoncus nisi tellus in ex. Vivamus orci tortor, ullamcorper ac bibendum sed, luctus lobortis libero?')
-q3 = Question.create(topic: 'Nullam accumsan dui ac semper mollis', body: 'Etiam porta, sem euismod elementum commodo, ipsum neque ultrices nulla, scelerisque posuere nisi justo rhoncus turpis. Proin consequat sem justo, vitae molestie nisl accumsan ut. Suspendisse iaculis iaculis nibh, facilisis aliquam lectus elementum vitae. Aliquam eget venenatis magna. Aliquam tincidunt est quis imperdiet consectetur. Ut dignissim, risus ut maximus euismod, turpis massa imperdiet urna, non venenatis mauris nisi sed mi?')
-Question.create(topic: 'This question has no answers', body: '. Suspendisse laoreet efficitur gravida. Aliquam erat volutpat?')
+4.times do
+  questions.push Question.create(
+    topic: "How to #{Faker::Hacker.verb} #{Faker::Hacker.adjective} " \
+      "#{Faker::Hacker.noun} #{Faker::Hacker.noun} #{Faker::Hacker.ingverb} " \
+      "#{Faker::Hacker.abbreviation}?",
+    body: Faker::Lorem.paragraph(8, true, 8).gsub(/\.$/, '?'))
+end
 
-Answer.create(question: q1, body: 'Aenean dictum libero elit, et viverra lacus condimentum eget. Nulla pretium, ligula nec posuere consequat, nisi nisi sodales lectus, sit amet pulvinar mi felis id eros. Duis interdum, erat in efficitur vestibulum, odio lorem rhoncus lacus, at egestas lectus lorem at nulla. Quisque dictum bibendum felis, ac convallis lacus elementum nec.')
-Answer.create(question: q1, body: 'Fusce urna lorem, auctor varius tempor et, tempor non ante. Donec tempus pellentesque neque sit amet convallis. Ut sem ex, vehicula ut egestas vehicula, lacinia non mauris. Nullam malesuada ultrices sodales. Sed aliquet mattis commodo. Proin lorem velit, mollis non varius non, euismod pulvinar mauris.')
-Answer.create(question: q1, body: 'Ut elementum porttitor turpis, ut tempus leo laoreet et. Maecenas pretium eros eu eros malesuada, sed scelerisque mi hendrerit. Nullam volutpat nunc risus. Aliquam sodales rutrum aliquam. Mauris feugiat magna et felis sollicitudin, id porta urna eleifend.')
-
-Answer.create(question: q2, body: 'In hendrerit velit vel magna imperdiet, vestibulum hendrerit orci hendrerit. Aliquam tristique tempus ipsum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.')
-
-Answer.create(question: q3, body: 'In ullamcorper, odio eu laoreet laoreet, quam felis porttitor turpis, tristique tempus lacus erat vitae purus. Morbi pharetra mi in nisi efficitur, at porta eros vehicula. Aliquam et imperdiet metus. Ut sem eros, viverra sed massa vitae, scelerisque bibendum lacus. Vivamus consequat dui sed eros laoreet placerat.')
-Answer.create(question: q3, body: 'Donec porttitor mollis nulla, nec ultricies risus vehicula vitae. Maecenas imperdiet ac leo ut tempor. Nam ac tempor purus. Nulla arcu urna, tristique ac elit at, varius lacinia erat. Quisque sed feugiat tortor. Maecenas nec molestie ex, vel congue lectus. Nulla sed neque fermentum, ultrices massa ac, dictum urna.')
+questions.each do |question|
+  rand(8).times do
+    Answer.create(
+      question: question,
+      body: Faker::Hacker.say_something_smart.capitalize)
+  end
+end
