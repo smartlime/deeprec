@@ -1,7 +1,16 @@
+= link_to new_question_path, class: "btn btn-primary pull-right"
+  ' Задать свой вопрос
+
 h2 Вопросы
-hr
-  - @questions.each do |question|
-    = link_to question_path(question)
-      p.lead
-        = question.topic
+
+.row
+  .col-xs-12
     hr
+      - @questions.each do |question|
+        = link_to question_path(question)
+          p.lead
+            = question.topic
+        hr
+
+= link_to new_question_path, class: "btn btn-primary pull-right"
+  ' Задать свой вопрос

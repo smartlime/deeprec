@@ -1,1 +1,14 @@
-h2 Stub4 questions#new
+h3 Задать свой вопрос
+.row
+  .col-sm-12
+    = render partial: 'shared/form_errors', locals: { object: @question }
+
+.row
+  .col-sm-12
+    = form_for @question do |f|
+      .form-group
+        label for="questionTopic" Тема вопроса:
+        = f.text_field :topic, id: 'questionTopic', class: 'form-control input', size: 200, placeholder: 'Кратко (не более 200 символов) сформулируйте суть вопроса'
+        label for="questionBody" Вопрос:
+        = f.text_area :body, id: 'questionBody', class: 'form-control input', rows: 10, size: 50000, placeholder: 'Введите сам вопрос здесь'
+      button.btn.btn-primary.pull-right type="submit" Задать вопрос
