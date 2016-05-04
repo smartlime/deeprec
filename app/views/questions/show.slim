@@ -31,5 +31,5 @@
     = form_for @answer, url: question_answers_path(@question) do |f|
       .form-group
         label.lead for="answerBody" Ваш ответ:
-        textarea.form-control#answerBody rows="10" style="width:100%" placeholder="Введите ответ здесь"
+        = f.text_area :body, id: 'answerBody', class: 'form-control', rows: 10, placeholder: 'Введите ответ здесь'
       button.btn.btn-primary.pull-right type="submit" Отправить ответ
