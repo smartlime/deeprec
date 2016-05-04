@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :question do
-    topic 'Sample Topic'
+    topic 'Sample Topic of a Question'
     body 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
     rating 0
   end

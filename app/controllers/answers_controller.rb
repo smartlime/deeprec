@@ -1,18 +1,22 @@
 class AnswersController < ApplicationController
-  before_action :get_question_id
+  before_action :set_question_id
+
+  def new
+    @answer = Answer.new(question_id: @question_id)
+  end
 
   def create
     @answer = Answer.new(answer_params)
     if @answer.save
       redirect_to question_path(@question_id)
     else
-      redirect_to question_path(@question_id)
+      render :new
     end
   end
 
   private
 
-  def get_question_id
+  def set_question_id
     @question_id = params[:question_id]
   end
 

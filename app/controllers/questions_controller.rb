@@ -5,7 +5,6 @@ class QuestionsController < ApplicationController
 
   def show
     @question = Question.with_answers.find_by_id(params[:id])
-    @answer = Answer.new(question: @question)
   end
 
   def new
