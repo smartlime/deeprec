@@ -26,6 +26,11 @@ RSpec.describe AnswersController, type: :controller do
           to change(Answer, :count).by(1)
       end
 
+      it 'associates new Answer with correct Question' do
+        expect { post :create, question_id: question.id, answer: attributes_for(:answer) }.
+          to change(question.answers, :count).by(1)
+      end
+
       it 'redirects to #show Questions view' do
         post :create, question_id: question.id, answer: attributes_for(:answer)
         expect(response).to redirect_to question_path(question.id)
