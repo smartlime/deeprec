@@ -4,7 +4,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @question = Question.with_answers.find_by_id(params[:id])
+    @question = Question.find_by_id!(params[:id])
   end
 
   def new
@@ -13,10 +13,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
-    @question.rating = 0
-
     if @question.save
-      flash[:notice] = 'Вопрос был успешно размещен на сайте.'
       redirect_to @question
     else
       render :new

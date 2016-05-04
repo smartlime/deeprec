@@ -3,6 +3,4 @@ class Question < ActiveRecord::Base
 
   validates :topic, presence: true, length: (10..200)
   validates :body, presence: true, length: (20..50_000)
-
-  scope :with_answers, -> { eager_load(:answers) }
 end
