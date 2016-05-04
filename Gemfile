@@ -32,6 +32,7 @@ group :development do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'better_errors'
+  gem 'meta_request'
 
   gem 'quiet_assets'
 
