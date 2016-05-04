@@ -12,10 +12,10 @@
 .row
   .col-sm-12
     hr
-      p.lead Ответов: #{@answers.count}
+      p.lead Ответов: #{@question.answers.count}
 
 - cnt = 0
-- @answers.each do |answer|
+- @question.answers.each do |answer|
   - cnt += 1
   .row
     .col-xs-1
@@ -24,6 +24,8 @@
       blockquote
         = answer.body
       hr
+
+/ ---- bottom answer form ----------------------------------------------------------------------------------------------
 .row
   .col-sm-12
     = form_for @answer, url: question_answers_path(@question) do |f|
