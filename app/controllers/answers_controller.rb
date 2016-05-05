@@ -17,7 +17,7 @@ class AnswersController < ApplicationController
   private
 
   def load_question
-    @question = Question.find_by_id!(params[:question_id])
+    @question = Question.find(params[:question_id])
   end
 
   def answer_params
