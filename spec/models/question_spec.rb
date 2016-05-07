@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Question, type: :model do
+RSpec.describe Question do
   it { should have_many(:answers).dependent(:destroy) }
 
   it { should validate_presence_of :topic }
