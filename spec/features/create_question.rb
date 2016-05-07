@@ -22,6 +22,7 @@ feature 'User can create question', %(
     click_on 'Задать вопрос'
 
     expect(page.find('.alert')).to have_content 'Вопрос успешно задан'
+    expect(current_path).to start_with '/questions/'
   end
 
 end
