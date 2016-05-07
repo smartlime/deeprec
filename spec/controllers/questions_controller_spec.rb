@@ -53,6 +53,12 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirects to #show view' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
+        expect(flash[:notice]).to be_present
+      end
+
+      it 'shows :notice flash' do
+        post :create, question: attributes_for(:question)
+        expect(flash[:notice]).to be_present
       end
     end
 

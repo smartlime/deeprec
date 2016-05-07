@@ -35,6 +35,11 @@ RSpec.describe AnswersController, type: :controller do
         post :create, question_id: question.id, answer: attributes_for(:answer)
         expect(response).to redirect_to question_path(question.id)
       end
+
+      it 'shows :notice flash' do
+        post :create, question_id: question.id, answer: attributes_for(:answer)
+        expect(flash[:notice]).to be_present
+      end
     end
 
     context 'with invalid attributes' do
