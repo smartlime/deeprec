@@ -7,15 +7,15 @@ feature 'User can view questions index', %(
 ) do
 
   scenario 'User can view questions index' do
-    @question1 = Question.create(topic: Faker::Lorem.sentence,
-                                 body: Faker::Lorem.paragraph(4, true, 8))
-    @question2 = Question.create(topic: Faker::Lorem.sentence,
-                                 body: Faker::Lorem.paragraph(4, true, 8))
+    question1 = Question.create(topic: Faker::Lorem.sentence,
+                                body: Faker::Lorem.paragraph(4, true, 8))
+    question2 = Question.create(topic: Faker::Lorem.sentence,
+                                body: Faker::Lorem.paragraph(4, true, 8))
 
     visit questions_path
 
-    expect(page).to have_content @question1.topic
-    expect(page).to have_content @question1.topic
+    expect(page).to have_content question1.topic
+    expect(page).to have_content question1.topic
     expect(page).to have_content 'Задать свой вопрос'
   end
 
