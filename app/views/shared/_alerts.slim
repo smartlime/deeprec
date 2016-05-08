@@ -2,12 +2,12 @@
   .alert.alert-danger.alert-dismissible role="alert"
     button.close type="button" data-dismiss="alert" aria-label="Close"
       span aria-hidden="true" &times;
-    span.glyphicon.glyphicon-alert aria-hidden="true"
+    = glyph :alert
     =< alert
 
 - if notice
   .alert.alert-info.alert-dismissible role="alert"
     button.close type="button" data-dismiss="alert" aria-label="Close"
       span aria-hidden="true" &times;
-    span.glyphicon.glyphicon-info-sign aria-hidden="true"
+    = glyph 'info-sign'
     =< notice
