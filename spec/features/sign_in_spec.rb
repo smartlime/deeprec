@@ -11,7 +11,7 @@ feature 'Signing in', %(
   scenario 'Registered user tries to sign in' do
     sign_in user
 
-    expect(page).to have_content 'Signed in successfully.'
+    expect(page.find('.alert')).to have_content 'Signed in successfully.'
   end
 
   scenario 'Not registered user tries to sign in' do
