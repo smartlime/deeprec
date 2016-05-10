@@ -2,13 +2,19 @@ require 'rails_helper'
 
 feature 'User can give an answer to particular question', %(
   To be able to share my knowledge on topic
-  As an user
+  As an anthenticated user
   I want to give an answer the question
 ) do
+  given(:user) { create(:user) }
+  given(:question) do
+    Question.create(
+      topic: Faker::Lorem.sentence,
+      body: Faker::Lorem.paragraph(4, true, 8))
+  end
 
-  scenario 'User can access new answer button and get the answer form' do
-    question = Question.create(topic: Faker::Lorem.sentence,
-                               body: Faker::Lorem.paragraph(4, true, 8))
+  before { sign_in user }
+
+  scenario 'Authenticated user can access new answer button and get the answer form' do
     visit question_path(question)
     expect(page).to have_content question.topic
     expect(page).to have_content question.body
@@ -20,15 +26,13 @@ feature 'User can give an answer to particular question', %(
     expect(page).to have_content question.body
     expect(page).to have_content 'Ваш ответ:'
     expect(current_path).to eq new_question_answer_path(question)
-    expect(page).to have_content 'Отправить ответ'
+    expect(page.find('#new_answer')).to have_content 'Отправить ответ'
   end
 
-  scenario 'User can create an answer' do
-    question = Question.create(topic: Faker::Lorem.sentence,
-                               body: Faker::Lorem.paragraph(4, true, 8))
+  scenario 'Authenticated user can create an answer' do
     visit new_question_answer_path(question)
     fill_in 'Ваш ответ', with: Faker::Lorem.paragraph(4, true, 8)
-    click_on 'Отправить ответ'
+    page.find('#new_answer').click_button('Отправить ответ')
 
     expect(page.find('.alert')).to have_content 'Ответ успешно размещен'
     expect(current_path).to eq question_path(question)

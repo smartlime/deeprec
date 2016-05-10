@@ -2,9 +2,12 @@ require 'rails_helper'
 
 feature 'User can create question', %(
   To be able to have ability to get answers
-  As a user
+  As an authenticated user
   I want to ask a question
 ) do
+  given(:user) { create(:user) }
+
+  before { sign_in user }
 
   scenario 'User can access new question button and get the question form' do
     visit questions_path
@@ -19,10 +22,9 @@ feature 'User can create question', %(
     visit new_question_path
     fill_in 'Тема вопроса', with: Faker::Lorem.sentence
     fill_in 'Вопрос', with: Faker::Lorem.paragraph(4, true, 8)
-    click_on 'Задать вопрос'
+    page.find('#new_question').click_button('Задать вопрос')
 
     expect(page.find('.alert')).to have_content 'Вопрос успешно задан'
     expect(current_path).to start_with '/questions/'
   end
-
 end
