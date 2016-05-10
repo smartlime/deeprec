@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -75,6 +76,54 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders #new view' do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    context 'own question' do
+      before { sign_in user }
+
+      it 'deletes question' do
+        question
+        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to index view' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
+
+      it 'shows :notice flash' do
+        delete :destroy, id: question
+        expect(flash[:notice]).to be_present
+      end
+    end
+
+    context 'other user\'s question' do
+      before { sign_in user }
+      before do
+        @alt_user = create(:user)
+        @alt_question = create(:question, user: @alt_user)
+      end
+
+      it 'doesn\'t delete question' do
+        expect { delete :destroy, id: @alt_question }.to change(Question, :count).by(0)
+      end
+
+      it 'keeps question in DB' do
+        delete :destroy, id: @alt_question
+        expect(Question.exists?(@alt_question.id)).to be true
+      end
+
+      it 'redirects to not deleted question' do
+        delete :destroy, id: @alt_question
+        expect(response).to redirect_to @alt_question
+      end
+
+      it 'shows :alert flash' do
+        delete :destroy, id: @alt_question
+        expect(flash[:alert]).to be_present
       end
     end
   end
