@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :question do
-    topic "#{Faker::Lorem.sentence}"
-    body "#{Faker::Lorem.paragraph(4, true, 8)}"
+    topic Faker::Lorem.sentence
+    body Faker::Lorem.paragraph(4, true, 8)
     rating 0
     user
   end

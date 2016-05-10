@@ -5,7 +5,7 @@ feature 'User can delete own answer', %(
   As an anthenticated user
   I want to delete an answer
 ) do
-  scenario "Authorized user can delete own question"
-  scenario "Authorized user cannot delete question of other user"
-  scenario "Unauthorized user cannot delete questions"
+  scenario 'Authorized user can delete own question'
+  scenario 'Authorized user cannot delete question of other user'
+  scenario 'Unauthorized user cannot delete questions'
 end

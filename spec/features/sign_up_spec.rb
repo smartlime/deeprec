@@ -6,7 +6,6 @@ feature 'Signing up', %(
   As an unregistered user
   I want to sign up
 ) do
-
   given(:password) { Faker::Internet.password }
 
   scenario 'New user tries to sign up' do

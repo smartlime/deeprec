@@ -25,16 +25,16 @@ feature 'User can give an answer to particular question', %(
     expect(page).to have_content question.body
     expect(page).to have_content 'Ваш ответ:'
     expect(current_path).to eq new_question_answer_path(question)
-    expect(page.find('#new_answer')).to have_content 'Отправить ответ'
+    expect(find('#new_answer')).to have_content 'Отправить ответ'
   end
 
   scenario 'Authenticated user can create an answer' do
     sign_in user
     visit new_question_answer_path(question)
     fill_in 'Ваш ответ', with: Faker::Lorem.paragraph(4, true, 8)
-    page.find('#new_answer').click_button('Отправить ответ')
+    find('#new_answer').click_button('Отправить ответ')
 
-    expect(page.find('.alert')).to have_content 'Ответ успешно размещен'
+    expect(find('.alert')).to have_content 'Ответ успешно размещен'
     expect(current_path).to eq question_path(question)
   end
 
@@ -43,7 +43,7 @@ feature 'User can give an answer to particular question', %(
     expect(page).not_to have_content 'Дать свой ответ'
 
     visit new_question_answer_path(question)
-    expect(page.find('.alert')).to have_content 'You need to sign in or sign up before continuing.'
+    expect(find('.alert')).to have_content 'You need to sign in or sign up before continuing.'
     expect(current_path).not_to eq new_question_answer_path(question)
   end
 end

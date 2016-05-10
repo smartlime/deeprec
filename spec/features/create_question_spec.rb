@@ -22,9 +22,9 @@ feature 'Authenticated user can create question', %(
     visit new_question_path
     fill_in 'Тема вопроса', with: Faker::Lorem.sentence
     fill_in 'Вопрос', with: Faker::Lorem.paragraph(4, true, 8)
-    page.find('#new_question').click_button('Задать вопрос')
+    find('#new_question').click_button('Задать вопрос')
 
-    expect(page.find('.alert')).to have_content 'Вопрос успешно задан'
+    expect(find('.alert')).to have_content 'Вопрос успешно задан'
     expect(current_path).to start_with '/questions/'
   end
 
@@ -34,7 +34,7 @@ feature 'Authenticated user can create question', %(
     expect(page).not_to have_content 'Вопрос:'
 
     visit new_question_path
-    expect(page.find('.alert')).to have_content 'You need to sign in or sign up before continuing.'
+    expect(find('.alert')).to have_content 'You need to sign in or sign up before continuing.'
     expect(current_path).to eq new_user_session_path
   end
 end

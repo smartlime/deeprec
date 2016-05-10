@@ -5,13 +5,12 @@ feature 'Signing in', %(
   As an user
   I want to sign in
 ) do
-
   given(:user) { create(:user) }
 
   scenario 'Registered user tries to sign in' do
     sign_in user
 
-    expect(page.find('.alert')).to have_content 'Signed in successfully.'
+    expect(find('.alert')).to have_content 'Signed in successfully.'
   end
 
   scenario 'Not registered user tries to sign in' do

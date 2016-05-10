@@ -5,7 +5,6 @@ feature 'User can view questions index', %(
   As a user
   I want to view the list of questions
 ) do
-
   scenario 'User can view questions index' do
     question1 = Question.create(topic: Faker::Lorem.sentence,
                                 body: Faker::Lorem.paragraph(4, true, 8))
@@ -17,5 +16,4 @@ feature 'User can view questions index', %(
     expect(page).to have_content question1.topic
     expect(page).to have_content question2.topic
   end
-
 end
