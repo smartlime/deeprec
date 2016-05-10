@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'User can create question', %(
+feature 'Authenticated user can create question', %(
   To be able to have ability to get answers
   As an authenticated user
   I want to ask a question
