@@ -13,7 +13,7 @@
   .col-sm-12
     hr
       p.lead.pull-left Ответов: #{@question.answers.count}
-      - if @question.answers.any?
+      - if user_signed_in? && @question.answers.any?
         = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
           ' Дать свой ответ
 - cnt = 0
@@ -27,7 +27,8 @@
         = answer.body
       hr
 
-.row
-  .col-sm-12
-    = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
-      ' Дать свой ответ
+- if user_signed_in?
+  .row
+    .col-sm-12
+      = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary pull-right"
+        ' Дать свой ответ
