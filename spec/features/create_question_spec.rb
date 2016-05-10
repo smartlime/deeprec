@@ -9,7 +9,9 @@ feature 'Authenticated user can create question', %(
 
   scenario 'Authenticated user can access new question button and get the question form' do
     sign_in user
+
     visit questions_path
+
     click_on 'Задать свой вопрос'
 
     expect(page).to have_content 'Задать свой вопрос'
@@ -19,7 +21,9 @@ feature 'Authenticated user can create question', %(
 
   scenario 'Authenticated user can create a question' do
     sign_in user
+
     visit new_question_path
+
     fill_in 'Тема вопроса', with: Faker::Lorem.sentence
     fill_in 'Вопрос', with: Faker::Lorem.paragraph(4, true, 8)
     find('#new_question').click_button('Задать вопрос')
@@ -30,6 +34,7 @@ feature 'Authenticated user can create question', %(
 
   scenario 'Unauthenticated user cannot access new question button and new question form' do
     visit questions_path
+
     expect(page).not_to have_content 'Задать свой вопрос'
     expect(page).not_to have_content 'Вопрос:'
 
