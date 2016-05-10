@@ -28,14 +28,11 @@ feature 'Authenticated user can create question', %(
     expect(current_path).to start_with '/questions/'
   end
 
-  scenario 'Unauthenticated user cannot access new question button and get the question form' do
+  scenario 'Unauthenticated user cannot access new question button and new question form' do
     visit questions_path
     expect(page).not_to have_content 'Задать свой вопрос'
     expect(page).not_to have_content 'Вопрос:'
-    expect(current_path).not_to eq new_question_path
-  end
 
-  scenario 'Unauthenticated user cannot create a question' do
     visit new_question_path
     expect(page.find('.alert')).to have_content 'You need to sign in or sign up before continuing.'
     expect(current_path).to eq new_user_session_path
