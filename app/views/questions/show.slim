@@ -28,6 +28,11 @@
     .col-xs-11
       blockquote
         = answer.body
+        - if user_signed_in? && answer.user == current_user
+          .pull-right style='margin-top:-10px'
+            br
+            = link_to question_answer_path(@question, answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete
+              ' Удалить ответ
       hr
 
 - if user_signed_in? && @question.answers.any?

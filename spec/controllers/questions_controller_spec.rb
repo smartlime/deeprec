@@ -81,9 +81,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    context 'own question' do
-      before { sign_in user }
+    before { sign_in user }
 
+    context 'own question' do
       it 'deletes question' do
         question
         expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
@@ -101,11 +101,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'other user\'s question' do
-      before { sign_in user }
-      before do
-        @alt_user = create(:user)
-        @alt_question = create(:question, user: @alt_user)
-      end
+      before { @alt_question = create(:question, user: create(:user)) }
 
       it 'doesn\'t delete question' do
         expect { delete :destroy, id: @alt_question }.to change(Question, :count).by(0)

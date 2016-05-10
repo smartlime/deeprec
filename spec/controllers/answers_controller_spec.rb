@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:answer_user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
   describe 'GET #new' do
@@ -57,6 +56,55 @@ RSpec.describe AnswersController, type: :controller do
       it 're-renders #new view' do
         post :create, question_id: question.id, answer: attributes_for(:invalid_answer)
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let(:answer) { create(:answer, question: question, user: user) }
+
+    context 'own answer' do
+      before { sign_in user }
+
+      it 'deletes answer' do
+        answer
+        expect { delete :destroy, question_id: question, id: answer }.
+          to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to question#show view' do
+        delete :destroy, question_id: question, id: answer
+        expect(response).to redirect_to question
+      end
+
+      it 'shows :notice flash' do
+        delete :destroy, question_id: question, id: answer
+        expect(flash[:notice]).to be_present
+      end
+    end
+
+    context 'other user\'s answer' do
+      before { sign_in user }
+      before { @alt_answer = create(:answer, question: question, user: create(:user)) }
+
+      it 'doesn\'t delete answer' do
+        expect { delete :destroy, question_id: question, id: @alt_answer }.
+          to change(Answer, :count).by(0)
+      end
+
+      it 'keeps answer in DB' do
+        delete :destroy, question_id: question, id: @alt_answer
+        expect(Answer.exists?(@alt_answer.id)).to be true
+      end
+
+      it 'redirects to question#show view' do
+        delete :destroy, question_id: question, id: @alt_answer
+        expect(response).to redirect_to question
+      end
+
+      it 'shows :alert flash' do
+        delete :destroy, question_id: question, id: @alt_answer
+        expect(flash[:alert]).to be_present
       end
     end
   end

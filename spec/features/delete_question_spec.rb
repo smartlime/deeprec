@@ -18,9 +18,8 @@ feature 'User can delete own question', %(
     expect(current_path).to eq questions_path
   end
 
-  scenario 'Authorized user cannot delete question of other user' do
-    user_alt = create(:user)
-    question = create(:question, user: user_alt)
+  scenario 'Authorized user can\'t delete other user\'s question' do
+    question = create(:question, user: create(:user))
 
     sign_in user
 
