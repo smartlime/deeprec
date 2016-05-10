@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-feature 'Signing in', %{
+feature 'Signing in', %(
   To ask questions
   As an user
   I want to sign in
- } do
+) do
 
   given(:user) { create(:user) }
 
   scenario 'Registered user tries to sign in' do
-    sign_in(user)
+    sign_in user
 
     expect(page).to have_content 'Signed in successfully.'
   end
