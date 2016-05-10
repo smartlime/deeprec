@@ -6,18 +6,17 @@ feature 'User can give an answer to particular question', %(
   I want to give an answer the question
 ) do
   given(:user) { create(:user) }
-  given(:question) do
-    Question.create(
-      topic: Faker::Lorem.sentence,
-      body: Faker::Lorem.paragraph(4, true, 8))
-  end
+  given(:question) { create(:question, user: user) }
 
   scenario 'Authenticated user can access new answer button and get the answer form' do
     sign_in user
+
     visit question_path(question)
+
     expect(page).to have_content question.topic
     expect(page).to have_content question.body
     expect(page).to have_content 'Дать свой ответ'
+
     click_on 'Дать свой ответ'
 
     expect(page).to have_content 'Ответить на вопрос'
@@ -30,7 +29,9 @@ feature 'User can give an answer to particular question', %(
 
   scenario 'Authenticated user can create an answer' do
     sign_in user
+
     visit new_question_answer_path(question)
+
     fill_in 'Ваш ответ', with: Faker::Lorem.paragraph(4, true, 8)
     find('#new_answer').click_button('Отправить ответ')
 
@@ -40,9 +41,11 @@ feature 'User can give an answer to particular question', %(
 
   scenario 'Unauthenticated user cannot access new answer button and get the answer form' do
     visit question_path(question)
+
     expect(page).not_to have_content 'Дать свой ответ'
 
     visit new_question_answer_path(question)
+
     expect(find('.alert')).to have_content 'You need to sign in or sign up before continuing.'
     expect(current_path).not_to eq new_question_answer_path(question)
   end

@@ -7,5 +7,5 @@ feature 'User can delete own answer', %(
 ) do
   scenario 'Authorized user can delete own question'
   scenario 'Authorized user cannot delete question of other user'
-  scenario 'Unauthorized user cannot delete questions'
+  scenario 'Unauthorized user don\'t see delete question button'
 end
