@@ -18,6 +18,5 @@ feature 'User can view answers to particular question', %(
     expect(page).to have_content question.body
     expect(page).to have_content answer1.body
     expect(page).to have_content answer2.body
-    expect(page).to have_content 'Дать свой ответ'
   end
 end

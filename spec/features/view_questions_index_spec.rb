@@ -15,8 +15,7 @@ feature 'User can view questions index', %(
     visit questions_path
 
     expect(page).to have_content question1.topic
-    expect(page).to have_content question1.topic
-    expect(page).to have_content 'Задать свой вопрос'
+    expect(page).to have_content question2.topic
   end
 
 end
