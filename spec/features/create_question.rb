@@ -7,9 +7,8 @@ feature 'User can create question', %(
 ) do
   given(:user) { create(:user) }
 
-  before { sign_in user }
-
-  scenario 'User can access new question button and get the question form' do
+  scenario 'Authenticated user can access new question button and get the question form' do
+    sign_in user
     visit questions_path
     click_on 'Задать свой вопрос'
 
@@ -18,7 +17,8 @@ feature 'User can create question', %(
     expect(current_path).to eq new_question_path
   end
 
-  scenario 'User can create a question' do
+  scenario 'Authenticated user can create a question' do
+    sign_in user
     visit new_question_path
     fill_in 'Тема вопроса', with: Faker::Lorem.sentence
     fill_in 'Вопрос', with: Faker::Lorem.paragraph(4, true, 8)
@@ -26,5 +26,18 @@ feature 'User can create question', %(
 
     expect(page.find('.alert')).to have_content 'Вопрос успешно задан'
     expect(current_path).to start_with '/questions/'
+  end
+
+  scenario 'Unauthenticated user cannot access new question button and get the question form' do
+    visit questions_path
+    expect(page).not_to have_content 'Задать свой вопрос'
+    expect(page).not_to have_content 'Вопрос:'
+    expect(current_path).not_to eq new_question_path
+  end
+
+  scenario 'Unauthenticated user cannot create a question' do
+    visit new_question_path
+    expect(page.find('.alert')).to have_content 'You need to sign in or sign up before continuing.'
+    expect(current_path).to eq new_user_session_path
   end
 end
