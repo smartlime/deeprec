@@ -30,12 +30,12 @@ feature 'User can delete own answer', %(
 
     visit question_path(question)
 
-    expect { find("#delete-answer-#{answer.id}") }.to raise_error(Capybara::ElementNotFound)
+    expect(has_no_css?("#delete-answer-#{answer.id}")).to be true
   end
 
   scenario 'Unauthorized user don\'t see delete answer button' do
     visit question_path(question)
 
-    expect { find("#delete-answer-#{answer.id}") }.to raise_error(Capybara::ElementNotFound)
+    expect(has_no_css?("#delete-answer-#{answer.id}")).to be true
   end
 end
