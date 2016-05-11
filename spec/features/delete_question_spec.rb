@@ -24,15 +24,13 @@ feature 'User can delete own question', %(
     sign_in user
 
     visit question_path(question)
-    find('#delete-question').click
 
-    expect(find('.alert')).to have_content 'Нельзя удалить чужой вопрос.'
-    expect(current_path).to eq question_path(question)
+    expect(has_no_css?('#delete-question')).to be true
   end
 
   scenario 'Unauthorized user don\'t see delete question button' do
     visit question_path(question)
 
-    expect { find('#delete-question') }.to raise_error(Capybara::ElementNotFound)
+    expect(has_no_css?('#delete-question')).to be true
   end
 end
