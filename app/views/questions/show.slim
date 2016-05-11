@@ -15,8 +15,9 @@
       p.lead.pull-left Ответов: #{@question.answers.count}
       - if user_signed_in?
         .pull-right
-          => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
-            ' Удалить вопрос
+          - if @question.user_id == current_user.id
+            => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
+              ' Удалить вопрос
           = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
             ' Дать свой ответ
 - cnt = 0
@@ -28,7 +29,7 @@
     .col-xs-11
       blockquote
         = answer.body
-        - if user_signed_in? && answer.user == current_user
+        - if user_signed_in? && answer.user_id == current_user.id
           .pull-right style='margin-top:-10px'
             br
             = link_to question_answer_path(@question, answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete
