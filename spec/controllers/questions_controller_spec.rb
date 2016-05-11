@@ -55,6 +55,11 @@ RSpec.describe QuestionsController, type: :controller do
           to change(Question, :count).by(1)
       end
 
+      it 'associates new Question with correct User' do
+        expect { post :create, question: attributes_for(:question) }.
+          to change(@user.questions, :count).by(1)
+      end
+
       it 'redirects to #show view' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
