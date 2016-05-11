@@ -24,11 +24,15 @@ feature 'Authenticated user can create question', %(
 
     visit new_question_path
 
-    fill_in 'Тема вопроса', with: Faker::Lorem.sentence
-    fill_in 'Вопрос', with: Faker::Lorem.paragraph(4, true, 8)
+    topic = Faker::Lorem.sentence
+    body = Faker::Lorem.paragraph(4, true, 8)
+    fill_in 'Тема вопроса', with: topic
+    fill_in 'Вопрос', with: body
     find('#new_question').click_button('Задать вопрос')
 
     expect(find('.alert')).to have_content 'Вопрос успешно задан'
+    expect(page).to have_content topic
+    expect(page).to have_content body
     expect(current_path).to start_with '/questions/'
   end
 
