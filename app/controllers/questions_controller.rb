@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
-    @question.user = current_user
+    @question.user_id = current_user.id
     if @question.save
       redirect_to @question, notice: "Вопрос успешно задан."
     else
@@ -24,7 +24,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if @question.user == current_user
+    if @question.user_id == current_user.id
       @question.destroy!
       redirect_to questions_path, notice: "Вопрос успешно удален."
     else
