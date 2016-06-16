@@ -1,4 +1,4 @@
-h3 Ответить на вопрос
+h3 Give an Answer
 .row
   .col-sm-12
     h3 = @answer.question.topic
@@ -13,6 +13,6 @@ h3 Ответить на вопрос
   .col-sm-12
     = form_for @answer, url: question_answers_path(@answer.question_id) do |f|
       .form-group
-        label.lead for="answerBody" Ваш ответ:
-        = f.text_area :body, id: 'answerBody', class: 'form-control input', rows: 10, placeholder: 'Введите ответ здесь'
-      button.btn.btn-primary.pull-right type="submit" Отправить ответ
+        = f.label :body, 'Your answer:', class: 'lead'
+        = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
+      button.btn.btn-primary.pull-right type="submit" Send an Answer

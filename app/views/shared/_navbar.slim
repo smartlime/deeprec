@@ -2,16 +2,16 @@ nav.navbar.navbar-default role="navigation"
   .container
     .navbar-header
       button.navbar-toggle data-target="#navbar-collapse" data-toggle="collapse" type="button"
-        span.sr-only Навигация
+        span.sr-only Navigation
         span.icon-bar
       = link_to root_path, class: 'navbar-brand'
         = image_tag 'logo.png', size: '24x24', alt: 'Deep Recursion', class: 'pull-left'
         | &nbsp;&nbsp;Deep Recursion
     #navbar-collapse.collapse.navbar-collapse
       ul.nav.navbar-nav
-        = navbar_item 'Список вопросов', questions_path
+        = navbar_item 'Questions List', questions_path
         - if user_signed_in?
-          = navbar_item 'Задать вопрос', new_question_path
+          = navbar_item 'Ask a Question', new_question_path
       ul.nav.navbar-nav.navbar-right
         li
           - if user_signed_in?
@@ -20,8 +20,8 @@ nav.navbar.navbar-default role="navigation"
               = current_user.email
             = navbar_item destroy_user_session_path, method: :delete
               => glyph 'log-out'
-              | Выйти
+              | Sign Out
           - else
             = navbar_item new_user_session_path
               => glyph 'log-in'
-              | Войти
+              | Sign In

@@ -1,7 +1,7 @@
 .row
   .col-sm-12
     = link_to questions_path, class: "btn btn-info btn-sm pull-right"
-      ' Вернуться к вопросам
+      ' Back to the Questions
 
 .row
   .col-sm-12
@@ -12,14 +12,14 @@
 .row
   .col-sm-12
     hr
-      p.lead.pull-left Ответов: #{@question.answers.count}
+      p.lead.pull-left Answers: #{@question.answers.count}
       - if user_signed_in?
         .pull-right
           - if @question.user_id == current_user.id
             => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
-              ' Удалить вопрос
+              ' Delete Question
           = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
-            ' Дать свой ответ
+            ' Give an Answer
 - cnt = 0
 - @question.answers.each do |answer|
   - cnt += 1
@@ -33,7 +33,7 @@
           .pull-right style='margin-top:-10px'
             br
             = link_to question_answer_path(@question, answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete
-              ' Удалить ответ
+              ' Delete Answer
       hr
 
 - if user_signed_in? && @question.answers.any?
@@ -41,5 +41,5 @@
     .col-sm-12
       .pull-right
         = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
-          ' Дать свой ответ
+          ' Give an Answer
 

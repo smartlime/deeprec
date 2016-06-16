@@ -14,7 +14,7 @@ feature 'User can delete own question', %(
     visit question_path(question)
     find('#delete-question').click
 
-    expect(find('.alert')).to have_content 'Вопрос успешно удален.'
+    expect(find('.alert')).to have_content 'Question deleted.'
     expect(current_path).to eq questions_path
   end
 

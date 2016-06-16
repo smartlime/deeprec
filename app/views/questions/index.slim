@@ -1,11 +1,11 @@
 - if user_signed_in? && @questions.any?
   = link_to new_question_path, class: "btn btn-primary pull-right"
-    ' Задать свой вопрос
+    ' Ask a question
 
-h2 Вопросы
+h2 Questions
 
 - unless @questions.any?
-  p.lead.text-center Пока не задано ни одного вопроса
+  p.lead.text-center No questions asked yet.
 
 .row
   .col-xs-12
@@ -18,5 +18,5 @@ h2 Вопросы
 
 - if user_signed_in?
   = link_to new_question_path, class: "btn btn-primary pull-right"
-    ' Задать свой вопрос
+    ' Ask a question
 

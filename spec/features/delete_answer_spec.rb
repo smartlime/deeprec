@@ -18,7 +18,7 @@ feature 'User can delete own answer', %(
     visit question_path(question)
     find("#delete-answer-#{answer.id}").click
 
-    expect(find('.alert')).to have_content 'Ответ успешно удален.'
+    expect(find('.alert')).to have_content 'Answer deleted.'
     expect(page).not_to have_content answer.body
     expect(current_path).to eq question_path(question)
   end

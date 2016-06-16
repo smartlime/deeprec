@@ -12,10 +12,10 @@ feature 'Authenticated user can create question', %(
 
     visit questions_path
 
-    click_on 'Задать свой вопрос'
+    click_on 'Ask a Question'
 
-    expect(page).to have_content 'Задать свой вопрос'
-    expect(page).to have_content 'Вопрос:'
+    expect(page).to have_content 'Ask a Question'
+    expect(page).to have_content 'Question:'
     expect(current_path).to eq new_question_path
   end
 
@@ -26,11 +26,11 @@ feature 'Authenticated user can create question', %(
 
     topic = Faker::Lorem.sentence
     body = Faker::Lorem.paragraph(4, true, 8)
-    fill_in 'Тема вопроса', with: topic
-    fill_in 'Вопрос', with: body
-    find('#new_question').click_button('Задать вопрос')
+    fill_in 'Question topic:', with: topic
+    fill_in 'Question:', with: body
+    find('#new_question').click_button('Ask Question')
 
-    expect(find('.alert')).to have_content 'Вопрос успешно задан'
+    expect(find('.alert')).to have_content 'Question asked.'
     expect(page).to have_content topic
     expect(page).to have_content body
     expect(current_path).to start_with '/questions/'
@@ -39,8 +39,8 @@ feature 'Authenticated user can create question', %(
   scenario 'Unauthenticated user cannot access new question button and new question form' do
     visit questions_path
 
-    expect(page).not_to have_content 'Задать свой вопрос'
-    expect(page).not_to have_content 'Вопрос:'
+    expect(page).not_to have_content 'Ask a Question'
+    expect(page).not_to have_content 'Question:'
 
     visit new_question_path
     expect(find('.alert')).to have_content 'You need to sign in or sign up before continuing.'

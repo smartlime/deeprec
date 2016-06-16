@@ -17,7 +17,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.user_id = current_user.id
     if @question.save
-      redirect_to @question, notice: "Вопрос успешно задан."
+      redirect_to @question, notice: 'Question asked.'
     else
       render :new
     end
@@ -26,9 +26,9 @@ class QuestionsController < ApplicationController
   def destroy
     if @question.user_id == current_user.id
       @question.destroy!
-      redirect_to questions_path, notice: "Вопрос успешно удален."
+      redirect_to questions_path, notice: "Question deleted."
     else
-      redirect_to @question, alert: "Нельзя удалить чужой вопрос."
+      redirect_to @question, alert: 'Cannot delete other user\'s question.'
     end
   end
 
