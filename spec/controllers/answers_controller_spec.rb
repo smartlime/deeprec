@@ -9,23 +9,23 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       it 'stores new Answer in the database' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer) }.
+        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }.
           to change(Answer, :count).by(1)
       end
 
       it 'associates new Answer with correct Question' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer) }.
+        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }.
           to change(question.answers, :count).by(1)
       end
 
       it 'associates new Answer with correct User' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer) }.
+        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }.
           to change(@user.answers, :count).by(1)
       end
 
-      it 'redirects to #show Questions view' do
-        post :create, question_id: question.id, answer: attributes_for(:answer)
-        expect(response).to redirect_to question_path(question.id)
+      it 'renders to #create partial' do
+        post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js
+        expect(response).to render_template :create
       end
 
       # it 'shows :notice flash' do
@@ -36,19 +36,14 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       it 'doesn\'t store the Answer' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer) }.
+        expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }.
           to_not change(Answer, :count)
       end
 
-      it 'redirects to #show Questions view' do
-        post :create, question_id: question.id, answer: attributes_for(:invalid_answer)
-        expect(response).to redirect_to question_path(question.id)
+      it 'renders to #create partial' do
+        post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js
+        expect(response).to render_template :create
       end
-
-      # it 're-renders #new view' do
-      #   post :create, question_id: question.id, answer: attributes_for(:invalid_answer)
-      #   expect(response).to render_template :new
-      # end
     end
   end
 
