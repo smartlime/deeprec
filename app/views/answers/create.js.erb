@@ -1,2 +1,3 @@
-$("#answers").html("<%= j render 'questions/answers' %>");
+$("<%= j render partial: 'questions/answer', locals: {answer: @answer, cnt: '...'} %>").appendTo("#answers");
+$("#cnt-<%= @answer.id %>").html(++maxcnt);
 $("#answer_body").val("");
