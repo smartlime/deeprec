@@ -20,5 +20,6 @@ html lang="ru"
       .row
         .col-xs-12
           .well#main
-            = render 'shared/alerts'
+            #alerts
+              = render 'shared/alerts'
             == yield
