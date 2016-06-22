@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'User can give an answer to particular question', %(
   To be able to share my knowledge on topic

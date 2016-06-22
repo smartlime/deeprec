@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'Authenticated user can create question', %(
   To be able to have ability to get answers

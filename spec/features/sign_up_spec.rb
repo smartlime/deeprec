@@ -1,5 +1,4 @@
-# Welcome! You have signed up successfully.
-require 'rails_helper'
+require 'features_helper'
 
 feature 'Signing up', %(
   To give answers to the questions

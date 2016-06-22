@@ -1,8 +1,8 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'Signing in', %(
   To ask questions
-  As an user
+  As a user
   I want to sign in
 ) do
   given(:user) { create(:user) }
