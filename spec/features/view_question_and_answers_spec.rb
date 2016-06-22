@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'User can view answers to particular question', %(
   To be able to get information

@@ -36,5 +36,6 @@ javascript:
       = form_for [@question, @answer], remote: true do |f|
         .form-group
           = f.label :body, 'Your answer:', class: 'lead'
+          #answerErrors
           = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
         button.btn.btn-primary.pull-right type="submit" Send an Answer

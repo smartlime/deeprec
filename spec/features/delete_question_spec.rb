@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'User can delete own question', %(
   To delete unneeded question which I made

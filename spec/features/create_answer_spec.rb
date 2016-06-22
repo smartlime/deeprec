@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'User can give an answer to particular question', %(
   To be able to share my knowledge on topic
@@ -33,6 +33,17 @@ feature 'User can give an answer to particular question', %(
     within '#answers' do
       expect(page).to have_content answer_text
     end
+  end
+
+  scenario "Authenticated user cannot create invalid answer", js: true do
+    sign_in user
+
+    visit question_path(question)
+
+    find('#new_answer').click_button('Send an Answer')
+
+    expect(page).to have_content 'Body can\'t be blank'
+    expect(page).to have_content 'Body is too short (minimum is 20 characters)'
   end
 
   # scenario 'Authenticated user can create an answer' do

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'User can view questions index', %(
   To be able to see all the questions
