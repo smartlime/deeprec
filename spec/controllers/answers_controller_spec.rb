@@ -23,7 +23,7 @@ RSpec.describe AnswersController, type: :controller do
           to change(@user.answers, :count).by(1)
       end
 
-      it 'renders to #create partial' do
+      it 'renders #create partial' do
         post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js
         expect(response).to render_template :create
       end
