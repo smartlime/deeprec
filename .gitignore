@@ -28,7 +28,7 @@ pickle-email-*.html
 # config/secrets.yml
 
 ## Environment normalization
-#.ruby-gemset
+.ruby-gemset
 #.ruby-version
 #Gemfile.lock
 /.bundle
