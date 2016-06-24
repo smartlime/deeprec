@@ -33,3 +33,9 @@ p {
     color: $state-danger-text;
   }
 }
+
+.error {
+  color: #B00100;
+  margin: 0 0 1em 1.8em;
+  list-style-type: circle;
+}
