@@ -1,0 +1,12 @@
+<% if @answer.errors.present? %>
+  $("#answerErrors").html("<ul>");
+  <% @answer.errors.full_messages.each do |message| %>
+    $("#answerErrors").append("<div class=\"error\"><li><%= j message %></div>");
+  <% end %>
+  $("#answerErrors").append("</ul>");
+<% else %>
+  <% if @answer&.id %>
+    $("<%= j render partial: 'questions/answer', locals: {answer: @answer, cnt: '...'} %>").appendTo("#answers");
+    $("#cnt-<%= @answer.id %>").html(++maxcnt);
+  <% end %>
+<% end %>
