@@ -21,9 +21,14 @@ p {
   font-size: 1.2em;
 }
 
+.little {
+  font-size: .82em;
+}
+
 #error_explanation {
   ul {
     color: red;
+
   }
 }
 
@@ -36,6 +41,7 @@ p {
 
 .error {
   color: #B00100;
-  margin: 0 0 1em 1.8em;
+  margin: 0 0 .5em .4em;
   list-style-type: circle;
+  height: 1em;
 }

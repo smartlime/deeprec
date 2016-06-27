@@ -35,7 +35,7 @@ feature 'User can give an answer to particular question', %(
     end
   end
 
-  scenario "Authenticated user cannot create invalid answer", js: true do
+  scenario 'Authenticated user cannot create invalid answer', js: true do
     sign_in user
 
     visit question_path(question)
@@ -46,18 +46,6 @@ feature 'User can give an answer to particular question', %(
     expect(page).to have_content 'Body is too short (minimum is 20 characters)'
   end
 
-  # scenario 'Authenticated user can create an answer' do
-  #   sign_in user
-  #
-  #   visit new_question_answer_path(question)
-  #
-  #   fill_in 'Your answer', with: Faker::Lorem.paragraph(4, true, 8)
-  #   find('#new_answer').click_button('Send an Answer')
-  #
-  #   expect(find('.alert')).to have_content 'Answer added.'
-  #   expect(current_path).to eq question_path(question)
-  # end
-  #
   scenario 'Unauthenticated user cannot access new answer button and get the answer form' do
     visit question_path(question)
 
