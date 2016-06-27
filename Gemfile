@@ -24,6 +24,9 @@ group :development, :test do
   gem 'byebug', '~>8.0'
   gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'spring-commands-rspec'
+  gem 'guard-rspec'
+  gem 'rb-fsevent' if `uname` =~ /Darwin/
 end
 
 group :test do
