@@ -26,8 +26,8 @@ feature 'User can edit own answer to any question', %(
 
       scenario 'can edit Answer', js: true do
         edited_answer_body = Faker::Lorem.paragraph(4, true, 8)
-        click_on 'Edit'
         within "#answer-#{answer.id}" do
+          click_on 'Edit'
           fill_in 'Answer', with: edited_answer_body
           click_on 'Save'
 
@@ -38,8 +38,8 @@ feature 'User can edit own answer to any question', %(
       end
 
       scenario 'cannot edit Answer with incorrect data', js: true do
-        click_on 'Edit'
         within "#answer-#{answer.id}" do
+          click_on 'Edit'
           fill_in 'Answer', with: ''
           click_on 'Save'
 
