@@ -1,11 +1,19 @@
-.row id="answer-#{answer.id}"
-  .col-xs-1
-    p.lead.pull-right id="cnt-#{answer.id}" = cnt
-  .col-xs-11
-    blockquote
-      = answer.body
-      - if user_signed_in? && answer.user_id == current_user.id
-        .pull-right style='margin-top:-10px'
-          br
-          = link_to 'Delete Answer', question_answer_path(@question, answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete
-    hr
+div id="answer-#{answer.id}"
+  .row
+    .col-xs-1
+      p.lead.pull-right id="cnt-#{answer.id}" = cnt
+    .col-xs-11
+      blockquote
+        = answer.body
+        - if user_signed_in? && answer.user_id == current_user.id
+          .pull-right style='margin-top:-10px'
+            br
+            => link_to 'Delete', question_answer_path(answer.question, answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete
+            = link_to 'Edit', '#', id: "edit-answer-link-#{answer.id}", class: "btn btn-info btn-sm edit-answer-link", data: { answer_id: answer.id }
+          div
+            = form_for [answer.question, answer], remote: true do |f|
+              = f.label :body, "Answer"
+              .little id="answer-errors-#{answer.id}"
+              = f.text_area :body, class: 'form-control'
+              = f.submit 'Save', class: "btn btn-info btn-sm pull-right"
+      hr

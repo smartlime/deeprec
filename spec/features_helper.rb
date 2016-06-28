@@ -1,7 +1,9 @@
 require 'rails_helper'
+require 'tilt/coffee'
 
 RSpec.configure do |config|
   Capybara.javascript_driver = :webkit
+  Capybara.default_wait_time = 4
 
   Capybara::Webkit.configure do |config|
     config.block_unknown_urls

@@ -28,7 +28,7 @@
       = render partial: 'answer', locals: {answer: answer, cnt: cnt}
 
 javascript:
-  maxcnt = #{cnt}
+  maxcnt = #{cnt};
 
 - if user_signed_in?
   .row#afterAnswers
@@ -39,3 +39,15 @@ javascript:
           #answerErrors
           = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
         button.btn.btn-primary.pull-right type="submit" Send an Answer
+
+coffee:
+  ready = ->
+    $(".edit-answer-link").click (e) ->
+      $(this).hide()
+      answer_id = $(this).data('answerId')
+      $("form#edit_answer_" + answer_id).show()
+      e.preventDefault()
+
+  $ -> ready()
+  $(document).on('page:load', ready)
+  $(document).on('page:update', ready)
