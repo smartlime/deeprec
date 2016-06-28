@@ -57,6 +57,11 @@ RSpec.describe AnswersController, type: :controller do
         expect(assigns(:answer)).to eq answer
       end
 
+      it 'answer assigned to @answer do belongs to correct question' do
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), user: user, format: :js
+        expect(assigns(:answer).question).to eq question
+      end
+
       it 'changes answer attributes' do
         edited_body = Faker::Lorem.paragraph(4, true, 8)
         patch :update, id: answer, question_id: question, answer: {body: edited_body}, user: user, format: :js
