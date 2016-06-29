@@ -89,6 +89,46 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    before { sign_in user }
+
+    context 'own question' do
+      it 'assigns question to edit to @question' do
+        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'question assigned to @question do belongs to correct user' do
+        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
+        expect(assigns(:question).user).to eq user
+      end
+
+      it 'changes answer attributes' do
+        edited_body = Faker::Lorem.paragraph(4, true, 8)
+        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
+        patch :update, id: answer, question_id: question, answer: {body: edited_body}, user: user, format: :js
+        answer.reload
+        expect(answer.body).to eq edited_body
+      end
+
+      it 'renders #update partial' do
+        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'other user\'s answer' do
+      before { @alt_answer = create(:answer, question: question, user: create(:user)) }
+
+      it 'doesn\'t change answer attributes' do
+        edited_body = Faker::Lorem.paragraph(4, true, 8)
+        patch :update, id: @alt_answer, question_id: question, answer: {body: edited_body}, user: user, format: :js
+        @alt_answer.reload
+        expect(@alt_answer.body).to eq @alt_answer.body
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     before { sign_in user }
 

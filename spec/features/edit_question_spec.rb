@@ -5,11 +5,48 @@ feature 'Authenticated user can edit his own question', %(
   As an anthenticated user
   I want to edit my question
 ) do
+  given(:user) { create(:user) }
+  given!(:question) { create(:question, user: user) }
+  given(:alt_user) { create(:user) }
+  given!(:alt_question) { create(:question, user: alt_user) }
+
   describe 'Authenticated User' do
-    scenario 'Authenticated user can access edit link for his own question'
-    scenario 'Authenticated user can edit his own question with correct data'
-    scenario 'Authenticated user cannot edit his own question with incorrect data'
-    scenario 'Authenticated user cannot access edit link for other user\'s question'
+    before do
+      sign_in user
+      visit questions_path
+    end
+
+    scenario 'can access edit link for his own question' do
+      within "#question-#{question.id}" do
+        expect(page).to have_link 'Edit'
+      end
+    end
+
+    scenario 'can edit his own question with correct data', js: true do
+      edited_question_topic = Faker::Lorem.sentence(5)
+      edited_question_body = Faker::Lorem.paragraph(4, true, 8)
+      within "#question-#{question.id}" do
+        click_on 'Edit'
+        fill_in 'Topic', with: edited_question_topic
+        fill_in 'Question', with: edited_question_body
+        click_on 'Save'
+
+        expect(page).to have_content edited_question_topic
+        expect(page).to_not have_content question.topic
+        expect(page).to_not have_selector 'textarea'
+      end
+
+    end
+
+    scenario 'cannot edit his own question with incorrect data'
+    scenario 'cannot access edit link for other user\'s question'
   end
-  scenario 'Unauthenticated user cannot edit any question'
+
+  scenario 'Unauthenticated user cannot see link to edit any question' do
+    visit questions_path
+
+    within '#questions' do
+      expect(page).to_not have_link 'Edit'
+    end
+  end
 end
