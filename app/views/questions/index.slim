@@ -7,16 +7,24 @@ h2 Questions
 - unless @questions.any?
   p.lead.text-center No questions asked yet.
 
-.row
+.row#questions
   .col-xs-12
     hr
       - @questions.each do |question|
-        = link_to question_path(question)
-          p.lead
-            = question.topic
-        hr
+        = render partial: 'question', locals: {question: question}
 
 - if user_signed_in?
   = link_to new_question_path, class: "btn btn-primary pull-right"
     ' Ask a question
 
+coffee:
+  ready = ->
+    $(".edit-question-link").click (e) ->
+      $(this).hide()
+      question_id = $(this).data('questionId')
+      $("form#edit_question_" + question_id).show()
+      e.preventDefault()
+
+  $ -> ready()
+  $(document).on('page:load', ready)
+  $(document).on('page:update', ready)

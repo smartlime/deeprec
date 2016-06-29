@@ -1,0 +1,13 @@
+<% errors_selector = "#question-errors-#{@question.id}" %>
+  <% if @question.errors.present? %>
+    $("<%= errors_selector %>").html("<ul>");
+    <% @question.errors.full_messages.each do |message| %>
+      $("<%= errors_selector %>").append("<div class=\"error\"><li><%= j message %></div>");
+    <% end %>
+    $("<%= errors_selector %>").append("</ul>");
+  <% else %>
+  $("<%= errors_selector %>").html("");
+  <% if @question&.id %>
+    $("#question-<%= @question.id %>").html("<%= j render partial: 'question', locals: {question: @question} %>");
+  <% end %>
+<% end %>
