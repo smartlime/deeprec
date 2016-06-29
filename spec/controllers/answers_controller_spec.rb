@@ -48,40 +48,47 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    before { sign_in user }
     context 'own answer' do
-      before { sign_in user }
       let(:answer) { create(:answer, question: question) }
 
       it 'assigns answer to edit to @answer' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), user: user, format: :js
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
         expect(assigns(:answer)).to eq answer
       end
 
       it 'answer assigned to @answer do belongs to correct question' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), user: user, format: :js
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
         expect(assigns(:answer).question).to eq question
       end
 
       it 'changes answer attributes' do
         edited_body = Faker::Lorem.paragraph(4, true, 8)
-        patch :update, id: answer, question_id: question, answer: {body: edited_body}, user: user, format: :js
+        patch :update, id: answer, question_id: question, answer: {body: edited_body}, format: :js
         answer.reload
         expect(answer.body).to eq edited_body
       end
 
+      it 'doesn\'t change user the answer belongs to' do
+        @alt_user = create(:user)
+        edited_body = Faker::Lorem.paragraph(4, true, 8)
+        patch :update, id: answer, question_id: question, answer: {body: edited_body}, user: @alt_user, format: :js
+        answer.reload
+        expect(answer.user).not_to eq @alt_user
+      end
+
       it 'renders #update partial' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), user: user, format: :js
+        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
         expect(response).to render_template :update
       end
     end
 
     context 'other user\'s answer' do
-      before { sign_in user }
       before { @alt_answer = create(:answer, question: question, user: create(:user)) }
 
       it 'doesn\'t change answer attributes' do
         edited_body = Faker::Lorem.paragraph(4, true, 8)
-        patch :update, id: @alt_answer, question_id: question, answer: {body: edited_body}, user: user, format: :js
+        patch :update, id: @alt_answer, question_id: question, answer: {body: edited_body}, format: :js
         @alt_answer.reload
         expect(@alt_answer.body).to eq @alt_answer.body
       end
