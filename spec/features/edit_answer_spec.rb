@@ -58,7 +58,7 @@ feature 'User can edit own answer to any question', %(
     end
   end
 
-  scenario 'Unauthenticated user cannot edit any answer to any question' do
+  scenario 'Unauthenticated user cannot see link to edit any answer to any question' do
     visit question_path(question)
 
     within '#answers' do
