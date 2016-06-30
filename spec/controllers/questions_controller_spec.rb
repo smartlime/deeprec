@@ -56,12 +56,12 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with valid attributes' do
       it 'stores new Question in the database' do
         expect { post :create, question: attributes_for(:question) }.
-          to change(Question, :count).by(1)
+            to change(Question, :count).by(1)
       end
 
       it 'associates new Question with correct User' do
         expect { post :create, question: attributes_for(:question) }.
-          to change(@user.questions, :count).by(1)
+            to change(@user.questions, :count).by(1)
       end
 
       it 'redirects to #show view' do
@@ -79,7 +79,7 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with invalid attributes' do
       it 'doesn\'t store the question' do
         expect { post :create, question: attributes_for(:invalid_question) }.
-          to_not change(Question, :count)
+            to_not change(Question, :count)
       end
 
       it 're-renders #new view' do
@@ -94,37 +94,49 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'own question' do
       it 'assigns question to edit to @question' do
-        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question)).to eq question
       end
 
       it 'question assigned to @question do belongs to correct user' do
-        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question).user).to eq user
       end
 
-      it 'changes answer attributes' do
-        edited_body = Faker::Lorem.paragraph(4, true, 8)
-        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
-        patch :update, id: answer, question_id: question, answer: {body: edited_body}, user: user, format: :js
-        answer.reload
-        expect(answer.body).to eq edited_body
+      it 'changes question attributes' do
+        edited_question = create(:question, user: user)
+        patch :update, id: question, question: {
+            topic: edited_question.topic, body: edited_question.body}, format: :js
+        question.reload
+        expect(question.topic).to eq edited_question.topic
+        expect(question.body).to eq edited_question.body
+      end
+
+      it 'doesn\'t change user the question belongs to' do
+        edited_question = create(:question, user: create(:user))
+        patch :update, id: question, question: {
+            topic: edited_question.topic, body: edited_question.body},
+              user: edited_question.user, format: :js
+        question.reload
+        expect(question.user).not_to eq edited_question.user
       end
 
       it 'renders #update partial' do
-        patch :update, id: question, question: attributes_for(:question), user: user, format: :js
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(response).to render_template :update
       end
     end
 
-    context 'other user\'s answer' do
-      before { @alt_answer = create(:answer, question: question, user: create(:user)) }
+    context 'other user\'s question' do
+      before { @alt_question = create(:question, user: create(:user)) }
 
-      it 'doesn\'t change answer attributes' do
-        edited_body = Faker::Lorem.paragraph(4, true, 8)
-        patch :update, id: @alt_answer, question_id: question, answer: {body: edited_body}, user: user, format: :js
-        @alt_answer.reload
-        expect(@alt_answer.body).to eq @alt_answer.body
+      it 'doesn\'t change question attributes' do
+        edited_question = create(:question, user: user)
+        patch :update, id: @alt_question, question: {
+            topic: edited_question.topic, body: edited_question.body}, format: :js
+        @alt_question.reload
+        expect(@alt_question.topic).to eq @alt_question.topic
+        expect(@alt_question.body).to eq @alt_question.body
       end
     end
   end
