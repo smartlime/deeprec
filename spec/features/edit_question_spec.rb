@@ -23,23 +23,43 @@ feature 'Authenticated user can edit his own question', %(
     end
 
     scenario 'can edit his own question with correct data', js: true do
-      edited_question_topic = Faker::Lorem.sentence(5)
-      edited_question_body = Faker::Lorem.paragraph(4, true, 8)
+      edited_question = create(:question, user: user)
       within "#question-#{question.id}" do
         click_on 'Edit'
-        fill_in 'Topic', with: edited_question_topic
-        fill_in 'Question', with: edited_question_body
+        fill_in 'Topic', with: edited_question.topic
+        fill_in 'Question', with: edited_question.body
         click_on 'Save'
 
-        expect(page).to have_content edited_question_topic
+        expect(page).to have_content edited_question.topic
         expect(page).to_not have_content question.topic
+        expect(page).to_not have_selector 'input'
         expect(page).to_not have_selector 'textarea'
       end
 
     end
 
-    scenario 'cannot edit his own question with incorrect data'
-    scenario 'cannot access edit link for other user\'s question'
+    scenario 'cannot edit his own question with incorrect data', js: true do
+      within "#question-#{question.id}" do
+        click_on 'Edit'
+        fill_in 'Topic', with: ''
+        fill_in 'Question', with: ''
+        click_on 'Save'
+
+        expect(page).to have_content 'Topic can\'t be blank'
+        expect(page).to have_content 'Topic is too short'
+        expect(page).to have_content 'Body can\'t be blank'
+        expect(page).to have_content 'Body is too short'
+        expect(page).to have_content question.topic
+        expect(page).to have_selector 'input'
+        expect(page).to have_selector 'textarea'
+      end
+    end
+
+    scenario 'cannot access edit link for other user\'s question', js: true do
+      within "#question-#{alt_question.id}" do
+        expect(page).to_not have_link 'Edit'
+      end
+    end
   end
 
   scenario 'Unauthenticated user cannot see link to edit any question' do

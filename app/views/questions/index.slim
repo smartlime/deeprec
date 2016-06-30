@@ -17,3 +17,14 @@ h2 Questions
   = link_to new_question_path, class: "btn btn-primary pull-right"
     ' Ask a question
 
+coffee:
+  ready = ->
+    $(".edit-question-link").click (e) ->
+      $(this).hide()
+      question_id = $(this).data('questionId')
+      $("form#edit_question_" + question_id).show()
+      e.preventDefault()
+
+  $ -> ready()
+  $(document).on('page:load', ready)
+  $(document).on('page:update', ready)
