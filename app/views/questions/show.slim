@@ -32,7 +32,7 @@
         .form-group
           = f.label :body, 'Your answer:', class: 'lead'
           #answerErrors
-          = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
+          = f.text_area :body, id: 'new_answer_body', class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 coffee:

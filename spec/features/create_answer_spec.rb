@@ -8,42 +8,37 @@ feature 'User can give an answer to particular question', %(
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  scenario 'Authenticated user can access new answer button' do
-    sign_in user
-
-    visit question_path(question)
-
-    expect(page).to have_content question.topic
-    expect(page).to have_content question.body
-    expect(find('#new_answer')).to have_content 'Send an Answer'
-  end
-
-  scenario 'Authenticated user can create an answer', js: true do
-    sign_in user
-
-    visit question_path(question)
-
-    answer_text = Faker::Lorem.paragraph(4, true, 8)
-    fill_in 'Your answer', with: answer_text
-    find('#new_answer').click_button('Send an Answer')
-
-    # expect(find('.alert')).to have_content 'Answer added.'
-    expect(current_path).to eq question_path(question)
-
-    within '#answers' do
-      expect(page).to have_content answer_text
+  describe 'Authenticated User' do
+    before do
+      sign_in user
+      visit question_path(question)
     end
-  end
 
-  scenario 'Authenticated user cannot create invalid answer', js: true do
-    sign_in user
+    scenario 'can access new answer button' do
+      expect(page).to have_content question.topic
+      expect(page).to have_content question.body
+      expect(find('#new_answer')).to have_content 'Send an Answer'
+    end
 
-    visit question_path(question)
+    scenario 'can create an answer', js: true do
+      answer_text = Faker::Lorem.paragraph(4, true, 8)
+      fill_in 'new_answer_body', with: answer_text
+      find('#new_answer').click_button('Send an Answer')
 
-    find('#new_answer').click_button('Send an Answer')
+      expect(current_path).to eq question_path(question)
 
-    expect(page).to have_content 'Body can\'t be blank'
-    expect(page).to have_content 'Body is too short (minimum is 20 characters)'
+      within '#answers' do
+        expect(page).to have_content answer_text
+      end
+      expect(find_field('new_answer_body')).to have_content ''
+    end
+
+    scenario 'cannot create invalid answer', js: true do
+      find('#new_answer').click_button('Send an Answer')
+
+      expect(page).to have_content 'Body can\'t be blank'
+      expect(page).to have_content 'Body is too short (minimum is 20 characters)'
+    end
   end
 
   scenario 'Unauthenticated user cannot access new answer button and get the answer form' do

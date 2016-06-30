@@ -5,9 +5,9 @@
   <% end %>
   $("#answerErrors").append("</ul>");
 <% else %>
+  $("#answerErrors").html("");
   <% if @answer&.id %>
-    $("<%= j render partial: 'questions/answer', locals: {answer: @answer, cnt: '...'} %>").appendTo("#answers");
-    $("#cnt-<%= @answer.id %>").html(++maxcnt);
-    $("#answer_body").val("");
+    $("<%= j render partial: 'questions/answer', locals: {answer: @answer} %>").appendTo("#answers");
+    $("#new_answer_body").val("");
   <% end %>
 <% end %>
