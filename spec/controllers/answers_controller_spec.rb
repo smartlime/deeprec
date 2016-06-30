@@ -49,36 +49,48 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #update' do
     before { sign_in user }
+
     context 'own answer' do
-      let(:answer) { create(:answer, question: question) }
+      let(:answer) { create(:answer, question: question, user: user) }
 
       it 'assigns answer to edit to @answer' do
         patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        answer.reload
+
         expect(assigns(:answer)).to eq answer
       end
 
       it 'answer assigned to @answer do belongs to correct question' do
         patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        answer.reload
+
         expect(assigns(:answer).question).to eq question
       end
 
       it 'changes answer attributes' do
         edited_body = Faker::Lorem.paragraph(4, true, 8)
+
         patch :update, id: answer, question_id: question, answer: {body: edited_body}, format: :js
         answer.reload
+
         expect(answer.body).to eq edited_body
       end
 
       it 'doesn\'t change user the answer belongs to' do
         @alt_user = create(:user)
         edited_body = Faker::Lorem.paragraph(4, true, 8)
+
         patch :update, id: answer, question_id: question, answer: {body: edited_body}, user: @alt_user, format: :js
         answer.reload
+
         expect(answer.user).not_to eq @alt_user
       end
 
       it 'renders #update partial' do
         patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+
+        answer.reload
+
         expect(response).to render_template :update
       end
     end
@@ -90,6 +102,7 @@ RSpec.describe AnswersController, type: :controller do
         edited_body = Faker::Lorem.paragraph(4, true, 8)
         patch :update, id: @alt_answer, question_id: question, answer: {body: edited_body}, format: :js
         @alt_answer.reload
+
         expect(@alt_answer.body).to eq @alt_answer.body
       end
     end
@@ -97,49 +110,34 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
     let(:answer) { create(:answer, question: question, user: user) }
+    before { sign_in user }
 
     context 'own answer' do
-      before { sign_in user }
+      it 'deletes the answer' do
+        answer.reload
 
-      it 'deletes answer' do
-        answer
-        expect { delete :destroy, question_id: question, id: answer }.
+        expect { delete :destroy, question_id: question, id: answer, format: :js }.
             to change(Answer, :count).by(-1)
       end
 
-      it 'redirects to question#show view' do
-        delete :destroy, question_id: question, id: answer
-        expect(response).to redirect_to question
-      end
+      it 'renders #destroy partial' do
+        delete :destroy, question_id: question, id: answer, format: :js
 
-      it 'shows :notice flash' do
-        delete :destroy, question_id: question, id: answer
-        expect(flash[:notice]).to be_present
+        expect(response).to render_template :destroy
       end
     end
 
     context 'other user\'s answer' do
-      before { sign_in user }
       before { @alt_answer = create(:answer, question: question, user: create(:user)) }
 
       it 'doesn\'t delete answer' do
-        expect { delete :destroy, question_id: question, id: @alt_answer }.
+        expect { delete :destroy, question_id: question, id: @alt_answer, format: :js }.
             to change(Answer, :count).by(0)
       end
 
       it 'keeps answer in DB' do
-        delete :destroy, question_id: question, id: @alt_answer
+        delete :destroy, question_id: question, id: @alt_answer, format: :js
         expect(Answer.exists?(@alt_answer.id)).to be true
-      end
-
-      it 'redirects to question#show view' do
-        delete :destroy, question_id: question, id: @alt_answer
-        expect(response).to redirect_to question
-      end
-
-      it 'shows :alert flash' do
-        delete :destroy, question_id: question, id: @alt_answer
-        expect(flash[:alert]).to be_present
       end
     end
   end

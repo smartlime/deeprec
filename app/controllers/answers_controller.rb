@@ -10,17 +10,12 @@ class AnswersController < ApplicationController
 
   def update
     @answer = Answer.find(params[:id])
-    @answer.update(answer_params)
+    @answer.update(answer_params) if @answer.user_id == current_user.id
   end
 
   def destroy
-    answer = Answer.find(params[:id])
-    if answer.user_id == current_user.id
-      answer.destroy!
-      redirect_to answer.question, notice: 'Answer deleted.'
-    else
-      redirect_to answer.question, alert: 'Cannot delete other user\'s answer.'
-    end
+    @answer = Answer.find(params[:id])
+    @answer.destroy! if @answer.user_id == current_user.id
   end
 
   private

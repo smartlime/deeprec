@@ -21,14 +21,9 @@
           = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
             ' Give an Answer
 #answers
-  - cnt = 0
   - @question.answers.each do |answer|
     - if answer.persisted?
-      - cnt += 1
-      = render partial: 'answer', locals: {answer: answer, cnt: cnt}
-
-javascript:
-  maxcnt = #{cnt};
+      = render partial: 'answer', locals: {answer: answer}
 
 - if user_signed_in?
   .row#afterAnswers
@@ -37,7 +32,7 @@ javascript:
         .form-group
           = f.label :body, 'Your answer:', class: 'lead'
           #answerErrors
-          = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
+          = f.text_area :body, id: 'new_answer_body', class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 coffee:
