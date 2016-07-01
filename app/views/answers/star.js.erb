@@ -1,0 +1,8 @@
+<% if @answer&.id %>
+  if ($(".answer-starred").size() > 0) {
+    $(".answer-starred").find(".star-answer-link").show();
+    $(".answer-starred").find(".best-answer").remove();
+  }
+  $("#answer-<%= @answer.id %>").remove();
+  $("#answers").prepend("<%= j render partial: 'questions/answer', locals: {answer: @answer} %>");
+<% end %>

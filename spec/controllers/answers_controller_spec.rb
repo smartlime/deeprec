@@ -141,4 +141,59 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #star' do
+    let(:answer) { create(:answer, question: question, user: user, starred: false) }
+    before { sign_in user }
+
+    it 'assigns answer to star to @answer' do
+      patch :star, id: answer, question_id: question, format: :js
+      answer.reload
+
+      expect(assigns(:answer)).to eq answer
+    end
+
+    context 'own question' do
+      it 'sets star flag for selected answer' do
+        patch :star, id: answer, question_id: question, format: :js
+        answer.reload
+
+        expect(answer.starred).to eq true
+      end
+
+      it 'cleans star flag for previously starred answer' do
+        starred_answer = create(:answer, question: question, user: user, starred: true)
+
+        patch :star, id: answer, question_id: question, format: :js
+        answer.reload
+        starred_answer.reload
+
+        expect(starred_answer.starred).to eq false
+      end
+
+      it 'renders #star partial' do
+        patch :star, id: answer, question_id: question, format: :js
+
+        expect(response).to render_template :star
+      end
+    end
+
+    context 'other user\'s question' do
+      before do
+        alt_user = create(:user)
+        alt_question = create(:question, user: alt_user)
+        @alt_answer = create(:answer, question: alt_question, user: user, starred: false)
+        @alt_starred_answer = create(:answer, question: alt_question, user: user, starred: true)
+        patch :star, id: @alt_answer, question_id: alt_question, format: :js
+      end
+
+      it 'doesn\'t sets star flag for selected answer' do
+        expect(@alt_answer.starred).to eq false
+      end
+
+      it 'keeps star flag for already starred answer' do
+        expect(@alt_starred_answer.starred).to eq true
+      end
+    end
+  end
 end

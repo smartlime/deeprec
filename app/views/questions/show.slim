@@ -21,7 +21,7 @@
           = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
             ' Give an Answer
 #answers
-  - @question.answers.each do |answer|
+  - @question.answers.order(starred: :desc).each do |answer|
     - if answer.persisted?
       = render partial: 'answer', locals: {answer: answer}
 
