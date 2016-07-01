@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
-    resources :answers, only: [:new, :create, :edit, :update, :destroy]
+    resources :answers, only: [:new, :create, :edit, :update, :destroy] do
+      member { patch :star }
+    end
   end
 end
