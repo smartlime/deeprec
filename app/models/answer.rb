@@ -4,4 +4,10 @@ class Answer < ActiveRecord::Base
 
   validates :user_id, :question_id, presence: true
   validates :body, presence: true, length: (20..50_000)
+
+  def star!
+    question.answers.where(starred: true).update_all(starred: false)
+    update(starred: true)
+  end
+
 end
