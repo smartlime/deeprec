@@ -4,7 +4,7 @@ div id="question-#{question.id}"
       - if user_signed_in? && question.user_id == current_user.id
         .pull-right
           = link_to 'Edit', '#', id: "edit-question-link-#{question.id}", class: "btn btn-info btn-sm edit-question-link", data: {question_id: question.id}
-      = question.topic
+      = link_to question.topic, question_path(question)
       - if user_signed_in? && question.user_id == current_user.id
         div
           = form_for question, remote: true do |f|
