@@ -1,6 +1,6 @@
 require 'features_helper'
 
-feature 'Signing in', %(
+feature 'Signing in', %q(
   To ask questions
   As a user
   I want to sign in

@@ -1,8 +1,8 @@
 require 'features_helper'
 
-feature 'User can give an answer to particular question', %(
+feature 'User can give an answer to particular question', %q(
   To be able to share my knowledge on topic
-  As an anthenticated user
+  As an authenticated user
   I want to give an answer the question
 ) do
   given(:user) { create(:user) }
@@ -20,7 +20,7 @@ feature 'User can give an answer to particular question', %(
       expect(find('#new_answer')).to have_content 'Send an Answer'
     end
 
-    scenario 'can create an answer', js: true do
+    scenario 'can create an answer', :js do
       answer_text = Faker::Lorem.paragraph(4, true, 8)
       fill_in 'new_answer_body', with: answer_text
       find('#new_answer').click_button('Send an Answer')
@@ -33,7 +33,7 @@ feature 'User can give an answer to particular question', %(
       expect(find_field('new_answer_body')).to have_content ''
     end
 
-    scenario 'cannot create invalid answer', js: true do
+    scenario 'cannot create invalid answer', :js do
       find('#new_answer').click_button('Send an Answer')
 
       expect(page).to have_content 'Body can\'t be blank'

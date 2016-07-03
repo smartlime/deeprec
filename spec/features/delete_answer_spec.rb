@@ -1,8 +1,8 @@
 require 'features_helper'
 
-feature 'User can delete own answer', %(
+feature 'User can delete own answer', %q(
   To delete unneeded answer which I made
-  As an anthenticated user
+  As an authenticated user
   I want to delete an answer
 ) do
   given(:user) { create(:user) }
@@ -16,7 +16,7 @@ feature 'User can delete own answer', %(
       visit question_path(question)
     end
 
-    scenario 'can delete own answer', js: true do
+    scenario 'can delete own answer', :js do
       within "#answer-#{answer.id}" do
         click_on 'Delete'
       end
@@ -28,15 +28,16 @@ feature 'User can delete own answer', %(
 
     scenario 'can\'t see a button to delete other user\'s answer' do
       answer = create(:answer, question: question, user: create(:user))
+      answer.reload
 
-      expect(has_no_css?("#delete-answer-#{answer.id}")).to be true
+      expect(page).not_to have_link "#delete-answer-#{answer.id}"
     end
   end
 
 
-  scenario 'Unauthorized user don\'t see delete answer button' do
+  scenario 'Unauthenticated user don\'t see delete answer button' do
     visit question_path(question)
 
-    expect(has_no_css?("#delete-answer-#{answer.id}")).to be true
+    expect(page).not_to have_link "#delete-answer-#{answer.id}"
   end
 end

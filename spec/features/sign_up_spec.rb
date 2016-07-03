@@ -1,6 +1,6 @@
 require 'features_helper'
 
-feature 'Signing up', %(
+feature 'Signing up', %q(
   To give answers to the questions
   As an unregistered user
   I want to sign up

@@ -1,6 +1,6 @@
 require 'features_helper'
 
-feature 'Signing out', %(
+feature 'Signing out', %q(
   To close current session
   As an authenticated user
   I want to sign out
@@ -13,7 +13,6 @@ feature 'Signing out', %(
     expect(find('.alert')).to have_content 'Signed in successfully.'
 
     find(:xpath, "//a[@href='#{destroy_user_session_path}']").click
-
     expect(find('.alert')).to have_content 'Signed out successfully.'
   end
 

@@ -1,8 +1,8 @@
 require 'features_helper'
 
-feature 'User can edit own answer to any question', %(
+feature 'User can edit own answer to any question', %q(
   To be able to correct mistake in answer or provide an extra information
-  As an anthenticated user
+  As an authenticated user
   I want to edit my own answer to any question
 ) do
   given(:user) { create(:user) }
@@ -24,7 +24,7 @@ feature 'User can edit own answer to any question', %(
         end
       end
 
-      scenario 'can edit Answer', js: true do
+      scenario 'can edit Answer', :js do
         edited_answer_body = Faker::Lorem.paragraph(4, true, 8)
         within "#answer-#{answer.id}" do
           click_on 'Edit'
@@ -37,7 +37,7 @@ feature 'User can edit own answer to any question', %(
         end
       end
 
-      scenario 'cannot edit Answer with incorrect data', js: true do
+      scenario 'cannot edit Answer with incorrect data', :js do
         within "#answer-#{answer.id}" do
           click_on 'Edit'
           fill_in 'Answer', with: ''

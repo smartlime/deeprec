@@ -1,8 +1,8 @@
 require 'features_helper'
 
-feature 'Authenticated user can edit his own question', %(
+feature 'Authenticated user can edit his own question', %q(
   To be able to correct mistake in answer or provide an extra information
-  As an anthenticated user
+  As an authenticated user
   I want to edit my question
 ) do
   given(:user) { create(:user) }
@@ -22,7 +22,7 @@ feature 'Authenticated user can edit his own question', %(
       end
     end
 
-    scenario 'can edit his own question with correct data', js: true do
+    scenario 'can edit his own question with correct data', :js do
       edited_question = create(:question, user: user)
       within "#question-#{question.id}" do
         click_on 'Edit'
@@ -35,10 +35,9 @@ feature 'Authenticated user can edit his own question', %(
         expect(page).to_not have_selector 'input'
         expect(page).to_not have_selector 'textarea'
       end
-
     end
 
-    scenario 'cannot edit his own question with incorrect data', js: true do
+    scenario 'cannot edit his own question with incorrect data', :js do
       within "#question-#{question.id}" do
         click_on 'Edit'
         fill_in 'Topic', with: ''
@@ -55,7 +54,7 @@ feature 'Authenticated user can edit his own question', %(
       end
     end
 
-    scenario 'cannot access edit link for other user\'s question', js: true do
+    scenario 'cannot access edit link for other user\'s question', :js do
       within "#question-#{alt_question.id}" do
         expect(page).to_not have_link 'Edit'
       end

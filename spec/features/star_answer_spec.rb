@@ -1,8 +1,8 @@
 require 'features_helper'
 
-feature 'User can star the best answer to his question', %(
+feature 'User can star the best answer to his question', %q(
   To be able to show others the best answer
-  As an anthenticated user
+  As an authenticated user
   I want to star any answer to my own question
 ) do
   given(:user) { create(:user) }
@@ -27,7 +27,7 @@ feature 'User can star the best answer to his question', %(
           within("#answer-#{answer.id}") { click_on 'Star' }
         end
 
-        scenario 'can star any Answer', js: true do
+        scenario 'can star any Answer', :js do
           within "#answer-#{answer.id}" do
             expect(page).to_not have_link 'Star'
             expect(page).to have_content answer.body
@@ -37,7 +37,7 @@ feature 'User can star the best answer to his question', %(
       end
     end
 
-    scenario 'starred Answer is always at the top of Answers list', js: true do
+    scenario 'starred Answer is always at the top of Answers list', :js do
       second_answer = create(:answer, question: question, user: user)
       visit question_path(question)
       within("#answer-#{second_answer.id}") { click_on 'Star' }
@@ -46,7 +46,7 @@ feature 'User can star the best answer to his question', %(
       end
     end
 
-    scenario 'can star any other answer if there starred answer is already exists', js: true do
+    scenario 'can star any other answer if there starred answer is already exists', :js do
       alt_answer = create(:answer, question: question, user: user, starred: true)
 
       visit question_path(question)
@@ -58,7 +58,7 @@ feature 'User can star the best answer to his question', %(
       end
     end
 
-    scenario 'cannot see star button at answer to other user\'s question', js: true do
+    scenario 'cannot see star button at answer to other user\'s question', :js do
       alt_user = create(:user)
       alt_question = create(:question, user: alt_user)
       alt_answer = create(:answer, question: alt_question, user: user)
@@ -78,5 +78,4 @@ feature 'User can star the best answer to his question', %(
       expect(page).to_not have_link 'Star'
     end
   end
-
 end

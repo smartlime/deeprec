@@ -1,6 +1,6 @@
 require 'features_helper'
 
-feature 'User can view answers to particular question', %(
+feature 'User can view answers to particular question', %q(
   To be able to get information
   As a user
   I want to view the list of all the answers to particular question
@@ -12,9 +12,9 @@ feature 'User can view answers to particular question', %(
     answers = []
     5.times do
       answers.push Answer.create(
-        user: create(:user),
-        question: question,
-        body: Faker::Lorem.paragraph(4, true, 8)
+          user: create(:user),
+          question: question,
+          body: Faker::Lorem.paragraph(4, true, 8)
       )
     end
 

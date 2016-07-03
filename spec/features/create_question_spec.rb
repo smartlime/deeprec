@@ -1,6 +1,6 @@
 require 'features_helper'
 
-feature 'Authenticated user can create question', %(
+feature 'Authenticated user can create question', %q(
   To be able to have ability to get answers
   As an authenticated user
   I want to ask a question

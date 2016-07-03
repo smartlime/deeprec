@@ -1,6 +1,6 @@
 require 'features_helper'
 
-feature 'User can view questions index', %(
+feature 'User can view questions index', %q(
   To be able to see all the questions
   As a user
   I want to view the list of all questions
@@ -9,9 +9,9 @@ feature 'User can view questions index', %(
     questions = []
     5.times do
       questions.push Question.create(
-        user: create(:user),
-        topic: Faker::Lorem.sentence,
-        body: Faker::Lorem.paragraph(4, true, 8)
+          user: create(:user),
+          topic: Faker::Lorem.sentence,
+          body: Faker::Lorem.paragraph(4, true, 8)
       )
     end
 
