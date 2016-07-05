@@ -18,6 +18,8 @@ gem 'devise'
 
 gem 'faker'
 
+gem 'carrierwave'
+
 # gem 'unicorn'
 
 group :development, :test do

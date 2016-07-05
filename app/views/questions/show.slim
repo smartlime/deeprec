@@ -9,6 +9,15 @@
     hr
     p
       = @question.body
+    - if @question.attachments.any?
+      hr
+      p
+        | Attachments:
+        - @question.attachments.each do |a|
+          div
+            => glyph :paperclip
+            = link_to a.file.filename, a.file.url
+
 .row
   .col-sm-12
     hr

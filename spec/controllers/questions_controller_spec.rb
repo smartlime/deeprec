@@ -41,8 +41,12 @@ RSpec.describe QuestionsController, type: :controller do
 
     before { get :new }
 
-    it 'assigns a new Question to @question' do
+    it 'assigns new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
+    end
+
+    it 'binds Attachments array to @question' do
+      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
 
     it 'renders #new view' do
