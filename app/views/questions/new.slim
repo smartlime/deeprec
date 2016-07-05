@@ -11,4 +11,5 @@ h3 Ask a Question
         = f.text_field :topic, class: 'form-control input', size: 200, placeholder: 'Briefly describe your question (no more than 200 characters)'
         = f.label :body, 'Question:'
         = f.text_area :body, class: 'form-control input', rows: 10, size: 50000, placeholder: 'Ask your question here'
+        = render partial: 'new_attachment', locals: {f: f}
       button.btn.btn-primary.pull-right type="submit" Ask Question
