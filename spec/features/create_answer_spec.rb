@@ -22,7 +22,7 @@ feature 'User can give an answer to particular question', %q(
 
     scenario 'can create an answer', :js do
       answer_text = Faker::Lorem.paragraph(4, true, 8)
-      fill_in 'new_answer_body', with: answer_text
+      fill_in 'Your answer:', with: answer_text
       find('#new_answer').click_button('Send an Answer')
 
       expect(current_path).to eq question_path(question)
@@ -30,7 +30,7 @@ feature 'User can give an answer to particular question', %q(
       within '#answers' do
         expect(page).to have_content answer_text
       end
-      expect(find_field('new_answer_body')).to have_content ''
+      expect(find_field('Your answer:')).to have_content ''
     end
 
     scenario 'cannot create invalid answer', :js do

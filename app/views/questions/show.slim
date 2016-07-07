@@ -9,15 +9,7 @@
     hr
     p
       = @question.body
-    - if @question.attachments.any?
-      hr
-      p
-        | Attachments:
-        - @question.attachments.each do |a|
-          div
-            => glyph :paperclip
-            = link_to a.file.filename, a.file.url
-
+    = render partial: 'attachments', locals: {attachable: @question}
 .row
   .col-sm-12
     hr
@@ -41,7 +33,8 @@
         .form-group
           = f.label :body, 'Your answer:', class: 'lead'
           #answerErrors
-          = f.text_area :body, id: 'new_answer_body', class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
+          = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
+        = render partial: 'new_attachment', locals: {f: f}
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 coffee:

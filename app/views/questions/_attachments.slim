@@ -1,0 +1,8 @@
+- if attachable&.attachments&.any?
+  hr
+  p
+    | Attachments:
+    - attachable.attachments.each do |a|
+      div
+        => glyph :paperclip
+        = link_to a.file.filename, a.file.url

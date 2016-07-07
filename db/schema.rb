@@ -30,11 +30,14 @@ ActiveRecord::Schema.define(version: 20160705201121) do
   add_index "answers", ["user_id"], name: "index_answers_on_user_id", using: :btree
 
   create_table "attachments", force: :cascade do |t|
-    t.integer  "question_id"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
     t.string   "file"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
+
+  add_index "attachments", ["attachable_id", "attachable_type"], name: "index_attachments_on_attachable_id_and_attachable_type", using: :btree
 
   create_table "questions", force: :cascade do |t|
     t.string   "topic",      limit: 200,             null: false
