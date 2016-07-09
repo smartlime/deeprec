@@ -10,16 +10,32 @@ feature 'Attach files to Question', %q(
   background do
     sign_in user
     visit new_question_path
+    fill_in 'Question topic:', with: Faker::Lorem.sentence
+    fill_in 'Question:', with: Faker::Lorem.paragraph(4, true, 8)
   end
 
   scenario 'User attaches a file when creates a Question' do
     file_name = 'README.md'
-    fill_in 'Question topic:', with: Faker::Lorem.sentence
-    fill_in 'Question:', with: Faker::Lorem.paragraph(4, true, 8)
     attach_file 'File', "#{Rails.root}/#{file_name}"
     click_on 'Ask Question'
 
     expect(page).to have_link file_name,
-        href: "/uploads/attachment/file/1/#{file_name}"
+                              href: "/uploads/attachment/file/1/#{file_name}"
   end
+
+  scenario 'User attaches more than ont file when creates a Question', :js do
+    file_names = %w(README.md Gemfile .ruby-version)
+    file_names.each do |file_name|
+      #TODO: get selector for 'within'
+      attach_file 'File', "#{Rails.root}/#{file_name}"
+      click_on 'Attach file'
+    end
+    click_on 'Ask Question'
+
+    file_names.each_with_index do |file_name, cnt|
+      expect(page).to have_link file_name,
+                                href: "/uploads/attachment/file/#{cnt + 1}/#{file_name}"
+    end
+  end
+
 end

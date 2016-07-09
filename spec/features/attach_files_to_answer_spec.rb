@@ -11,17 +11,34 @@ feature 'Attach files to Answer', %q(
   background do
     sign_in user
     visit question_path(question)
+    fill_in 'Your answer:', with: Faker::Lorem.paragraph(4, true, 8)
   end
 
   scenario 'User attaches a file when creates an Answer', :js do
     file_name = 'README.md'
-    fill_in 'Your answer:', with: Faker::Lorem.paragraph(4, true, 8)
     attach_file 'File', "#{Rails.root}/#{file_name}"
     click_on 'Send an Answer'
 
     within '#answers' do
       expect(page).to have_link file_name,
                                 href: "/uploads/attachment/file/1/#{file_name}"
+    end
+  end
+
+  scenario 'User attaches more than ont file when creates an Answer', :js do
+    file_names = %w(README.md Gemfile .ruby-version)
+    file_names.each do |file_name|
+      #TODO: get selector for 'within'
+      attach_file 'File', "#{Rails.root}/#{file_name}"
+      click_on 'Attach file'
+    end
+    click_on 'Send an Answer'
+
+    within '#answers' do
+      file_names.each_with_index do |file_name, cnt|
+        expect(page).to have_link file_name,
+                                  href: "/uploads/attachment/file/#{cnt + 1}/#{file_name}"
+      end
     end
   end
 end
