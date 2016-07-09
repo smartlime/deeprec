@@ -17,6 +17,7 @@ gem 'devise'
 gem 'faker'
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cocoon'
 
 # gem 'unicorn'
 

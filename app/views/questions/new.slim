@@ -1,7 +1,7 @@
 h3 Ask a Question
 .row
   .col-sm-12
-    = render partial: 'shared/form_errors', locals: { object: @question }
+    = render partial: 'shared/form_errors', locals: {object: @question}
 
 .row
   .col-sm-12
@@ -11,5 +11,10 @@ h3 Ask a Question
         = f.text_field :topic, class: 'form-control input', size: 200, placeholder: 'Briefly describe your question (no more than 200 characters)'
         = f.label :body, 'Question:'
         = f.text_area :body, class: 'form-control input', rows: 10, size: 50000, placeholder: 'Ask your question here'
-        = render partial: 'new_attachment', locals: {f: f}
+        h4 Question attachments:
+        #attachments
+          = f.fields_for :attachments do |attachment|
+            = render partial: 'attachment_fields', locals: {f: attachment}
+          .links
+            = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
       button.btn.btn-primary.pull-right type="submit" Ask Question
