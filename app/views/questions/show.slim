@@ -34,7 +34,7 @@
           = f.label :body, 'Your answer:', class: 'lead'
           #answerErrors
           = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
-        = render partial: 'new_attachment', locals: {f: f}
+        = render partial: 'attachment_fields', locals: {f: f}
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 coffee:

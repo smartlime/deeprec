@@ -1,0 +1,6 @@
+.form-group.nested-fields
+  .field
+    = f.label :file
+    = f.file_field :file
+  .links
+    = link_to_remove_association 'Delete attachment', f, class: 'btn btn-sm btn-danger'

@@ -34,7 +34,7 @@ class QuestionsController < ApplicationController
   def destroy
     if @question.user_id == current_user.id
       @question.destroy!
-      redirect_to questions_path, notice: "Question deleted."
+      redirect_to questions_path, notice: 'Question deleted.'
     else
       redirect_to @question, alert: 'Cannot delete other user\'s question.'
     end
@@ -48,6 +48,6 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:topic, :body,
-                                     attachments_attributes: [:file])
+                                     attachments_attributes: [:id, :file, :_destroy])
   end
 end
