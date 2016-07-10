@@ -9,6 +9,7 @@ feature 'Attach files to Answer', %q(
   given(:question) { create(:question) }
 
   background do
+    DatabaseCleaner.clean
     sign_in user
     visit question_path(question)
     fill_in 'Your answer:', with: Faker::Lorem.paragraph(4, true, 8)

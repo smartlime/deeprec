@@ -8,6 +8,7 @@ feature 'Attach files to Question', %q(
   given(:user) { create(:user) }
 
   background do
+    DatabaseCleaner.clean
     sign_in user
     visit new_question_path
     fill_in 'Question topic:', with: Faker::Lorem.sentence
