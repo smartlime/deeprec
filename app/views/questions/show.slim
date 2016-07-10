@@ -9,7 +9,8 @@
     hr
     p
       = @question.body
-    = render partial: 'attachments', locals: {attachable: @question}
+    #question-attachments
+      = render partial: 'attachments', locals: {attachable: @question}
 .row
   .col-sm-12
     hr
