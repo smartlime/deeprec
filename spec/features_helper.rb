@@ -33,20 +33,3 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 end
-
-class Counter
-  class << self
-    def set(val)
-      @val = val
-    end
-
-    def inc
-      @val ||= 0
-      @val += 1
-    end
-
-    def val
-      @val ||= 0
-    end
-  end
-end
