@@ -8,6 +8,7 @@
   $("#answerErrors").html("");
   <% if @answer&.id %>
     $("<%= j render partial: 'questions/answer', locals: {answer: @answer} %>").appendTo("#answers");
-    $("#new_answer_body").val("");
+    $(".new-answer-body").val("");
+    $("#attachments").html("");
   <% end %>
 <% end %>

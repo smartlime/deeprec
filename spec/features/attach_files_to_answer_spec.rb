@@ -21,23 +21,24 @@ feature 'Attach files to Answer', %q(
 
     within '#answers' do
       expect(page).to have_link file_name,
-                                href: "/uploads/attachment/file/1/#{file_name}"
+          href: "/uploads/attachment/file/1/#{file_name}"
     end
   end
 
-  scenario 'User attaches more than ont file when creates an Answer', :js do
+  scenario 'User attaches more than own file when creates an Answer', :js do
     file_names = %w(README.md Gemfile .ruby-version)
     file_names.each do |file_name|
-      #TODO: get selector for 'within'
-      attach_file 'File', "#{Rails.root}/#{file_name}"
-      click_on 'Attach file'
+      within page.all('.nested-fields').last do
+        attach_file 'File', "#{Rails.root}/#{file_name}"
+      end
+      click_on 'Add attachment'
     end
     click_on 'Send an Answer'
 
     within '#answers' do
       file_names.each_with_index do |file_name, cnt|
         expect(page).to have_link file_name,
-                                  href: "/uploads/attachment/file/#{cnt + 1}/#{file_name}"
+            href: "/uploads/attachment/file/#{cnt + 1}/#{file_name}"
       end
     end
   end

@@ -33,8 +33,13 @@
         .form-group
           = f.label :body, 'Your answer:', class: 'lead'
           #answerErrors
-          = f.text_area :body, class: 'form-control input', rows: 10, placeholder: 'Place your answer here'
-        = render partial: 'attachment_fields', locals: {f: f}
+          = f.text_area :body, class: 'form-control input new-answer-body', rows: 10, placeholder: 'Place your answer here'
+          h4 Answer attachments:
+          = f.fields_for :attachments do |attachment|
+            #attachments
+              = render partial: 'attachment_fields', locals: {f: attachment}
+            .links
+              = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 coffee:
