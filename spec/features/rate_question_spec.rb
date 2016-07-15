@@ -78,8 +78,12 @@ feature 'Rate the Question', %q(
   end
 
   scenario 'Unauthenticated user cannot see links to rate the Question' do
-    within "#questions" do
-      expect(page).to_not have_content 'Rating: '
+    visit questions_path
+
+    within '#questions' do
+      expect(page).to have_content 'Rating: '
+      expect(page).to_not have_link 'Up'
+      expect(page).to_not have_link 'Down'
     end
   end
 end
