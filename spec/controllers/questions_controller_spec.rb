@@ -3,6 +3,18 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let(:other_user) { create(:user) }
+  let(:others_question) { create(:question, user: other_user) }
+  let(:own_rating) { create(:question_rating, user: user, rateable: question) }
+  let(:others_rating) { create(:question_rating, user: other_user, rateable: others_question) }
+
+  subject(:post_question) { post :create, question: attributes_for(:question) }
+  subject(:post_invalid_question) { post :create, question: attributes_for(:invalid_question) }
+  subject(:patch_question) { patch :update, id: question, question: attributes_for(:question), format: :js }
+  subject(:destroy_question) { delete :destroy, id: question }
+  subject(:post_rate_inc) { post :rate_inc, id: others_question, js: true }
+  subject(:post_rate_dec) { post :rate_dec, id: others_question, js: true }
+  subject(:post_rate_revoke) { post :rate_revoke, id: question, js: true }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -63,35 +75,32 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'stores new Question in the database' do
-        expect { post :create, question: attributes_for(:question) }.
-            to change(Question, :count).by(1)
+        expect { post_question }.to change(Question, :count).by(1)
       end
 
       it 'associates new Question with correct User' do
-        expect { post :create, question: attributes_for(:question) }.
-            to change(@user.questions, :count).by(1)
+        expect { post_question }.to change(@user.questions, :count).by(1)
       end
 
       it 'redirects to #show view' do
-        post :create, question: attributes_for(:question)
+        post_question
         expect(response).to redirect_to question_path(assigns(:question))
         expect(flash[:notice]).to be_present
       end
 
       it 'shows :notice flash' do
-        post :create, question: attributes_for(:question)
+        post_question
         expect(flash[:notice]).to be_present
       end
     end
 
     context 'with invalid attributes' do
       it 'doesn\'t store the question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.
-            to_not change(Question, :count)
+        expect { post_invalid_question }.to_not change(Question, :count)
       end
 
       it 're-renders #new view' do
-        post :create, question: attributes_for(:invalid_question)
+        post_invalid_question
         expect(response).to render_template :new
       end
     end
@@ -102,12 +111,12 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'own question' do
       it 'assigns question to edit to @question' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
+        patch_question
         expect(assigns(:question)).to eq question
       end
 
       it 'question assigned to @question do belongs to correct user' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
+        patch_question
         expect(assigns(:question).user).to eq user
       end
 
@@ -124,13 +133,13 @@ RSpec.describe QuestionsController, type: :controller do
         edited_question = create(:question, user: create(:user))
         patch :update, id: question, question: {
             topic: edited_question.topic, body: edited_question.body},
-              user: edited_question.user, format: :js
+            user: edited_question.user, format: :js
         question.reload
         expect(question.user).not_to eq edited_question.user
       end
 
       it 'renders #update partial' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
+        patch_question
         expect(response).to render_template :update
       end
     end
@@ -155,16 +164,16 @@ RSpec.describe QuestionsController, type: :controller do
     context 'own question' do
       it 'deletes question' do
         question
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        expect { destroy_question }.to change(Question, :count).by(-1)
       end
 
       it 'redirects to index view' do
-        delete :destroy, id: question
+        destroy_question
         expect(response).to redirect_to questions_path
       end
 
       it 'shows :notice flash' do
-        delete :destroy, id: question
+        destroy_question
         expect(flash[:notice]).to be_present
       end
     end
@@ -189,6 +198,81 @@ RSpec.describe QuestionsController, type: :controller do
       it 'shows :alert flash' do
         delete :destroy, id: @alt_question
         expect(flash[:alert]).to be_present
+      end
+    end
+  end
+
+  context 'Rateable' do
+    before { sign_in user }
+
+    describe 'POST #rate_inc' do
+      it 'assigns @rateable to question instance' do
+        post_rate_inc
+        expect(assigns(:rateable)).to eq others_question
+      end
+
+      it 'changes rating for other users\' questions' do
+        expect { post_rate_inc }
+            .to change { others_question.rating(other_user) }.by(1)
+      end
+
+      it 'doesn\'t change rate for own questions' do
+        expect { post :rate_inc, id: others_question, js: true }
+            .not_to change { question.rating(user) }
+      end
+
+      it 'responses with HTTP status 200' do
+        post_rate_inc
+        expect(response.status).to eq 200
+      end
+    end
+
+    describe 'POST #rate_dec' do
+      it 'assigns @rateable to question instance' do
+        post_rate_dec
+        expect(assigns(:rateable)).to eq others_question
+      end
+
+      it 'changes rating for other users\' questions' do
+        expect { post_rate_dec }
+            .to change { others_question.rating(other_user) }.by(-1)
+      end
+
+      it 'doesn\'t change rate for own questions' do
+        expect { post :rate_dec, id: others_question, js: true }
+            .not_to change { question.rating(user) }
+      end
+
+      it 'responses with HTTP status 200' do
+        post_rate_dec
+        expect(response.status).to eq 200
+      end
+    end
+
+    describe 'POST #rate_revoke' do
+      before do
+        own_rating
+        others_rating
+      end
+
+      it 'assigns @rateable to question instance' do
+        post_rate_revoke
+        expect(assigns(:rateable)).to eq question
+      end
+
+      it 'doesn\'t revoke rating for other users\' questions' do
+        expect { post_rate_revoke }
+            .not_to change { others_question.rating(other_user) }
+      end
+
+      it 'revokes rate for own questions' do
+        expect { post :rate_revoke, id: question, js: true }
+            .to change { question.rating(user) }.by(-1)
+      end
+
+      it 'responses with HTTP status 200' do
+        post_rate_revoke
+        expect(response.status).to eq 200
       end
     end
   end

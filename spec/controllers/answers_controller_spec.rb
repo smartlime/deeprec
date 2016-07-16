@@ -2,46 +2,48 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let!(:question) { create(:question, user: user) }
+  let(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
+  let(:others_answer) { create(:answer, question: question, user: create(:user)) }
+
+  subject(:post_answer) { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
+  subject(:post_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
+  subject(:patch_answer) { patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+  subject(:destroy_answer) { delete :destroy, question_id: question, id: answer, format: :js }
+  subject(:patch_star_answer) { patch :star, id: answer, question_id: question, format: :js }
+  subject(:post_rate_inc) { post :rate_inc, id: others_answer, question_id: question, js: true }
+  subject(:post_rate_dec) { post :rate_dec, id: others_answer, question_id: question, js: true }
+  subject(:post_rate_revoke) { post :rate_revoke, id: answer, question_id: question, js: true }
 
   describe 'POST #create' do
     sign_in_user
 
     context 'with valid attributes' do
       it 'stores new Answer in the database' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }.
-            to change(Answer, :count).by(1)
+        expect { post_answer }.to change(Answer, :count).by(1)
       end
 
       it 'associates new Answer with correct Question' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }.
-            to change(question.answers, :count).by(1)
+        expect { post_answer }.to change(question.answers, :count).by(1)
       end
 
       it 'associates new Answer with correct User' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }.
-            to change(@user.answers, :count).by(1)
+        expect { post_answer }.to change(@user.answers, :count).by(1)
       end
 
       it 'renders #create partial' do
-        post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js
+        post_invalid_answer
         expect(response).to render_template :create
       end
-
-      # it 'shows :notice flash' do
-      #   post :create, question_id: question.id, answer: attributes_for(:answer)
-      #   expect(flash[:notice]).to be_present
-      # end
     end
 
     context 'with invalid attributes' do
       it 'doesn\'t store the Answer' do
-        expect { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }.
-            to_not change(Answer, :count)
+        expect { post_invalid_answer }.to_not change(Answer, :count)
       end
 
       it 'renders to #create partial' do
-        post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js
+        post_invalid_answer
         expect(response).to render_template :create
       end
     end
@@ -51,17 +53,15 @@ RSpec.describe AnswersController, type: :controller do
     before { sign_in user }
 
     context 'own answer' do
-      let(:answer) { create(:answer, question: question, user: user) }
-
       it 'assigns answer to edit to @answer' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        patch_answer
         answer.reload
 
         expect(assigns(:answer)).to eq answer
       end
 
       it 'answer assigned to @answer do belongs to correct question' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
+        patch_answer
         answer.reload
 
         expect(assigns(:answer).question).to eq question
@@ -87,10 +87,8 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'renders #update partial' do
-        patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
-
+        patch_answer
         answer.reload
-
         expect(response).to render_template :update
       end
     end
@@ -109,20 +107,16 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:answer) { create(:answer, question: question, user: user) }
     before { sign_in user }
 
     context 'own answer' do
       it 'deletes the answer' do
         answer.reload
-
-        expect { delete :destroy, question_id: question, id: answer, format: :js }.
-            to change(Answer, :count).by(-1)
+        expect { destroy_answer }.to change(Answer, :count).by(-1)
       end
 
       it 'renders #destroy partial' do
-        delete :destroy, question_id: question, id: answer, format: :js
-
+        destroy_answer
         expect(response).to render_template :destroy
       end
     end
@@ -147,7 +141,7 @@ RSpec.describe AnswersController, type: :controller do
     before { sign_in user }
 
     it 'assigns answer to star to @answer' do
-      patch :star, id: answer, question_id: question, format: :js
+      patch_star_answer
       answer.reload
 
       expect(assigns(:answer)).to eq answer
@@ -155,7 +149,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'own question' do
       it 'sets star flag for selected answer' do
-        patch :star, id: answer, question_id: question, format: :js
+        patch_star_answer
         answer.reload
 
         expect(answer.starred).to eq true
@@ -164,7 +158,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'cleans star flag for previously starred answer' do
         starred_answer = create(:answer, question: question, user: user, starred: true)
 
-        patch :star, id: answer, question_id: question, format: :js
+        patch_star_answer
         answer.reload
         starred_answer.reload
 
@@ -172,8 +166,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'renders #star partial' do
-        patch :star, id: answer, question_id: question, format: :js
-
+        patch_star_answer
         expect(response).to render_template :star
       end
     end
@@ -194,6 +187,74 @@ RSpec.describe AnswersController, type: :controller do
       it 'keeps star flag for already starred answer' do
         expect(@alt_starred_answer.starred).to eq true
       end
+    end
+  end
+
+  describe 'POST #rate_inc' do
+    it 'assigns @rateable to answer instance' do
+      post_rate_inc
+      expect(assigns(:rateable)).to eq answer
+    end
+
+    it 'changes rating for other users\' answers' do
+      expect { post_rate_inc }.to change { others_answer.rating }.by(1)
+    end
+
+    it 'doesn\'t change rate for own answers' do
+      expect { post :rate_inc, id: others_answer, js: true }
+          .not_to change { answer.rating }
+    end
+
+    it 'responses with HTTP status 200' do
+      post_rate_inc
+      expect(response.status).to eq 200
+    end
+  end
+
+  describe 'POST #rate_dec' do
+    it 'assigns @rateable to answer instance' do
+      post_rate_dec
+      expect(assigns(:rateable)).to eq answer
+    end
+
+    it 'changes rating for other users\' answers' do
+      expect { post_rate_dec }.to change { others_answer.rating }.by(-1)
+    end
+
+    it 'doesn\'t change rate for own answers' do
+      expect { post :rate_dec, id: others_answer, js: true }
+          .not_to change { answer.rating }
+    end
+
+    it 'responses with HTTP status 200' do
+      post_rate_dec
+      expect(response.status).to eq 200
+    end
+  end
+
+  describe 'POST #rate_revoke' do
+    before do
+      @own_rate = create(:answer_rating, user: user, votable: answer)
+      @others_rate = create(:answer_rating, user: create(:user), votable: answer)
+    end
+
+    it 'assigns @rateable to answer instance' do
+      post_rate_revoke
+      expect(assigns(:rateable)).to eq answer
+    end
+
+    it 'doesn\'t revoke rating for other users\' answers' do
+      expect { post_rate_revoke }.not_to change { others_answer.rating }
+    end
+
+    it 'revokes rate for own answers' do
+      expect { post :rate_revoke, id: answer, js: true }
+          .to change { answer.rating }.by(-1)
+    end
+
+    it 'responses with HTTP status 200' do
+      post_rate_revoke
+      expect(response.status).to eq 200
     end
   end
 end
