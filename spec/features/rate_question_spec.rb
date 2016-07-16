@@ -15,20 +15,20 @@ feature 'Rate the Question', %q(
       visit questions_path
     end
 
-    scenario 'Can see Question Rating' do
+    scenario 'can see Question Rating' do
       within "#question-#{question.id}" do
         expect(page).to have_content 'Rating: '
       end
     end
 
-    scenario 'Can rate other User\'s Question' do
+    scenario 'can rate other User\'s Question' do
       within "#question-#{question.id}" do
         expect(page).to have_link 'GLYPH:plus-sign'
         expect(page).to have_link 'GLYPH:minus-sign'
       end
     end
 
-    scenario 'rate up', :js do
+    scenario 'can increment rate', :js do
       within "#question-#{question.id}" do
         click_on 'GLYPH:plus-sign'
       end
@@ -38,7 +38,7 @@ feature 'Rate the Question', %q(
       end
     end
 
-    scenario 'rate down', :js do
+    scenario 'can decrement rate', :js do
       within "#question-#{question.id}" do
         click_on 'GLYPH:minus-sign'
       end
@@ -48,8 +48,7 @@ feature 'Rate the Question', %q(
       end
     end
 
-
-    scenario 'Cannot see links to rate other User\'s Question second time' do
+    scenario 'cannot see links to rate other User\'s Question second time', :js do
       within "#question-#{question.id}" do
         click_on 'GLYPH:plus-sign'
         expect(page).to_not have_link 'GLYPH:plus-sign'
@@ -57,7 +56,7 @@ feature 'Rate the Question', %q(
       end
     end
 
-    scenario 'Cannot see links to rate own Question' do
+    scenario 'cannot see links to rate own Question' do
       alt_question = create(:question, user: user)
       visit questions_path
 
@@ -67,7 +66,7 @@ feature 'Rate the Question', %q(
       end
     end
 
-    scenario 'Can revoke own vote and rate other Question', :js do
+    scenario 'can revoke own vote and rate other Question', :js do
       alt_question = create(:question)
       visit questions_path
 

@@ -7,21 +7,25 @@ module Rated
 
   def rate_inc
     @rateable.change_rate!(1, current_user)
-    render json: {}
+    render json: json_data(false)
   end
 
   def rate_dec
     @rateable.change_rate!(-1, current_user)
-    render json: {}
+    render json: json_data(false)
   end
 
   def rate_revoke
-    head :forbidden unless current_user? && rate_exists?
+    return head :forbidden unless current_user? || rate_exists?
     @rateable.revoke_rate!(current_user)
-    render json: {}
+    render json: json_data(true)
   end
 
   private
+
+  def json_data(revoked)
+    {id: @rateable.id, rating: @rateable.rating, revoked: revoked}
+  end
 
   def current_user?
     @rateable.user_id == current_user.id

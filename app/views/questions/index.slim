@@ -24,6 +24,8 @@ coffee:
       question_id = $(this).data('questionId')
       $("form#edit_question_" + question_id).show()
       e.preventDefault()
+    $(document).on 'ajax:success', '.rate', (e, data, status, xhr) ->
+      updateRatingPanel(xhr.responseJSON)
 
   $ -> ready()
   $(document).on('page:load', ready)

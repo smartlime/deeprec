@@ -3,9 +3,8 @@
     span.small Rating:
     | &nbsp;
     - if signed_in? && rateable.user.id != current_user.id
-      => link_to glyph('plus-sign'), polymorphic_path([:rate_inc, rateable]), method: :post, remote: true, class: vh(!rateable.rated?(rateable, current_user))
-    span rateable.rating id="#rating-{rateable.id}"
+      => link_to glyph('plus-sign'), polymorphic_path([:rate_inc, rateable]), id: "rate-inc-#{rateable.id}", method: :post, remote: true, class: 'rate ' << vh(!rateable.rated?(rateable, current_user))
+    span id="rating-#{rateable.id}" = rateable.rating
     - if signed_in? && rateable.user.id != current_user.id
-      =< link_to glyph('minus-sign'), polymorphic_path([:rate_dec, rateable]), method: :post, remote: true, class: vh(!rateable.rated?(rateable, current_user))
-    - if signed_in? && rateable.user.id == current_user.id
-     =< link_to glyph('remove-circle'), polymorphic_path([:rate_revoke, rateable]), method: :post, remote: true, class: vh(rateable.rated?(rateable, current_user))
+      =< link_to glyph('minus-sign'), polymorphic_path([:rate_dec, rateable]), id: "rate-dec-#{rateable.id}", method: :post, remote: true, class: 'rate ' << vh(!rateable.rated?(rateable, current_user))
+      =< link_to glyph('remove-circle'), polymorphic_path([:rate_revoke, rateable]), id: "rate-revoke-#{rateable.id}", method: :post, remote: true, class: 'rate ' << vh(rateable.rated?(rateable, current_user))
