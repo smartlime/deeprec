@@ -14,14 +14,12 @@
 .row
   .col-sm-12
     hr
-      p.lead.pull-left Answers: #{@question.answers.count}
+      p.lead.pull-left Answers:
       - if user_signed_in?
         .pull-right
           - if @question.user_id == current_user.id
             => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
               ' Delete Question
-          = link_to new_question_answer_path(question_id: @question.id), class: "btn btn-primary"
-            ' Give an Answer
 #answers
   - @question.answers.order(starred: :desc).each do |answer|
     - if answer.persisted?
@@ -50,6 +48,8 @@ coffee:
       answer_id = $(this).data('answerId')
       $("form#edit_answer_" + answer_id).show()
       e.preventDefault()
+    $(document).on 'ajax:success', '.rate', (e, data, status, xhr) ->
+      updateRatingPanel(xhr.responseJSON)
 
   $ -> ready()
   $(document).on('page:load', ready)
