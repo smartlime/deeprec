@@ -204,12 +204,12 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'changes rating for other users\' answers' do
         expect { post_rate_inc }
-            .to change { others_answer.rating(other_user) }.by(1)
+            .to change { others_answer.rating }.by(1)
       end
 
       it 'doesn\'t change rate for own answers' do
         expect { post :rate_inc, id: others_answer, question_id: question, js: true }
-            .not_to change { answer.rating(user) }
+            .not_to change { answer.rating }
       end
 
       it 'responses with HTTP status 200' do
@@ -226,12 +226,12 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'changes rating for other users\' answers' do
         expect { post_rate_dec }
-            .to change { others_answer.rating(other_user) }.by(-1)
+            .to change { others_answer.rating }.by(-1)
       end
 
       it 'doesn\'t change rate for own answers' do
         expect { post :rate_dec, id: others_answer, question_id: question, js: true }
-            .not_to change { answer.rating(user) }
+            .not_to change { answer.rating }
       end
 
       it 'responses with HTTP status 200' do
@@ -253,12 +253,12 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'doesn\'t revoke rating for other users\' answers' do
         expect { post_rate_revoke }
-            .not_to change { others_answer.rating(other_user) }
+            .not_to change { others_answer.rating }
       end
 
       it 'revokes rate for own answers' do
         expect { post :rate_revoke, id: answer, question_id: question, js: true }
-            .to change { answer.rating(user) }.by(-1)
+            .to change { answer.rating }.by(-1)
       end
 
       it 'responses with HTTP status 200' do
