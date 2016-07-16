@@ -1,18 +1,20 @@
-div id="question-#{question.id}"
-  = link_to question_path(question)
-    p.lead
-      - if user_signed_in? && question.user_id == current_user.id
-        .pull-right
-          = link_to 'Edit', '#', id: "edit-question-link-#{question.id}", class: "btn btn-info btn-sm edit-question-link", data: {question_id: question.id}
-      = link_to question.topic, question_path(question)
-      = render 'rating'
-        - if user_signed_in? && question.user_id == current_user.id
-        div
-          = form_for question, remote: true do |f|
-            .little id="question-errors-#{question.id}"
-            = f.label :topic, 'Topic'
-            = f.text_field :topic, class: 'form-control'
-            = f.label :body, 'Question'
-            = f.text_area :body, class: 'form-control'
-            = f.submit 'Save', class: "btn btn-info btn-sm pull-right"
-  hr
+div.row id="question-#{question.id}"
+  .col-sm-10
+    = link_to question_path(question)
+      p.lead
+        = link_to question_path(question)
+          = question.topic
+          - if user_signed_in? && question.user_id == current_user.id
+          div
+            = form_for question, remote: true do |f|
+              .little id="question-errors-#{question.id}"
+              = f.label :topic, 'Topic'
+              = f.text_field :topic, class: 'form-control'
+              = f.label :body, 'Question'
+              = f.text_area :body, class: 'form-control'
+              = f.submit 'Save', class: "btn btn-info btn-sm pull-right"
+  .col-sm-2
+    - if user_signed_in? && question.user_id == current_user.id
+      = link_to 'Edit', '#', id: "edit-question-link-#{question.id}", class: "btn btn-info btn-sm edit-question-link pull-right", data: {question_id: question.id}
+    = render partial: 'shared/rating', locals: {rateable: question}
+hr

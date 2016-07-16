@@ -6,10 +6,14 @@ feature 'Rate the Question', %q(
   I want to rate other Users' Questions and revoke my votes
 ) do
   given(:user) { create(:user) }
-  given!(:question) { create(:question) }
+  given(:other_user) { create(:user) }
+  given!(:question) { create(:question, user: other_user) }
 
   describe 'Authenticated User' do
-    before { visit questions_path }
+    before do
+      sign_in user
+      visit questions_path
+    end
 
     scenario 'Can see Question Rating' do
       within "#question-#{question.id}" do
@@ -18,34 +22,38 @@ feature 'Rate the Question', %q(
     end
 
     scenario 'Can rate other User\'s Question' do
-      before do
-        within "#question-#{question.id}" do
-          expect(page).to have_link 'Up'
-          expect(page).to have_link 'Down'
-        end
+      within "#question-#{question.id}" do
+        expect(page).to have_link 'GLYPH:plus-sign'
+        expect(page).to have_link 'GLYPH:minus-sign'
+      end
+    end
+
+    scenario 'rate up', :js do
+      within "#question-#{question.id}" do
+        click_on 'GLYPH:plus-sign'
       end
 
-      scenario 'rate up', :js do
-        within "#question-#{question.id}" do
-          click_on 'Up'
-          expect(page).to have_content 'Rating: 1'
-        end
+      within "#rating-#{question.id}" do
+        expect(page).to have_content '1'
+      end
+    end
+
+    scenario 'rate down', :js do
+      within "#question-#{question.id}" do
+        click_on 'GLYPH:minus-sign'
       end
 
-      scenario 'rate down', :js do
-        within "#question-#{question.id}" do
-          click_on 'Down'
-          expect(page).to have_content 'Rating: -1'
-        end
+      within "#rating-#{question.id}" do
+        expect(page).to have_content '-1'
       end
     end
 
 
     scenario 'Cannot see links to rate other User\'s Question second time' do
       within "#question-#{question.id}" do
-        click_on 'Up'
-        expect(page).to_not have_link 'Up'
-        expect(page).to_not have_link 'Down'
+        click_on 'GLYPH:plus-sign'
+        expect(page).to_not have_link 'GLYPH:plus-sign'
+        expect(page).to_not have_link 'GLYPH:minus-sign'
       end
     end
 
@@ -54,8 +62,8 @@ feature 'Rate the Question', %q(
       visit questions_path
 
       within "#question-#{alt_question.id}" do
-        expect(page).to_not have_link 'Up'
-        expect(page).to_not have_link 'Down'
+        expect(page).to_not have_link 'GLYPH:plus-sign'
+        expect(page).to_not have_link 'GLYPH:minus-sign'
       end
     end
 
@@ -64,15 +72,15 @@ feature 'Rate the Question', %q(
       visit questions_path
 
       within "#question-#{question.id}" do
-        click_on 'Up'
-        expect(page).to have_link 'Revoke'
+        click_on 'GLYPH:plus-sign'
+        expect(page).to have_link 'GLYPH:remove-circle'
 
-        click_on 'Revoke'
+        click_on 'GLYPH:remove-circle'
       end
 
       within "#question-#{alt_question.id}" do
-        expect(page).to have_link 'Up'
-        expect(page).to have_link 'Down'
+        expect(page).to have_link 'GLYPH:plus-sign'
+        expect(page).to have_link 'GLYPH:minus-sign'
       end
     end
   end
@@ -82,8 +90,8 @@ feature 'Rate the Question', %q(
 
     within '#questions' do
       expect(page).to have_content 'Rating: '
-      expect(page).to_not have_link 'Up'
-      expect(page).to_not have_link 'Down'
+      expect(page).to_not have_link 'GLYPH:plus-sign'
+      expect(page).to_not have_link 'GLYPH:minus-sign'
     end
   end
 end

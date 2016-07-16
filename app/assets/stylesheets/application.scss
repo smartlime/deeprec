@@ -45,3 +45,7 @@ p {
   list-style-type: circle;
   height: 1em;
 }
+
+// Pair of styles to toggle elements
+.h_el { display: none; }
+.v_el { display: inline; }

@@ -14,7 +14,11 @@ module Rateable
     ratings.find_by(user: user).destroy!
   end
 
-  def rating(user)
-    ratings.sum(:rate, user: user)
+  def rated?(rateable, user)
+    ratings.exists?(rateable: rateable, user: user)
+  end
+
+  def rating
+    ratings.sum(:rate)
   end
 end

@@ -1,0 +1,11 @@
+.rating style="padding-top:45px"
+  p.pull-right
+    span.small Rating:
+    | &nbsp;
+    - if signed_in? && rateable.user.id != current_user.id
+      => link_to glyph('plus-sign'), polymorphic_path([:rate_inc, rateable]), method: :post, remote: true, class: vh(!rateable.rated?(rateable, current_user))
+    span rateable.rating id="#rating-{rateable.id}"
+    - if signed_in? && rateable.user.id != current_user.id
+      =< link_to glyph('minus-sign'), polymorphic_path([:rate_dec, rateable]), method: :post, remote: true, class: vh(!rateable.rated?(rateable, current_user))
+    - if signed_in? && rateable.user.id == current_user.id
+     =< link_to glyph('remove-circle'), polymorphic_path([:rate_revoke, rateable]), method: :post, remote: true, class: vh(rateable.rated?(rateable, current_user))
