@@ -4,6 +4,11 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
+  subject(:post_question) { post :create, question: attributes_for(:question) }
+  subject(:post_invalid_question) { post :create, question: attributes_for(:invalid_question) }
+  subject(:patch_question) { patch :update, id: question, question: attributes_for(:question), format: :js }
+  subject(:destroy_question) { delete :destroy, id: question }
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
 
@@ -63,35 +68,32 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with valid attributes' do
       it 'stores new Question in the database' do
-        expect { post :create, question: attributes_for(:question) }.
-            to change(Question, :count).by(1)
+        expect { post_question }.to change(Question, :count).by(1)
       end
 
       it 'associates new Question with correct User' do
-        expect { post :create, question: attributes_for(:question) }.
-            to change(@user.questions, :count).by(1)
+        expect { post_question }.to change(@user.questions, :count).by(1)
       end
 
       it 'redirects to #show view' do
-        post :create, question: attributes_for(:question)
+        post_question
         expect(response).to redirect_to question_path(assigns(:question))
         expect(flash[:notice]).to be_present
       end
 
       it 'shows :notice flash' do
-        post :create, question: attributes_for(:question)
+        post_question
         expect(flash[:notice]).to be_present
       end
     end
 
     context 'with invalid attributes' do
       it 'doesn\'t store the question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.
-            to_not change(Question, :count)
+        expect { post_invalid_question }.to_not change(Question, :count)
       end
 
       it 're-renders #new view' do
-        post :create, question: attributes_for(:invalid_question)
+        post_invalid_question
         expect(response).to render_template :new
       end
     end
@@ -102,12 +104,12 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'own question' do
       it 'assigns question to edit to @question' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
+        patch_question
         expect(assigns(:question)).to eq question
       end
 
       it 'question assigned to @question do belongs to correct user' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
+        patch_question
         expect(assigns(:question).user).to eq user
       end
 
@@ -124,13 +126,13 @@ RSpec.describe QuestionsController, type: :controller do
         edited_question = create(:question, user: create(:user))
         patch :update, id: question, question: {
             topic: edited_question.topic, body: edited_question.body},
-              user: edited_question.user, format: :js
+            user: edited_question.user, format: :js
         question.reload
         expect(question.user).not_to eq edited_question.user
       end
 
       it 'renders #update partial' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
+        patch_question
         expect(response).to render_template :update
       end
     end
@@ -155,16 +157,16 @@ RSpec.describe QuestionsController, type: :controller do
     context 'own question' do
       it 'deletes question' do
         question
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        expect { destroy_question }.to change(Question, :count).by(-1)
       end
 
       it 'redirects to index view' do
-        delete :destroy, id: question
+        destroy_question
         expect(response).to redirect_to questions_path
       end
 
       it 'shows :notice flash' do
-        delete :destroy, id: question
+        destroy_question
         expect(flash[:notice]).to be_present
       end
     end
