@@ -2,13 +2,18 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let!(:question) { create(:question, user: user) }
+  let(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
+  let(:others_answer) { create(:answer, question: question, user: create(:user)) }
 
   subject(:post_answer) { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
   subject(:post_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
   subject(:patch_answer) { patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
   subject(:destroy_answer) { delete :destroy, question_id: question, id: answer, format: :js }
   subject(:patch_star_answer) { patch :star, id: answer, question_id: question, format: :js }
+  subject(:post_rate_inc) { post :rate_inc, id: others_answer, question_id: question, js: true }
+  subject(:post_rate_dec) { post :rate_dec, id: others_answer, question_id: question, js: true }
+  subject(:post_rate_revoke) { post :rate_revoke, id: answer, question_id: question, js: true }
 
   describe 'POST #create' do
     sign_in_user
@@ -48,8 +53,6 @@ RSpec.describe AnswersController, type: :controller do
     before { sign_in user }
 
     context 'own answer' do
-      let(:answer) { create(:answer, question: question, user: user) }
-
       it 'assigns answer to edit to @answer' do
         patch_answer
         answer.reload
@@ -104,7 +107,6 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:answer) { create(:answer, question: question, user: user) }
     before { sign_in user }
 
     context 'own answer' do
@@ -185,6 +187,74 @@ RSpec.describe AnswersController, type: :controller do
       it 'keeps star flag for already starred answer' do
         expect(@alt_starred_answer.starred).to eq true
       end
+    end
+  end
+
+  describe 'POST #rate_inc' do
+    it 'assigns @rateable to answer instance' do
+      post_rate_inc
+      expect(assigns(:rateable)).to eq answer
+    end
+
+    it 'changes rating for other users\' answers' do
+      expect { post_rate_inc }.to change { others_answer.rating }.by(1)
+    end
+
+    it 'doesn\'t change rate for own answers' do
+      expect { post :rate_inc, id: others_answer, js: true }
+          .not_to change { answer.rating }
+    end
+
+    it 'responses with HTTP status 200' do
+      post_rate_inc
+      expect(response.status).to eq 200
+    end
+  end
+
+  describe 'POST #rate_dec' do
+    it 'assigns @rateable to answer instance' do
+      post_rate_dec
+      expect(assigns(:rateable)).to eq answer
+    end
+
+    it 'changes rating for other users\' answers' do
+      expect { post_rate_dec }.to change { others_answer.rating }.by(-1)
+    end
+
+    it 'doesn\'t change rate for own answers' do
+      expect { post :rate_dec, id: others_answer, js: true }
+          .not_to change { answer.rating }
+    end
+
+    it 'responses with HTTP status 200' do
+      post_rate_dec
+      expect(response.status).to eq 200
+    end
+  end
+
+  describe 'POST #rate_revoke' do
+    before do
+      @own_rate = create(:answer_rating, user: user, votable: answer)
+      @others_rate = create(:answer_rating, user: create(:user), votable: answer)
+    end
+
+    it 'assigns @rateable to answer instance' do
+      post_rate_revoke
+      expect(assigns(:rateable)).to eq answer
+    end
+
+    it 'doesn\'t revoke rating for other users\' answers' do
+      expect { post_rate_revoke }.not_to change { others_answer.rating }
+    end
+
+    it 'revokes rate for own answers' do
+      expect { post :rate_revoke, id: answer, js: true }
+          .to change { answer.rating }.by(-1)
+    end
+
+    it 'responses with HTTP status 200' do
+      post_rate_revoke
+      expect(response.status).to eq 200
     end
   end
 end

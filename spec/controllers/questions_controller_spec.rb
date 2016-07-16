@@ -3,11 +3,18 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let(:other_user) { create(:user) }
+  let(:others_question) { create(:question, user: other_user) }
+  let(:own_rating) { create(:question_rating, user: user, rateable: question) }
+  let(:others_rating) { create(:question_rating, user: other_user, rateable: others_question) }
 
   subject(:post_question) { post :create, question: attributes_for(:question) }
   subject(:post_invalid_question) { post :create, question: attributes_for(:invalid_question) }
   subject(:patch_question) { patch :update, id: question, question: attributes_for(:question), format: :js }
   subject(:destroy_question) { delete :destroy, id: question }
+  subject(:post_rate_inc) { post :rate_inc, id: others_question, js: true }
+  subject(:post_rate_dec) { post :rate_dec, id: others_question, js: true }
+  subject(:post_rate_revoke) { post :rate_revoke, id: question, js: true }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -191,6 +198,81 @@ RSpec.describe QuestionsController, type: :controller do
       it 'shows :alert flash' do
         delete :destroy, id: @alt_question
         expect(flash[:alert]).to be_present
+      end
+    end
+  end
+
+  context 'Rateable' do
+    before { sign_in user }
+
+    describe 'POST #rate_inc' do
+      it 'assigns @rateable to question instance' do
+        post_rate_inc
+        expect(assigns(:rateable)).to eq others_question
+      end
+
+      it 'changes rating for other users\' questions' do
+        expect { post_rate_inc }
+            .to change { others_question.rating(other_user) }.by(1)
+      end
+
+      it 'doesn\'t change rate for own questions' do
+        expect { post :rate_inc, id: others_question, js: true }
+            .not_to change { question.rating(user) }
+      end
+
+      it 'responses with HTTP status 200' do
+        post_rate_inc
+        expect(response.status).to eq 200
+      end
+    end
+
+    describe 'POST #rate_dec' do
+      it 'assigns @rateable to question instance' do
+        post_rate_dec
+        expect(assigns(:rateable)).to eq others_question
+      end
+
+      it 'changes rating for other users\' questions' do
+        expect { post_rate_dec }
+            .to change { others_question.rating(other_user) }.by(-1)
+      end
+
+      it 'doesn\'t change rate for own questions' do
+        expect { post :rate_dec, id: others_question, js: true }
+            .not_to change { question.rating(user) }
+      end
+
+      it 'responses with HTTP status 200' do
+        post_rate_dec
+        expect(response.status).to eq 200
+      end
+    end
+
+    describe 'POST #rate_revoke' do
+      before do
+        own_rating
+        others_rating
+      end
+
+      it 'assigns @rateable to question instance' do
+        post_rate_revoke
+        expect(assigns(:rateable)).to eq question
+      end
+
+      it 'doesn\'t revoke rating for other users\' questions' do
+        expect { post_rate_revoke }
+            .not_to change { others_question.rating(other_user) }
+      end
+
+      it 'revokes rate for own questions' do
+        expect { post :rate_revoke, id: question, js: true }
+            .to change { question.rating(user) }.by(-1)
+      end
+
+      it 'responses with HTTP status 200' do
+        post_rate_revoke
+        expect(response.status).to eq 200
       end
     end
   end
