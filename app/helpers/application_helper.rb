@@ -6,6 +6,14 @@ module ApplicationHelper
   end
 
   def glyph(name)
-    "<span class=\"glyphicon glyphicon-#{name}\" aria-hidden=\"true\"></span>".html_safe
+    if Rails.env.test?
+      "GLYPH:#{name}"
+    else
+      "<span class=\"glyphicon glyphicon-#{name}\" aria-hidden=\"true\"></span>".html_safe
+    end
+  end
+
+  def vh(expression)
+    expression ? 'v_el' : 'h_el'
   end
 end
