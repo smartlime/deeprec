@@ -19,7 +19,7 @@ RSpec.describe Answer do
   it { should have_db_index :question_id }
 
   describe('#star!') do
-    it 'stars the selected answer' do
+    it 'should star the selected answer' do
       question = create(:question)
       answer1 = create(:answer, question: question)
       answer2 = create(:answer, question: question, starred: true)
@@ -33,29 +33,42 @@ RSpec.describe Answer do
     end
   end
 
-  let (:answer) { create(:answer) }
-  describe '#change_rate!' do
+  let (:user) { create(:user) }
+  let (:answer) { create(:answer, user: user) }
+
+  describe '#change_rate! and #rating' do
     it 'should store rate with 1' do
-      expect { answer.change_rate!(1) }.to change(answer.ratings, :count).by(1)
+      expect { answer.change_rate!(1, user) }.to change(answer.ratings, :count).by(1)
     end
 
     it 'should increase rate with 1' do
-      expect { answer.change_rate!(1) }.to change { answer.rating }.by(1)
+      expect { answer.change_rate!(1, user) }.to change { answer.rating }.by(1)
     end
 
     it 'should store rate with -1' do
-      expect { answer.change_rate!(-1) }.to change(answer.ratings, :count).by(1)
+      expect { answer.change_rate!(-1, user) }.to change(answer.ratings, :count).by(1)
     end
 
     it 'should decrease rate with -1' do
-      expect { answer.change_rate!(-1) }.to change { answer.rating }.by(-1)
+      expect { answer.change_rate!(-1, user) }.to change { answer.rating }.by(-1)
     end
   end
 
-  describe '#revoke_rate!' do
-    it 'revorkes rate' do
-      answer.change_rate!(1)
-      expect { answer.revoke_rate!}.to change { answer.rating }.to(0)
+  describe '#revoke_rate! and #rating' do
+    it 'should revorke rate' do
+      answer.change_rate!(1, user)
+      expect { answer.revoke_rate!(user) }.to change { answer.rating }.to(0)
+    end
+  end
+
+  describe '#rated? and #change_rate!' do
+    it 'should have the answer not rated initially' do
+      expect(answer.rated?(answer, user)).to eq false
+    end
+
+    it 'should mark answer as rated after #change_rate' do
+      expect { answer.change_rate!(1, user) }
+          .to change { answer.rated?(answer, user) }.to(true)
     end
   end
 end
