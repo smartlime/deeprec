@@ -6,12 +6,12 @@ module Rated
   end
 
   def rate_inc
-    @rateable.change_rate!(1, current_user)
+    @rateable.rate_up!(current_user)
     render json: json_data(false)
   end
 
   def rate_dec
-    @rateable.change_rate!(-1, current_user)
+    @rateable.rate_down!(current_user)
     render json: json_data(false)
   end
 

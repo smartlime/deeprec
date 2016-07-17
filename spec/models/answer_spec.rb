@@ -36,38 +36,40 @@ RSpec.describe Answer do
   let (:user) { create(:user) }
   let (:answer) { create(:answer, user: user) }
 
-  describe '#change_rate! and #rating' do
-    it 'should store rate with 1' do
-      expect { answer.change_rate!(1, user) }.to change(answer.ratings, :count).by(1)
+  describe '#rate_up! and #rating' do
+    it 'should store rate' do
+      expect { answer.rate_up!(user) }.to change(answer.ratings, :count).by(1)
     end
 
-    it 'should increase rate with 1' do
-      expect { answer.change_rate!(1, user) }.to change { answer.rating }.by(1)
+    it 'should increase rate' do
+      expect { answer.rate_up!(user) }.to change { answer.rating }.by(1)
+    end
+  end
+
+  describe '#rate_down! and #rating' do
+    it 'should store rate' do
+      expect { answer.rate_down!(user) }.to change(answer.ratings, :count).by(1)
     end
 
-    it 'should store rate with -1' do
-      expect { answer.change_rate!(-1, user) }.to change(answer.ratings, :count).by(1)
-    end
-
-    it 'should decrease rate with -1' do
-      expect { answer.change_rate!(-1, user) }.to change { answer.rating }.by(-1)
+    it 'should decrease rate' do
+      expect { answer.rate_down!(user) }.to change { answer.rating }.by(-1)
     end
   end
 
   describe '#revoke_rate! and #rating' do
     it 'should revorke rate' do
-      answer.change_rate!(1, user)
+      answer.rate_up!(user)
       expect { answer.revoke_rate!(user) }.to change { answer.rating }.to(0)
     end
   end
 
-  describe '#rated? and #change_rate!' do
+  describe '#rated? and #rate_up!' do
     it 'should have the answer not rated initially' do
       expect(answer.rated?(answer, user)).to eq false
     end
 
     it 'should mark answer as rated after #change_rate' do
-      expect { answer.change_rate!(1, user) }
+      expect { answer.rate_up!(user) }
           .to change { answer.rated?(answer, user) }.to(true)
     end
   end

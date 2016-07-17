@@ -21,39 +21,40 @@ RSpec.describe Question do
 
   let (:user) { create(:user) }
   let (:question) { create(:question, user: user) }
-
-  describe '#change_rate! and #rating' do
-    it 'should store rate with 1' do
-      expect { question.change_rate!(1, user) }.to change(question.ratings, :count).by(1)
+  describe '#rate_up! and #rating' do
+    it 'should store rate' do
+      expect { question.rate_up!(user) }.to change(question.ratings, :count).by(1)
     end
 
-    it 'should increase rate with 1' do
-      expect { question.change_rate!(1, user) }.to change { question.rating }.by(1)
+    it 'should increase rate' do
+      expect { question.rate_up!(user) }.to change { question.rating }.by(1)
+    end
+  end
+
+  describe '#rate_down! and #rating' do
+    it 'should store rate' do
+      expect { question.rate_down!(user) }.to change(question.ratings, :count).by(1)
     end
 
-    it 'should store rate with -1' do
-      expect { question.change_rate!(-1, user) }.to change(question.ratings, :count).by(1)
-    end
-
-    it 'should decrease rate with -1' do
-      expect { question.change_rate!(-1, user) }.to change { question.rating }.by(-1)
+    it 'should decrease rate' do
+      expect { question.rate_down!(user) }.to change { question.rating }.by(-1)
     end
   end
 
   describe '#revoke_rate! and #rating' do
     it 'should revorke rate' do
-      question.change_rate!(1, user)
+      question.rate_up!(user)
       expect { question.revoke_rate!(user) }.to change { question.rating }.to(0)
     end
   end
 
-  describe '#rated? and #change_rate!' do
+  describe '#rated? and #rate_up!' do
     it 'should have the question not rated initially' do
       expect(question.rated?(question, user)).to eq false
     end
 
     it 'should mark question as rated after #change_rate' do
-      expect { question.change_rate!(1, user) }
+      expect { question.rate_up!(user) }
           .to change { question.rated?(question, user) }.to(true)
     end
   end
