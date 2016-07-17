@@ -5,9 +5,12 @@ module Rateable
     has_many :ratings, as: :rateable, dependent: :destroy
   end
 
-  def change_rate!(delta, user)
-    delta = delta <=> 0
-    ratings.find_or_initialize_by(user: user).update!(rate: delta) if delta != 0
+  def rate_up!(user)
+    change_rate!(1, user)
+  end
+
+  def rate_down!(user)
+    change_rate!(-1, user)
   end
 
   def revoke_rate!(user)
@@ -20,5 +23,11 @@ module Rateable
 
   def rating
     ratings.sum(:rate)
+  end
+
+  private
+
+  def change_rate!(delta, user)
+    ratings.find_or_initialize_by(user: user).update!(rate: delta) if delta != 0
   end
 end
