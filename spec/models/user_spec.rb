@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  it { should have_many(:questions).dependent(:destroy) }
-  it { should have_many(:answers).dependent(:destroy) }
+  it { is_expected.to have_many(:questions).dependent(:destroy) }
+  it { is_expected.to have_many(:answers).dependent(:destroy) }
 
-  it { should validate_presence_of :email }
-  it { should validate_presence_of :password }
+  it { is_expected.to validate_presence_of :email }
+  it { is_expected.to validate_presence_of :password }
 end
