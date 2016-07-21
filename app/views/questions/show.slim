@@ -41,6 +41,8 @@
               = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
+= subscribe_to "/questions/#{@question.id}/answers"
+
 coffee:
   ready = ->
     $(".edit-answer-link").click (e) ->

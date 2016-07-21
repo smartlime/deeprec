@@ -18,8 +18,10 @@ gem 'faker'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
+gem 'private_pub'
 
 # gem 'unicorn'
+gem 'thin'
 
 group :development, :test do
   gem 'byebug', '~>8.0'
