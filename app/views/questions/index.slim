@@ -1,23 +1,43 @@
-- if user_signed_in? && @questions.any?
-  = link_to new_question_path, class: "btn btn-primary pull-right"
-    ' Ask a question
+/- if user_signed_in? && @questions.any?
+/  = link_to new_question_path, class: "btn btn-primary pull-right"
+/    ' Ask a question
 
 h2 Questions
 
 - unless @questions.any?
   p.lead.text-center No questions asked yet.
 
-.row#questions
-  .col-xs-12
-    hr
-      - @questions.each do |question|
-        = render partial: 'question', locals: {question: question}
+#questions
+  hr
+  - @questions.each do |question|
+    = render partial: 'question', locals: {question: question}
 
 - if user_signed_in?
-  = link_to new_question_path, class: "btn btn-primary pull-right"
-    ' Ask a question
-  br
-  br
+  /= link_to new_question_path, class: "btn btn-primary pull-right"
+  /  ' Ask a question
+  /br
+  /br
+  h3 Ask a Question
+  .row
+    .col-sm-12#question-errors
+
+  .row
+    .col-sm-12
+      = form_for @question, remote: true do |f|
+        .form-group
+          = f.label :topic, 'Question topic:'
+          = f.text_field :topic, class: 'form-control input', size: 200, placeholder: 'Briefly describe your question (no more than 200 characters)'
+          = f.label :body, 'Question:'
+          = f.text_area :body, class: 'form-control input', rows: 10, size: 50000, placeholder: 'Ask your question here'
+          h4 Question attachments:
+          #attachments
+            = f.fields_for :attachments do |attachment|
+              = render partial: 'attachment_fields', locals: {f: attachment}
+            .links
+              = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
+        button.btn.btn-primary.pull-right type="submit" Ask Question
+
+= subscribe_to '/questions'
 
 coffee:
   ready = ->
@@ -26,6 +46,7 @@ coffee:
       question_id = $(this).data('questionId')
       $("form#edit_question_" + question_id).show()
       e.preventDefault()
+
     $(document).on 'ajax:success', '.rate', (e, data, status, xhr) ->
       updateRatingPanel(xhr.responseJSON)
 

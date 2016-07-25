@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
 
   def index
     @questions = Question.all
+    @question = Question.new
+    @question.attachments.build
   end
 
   def show
@@ -21,11 +23,7 @@ class QuestionsController < ApplicationController
   def create
     @question = Question.new(question_params)
     @question.user_id = current_user.id
-    if @question.save
-      redirect_to @question, notice: 'Question asked.'
-    else
-      render :new
-    end
+    @question.save
   end
 
   def update
