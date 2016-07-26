@@ -34,7 +34,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post_answer }.to change(@user.answers, :count).by(1)
       end
 
-      it 'renders #create partial' do
+      it 'renders #create template' do
         post_invalid_answer
         expect(response).to render_template :create
       end
@@ -45,7 +45,7 @@ RSpec.describe AnswersController, type: :controller do
         expect { post_invalid_answer }.to_not change(Answer, :count)
       end
 
-      it 'renders to #create partial' do
+      it 'renders #create template' do
         post_invalid_answer
         expect(response).to render_template :create
       end

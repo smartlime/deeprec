@@ -8,13 +8,13 @@ RSpec.describe QuestionsController, type: :controller do
   let(:own_rating) { create(:question_rating, user: user, rateable: question) }
   let(:others_rating) { create(:question_rating, user: other_user, rateable: others_question) }
 
-  subject(:post_question) { post :create, question: attributes_for(:question) }
-  subject(:post_invalid_question) { post :create, question: attributes_for(:invalid_question) }
+  subject(:post_question) { post :create, question: attributes_for(:question), format: :js }
+  subject(:post_invalid_question) { post :create, question: attributes_for(:invalid_question), format: :js }
   subject(:patch_question) { patch :update, id: question, question: attributes_for(:question), format: :js }
   subject(:destroy_question) { delete :destroy, id: question }
-  subject(:post_rate_inc) { post :rate_inc, id: others_question, js: true }
-  subject(:post_rate_dec) { post :rate_dec, id: others_question, js: true }
-  subject(:post_rate_revoke) { post :rate_revoke, id: question, js: true }
+  subject(:post_rate_inc) { post :rate_inc, id: others_question, format: :js }
+  subject(:post_rate_dec) { post :rate_dec, id: others_question, format: :js }
+  subject(:post_rate_revoke) { post :rate_revoke, id: question, format: :js }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
@@ -81,46 +81,35 @@ RSpec.describe QuestionsController, type: :controller do
       it 'associates new Question with correct User' do
         expect { post_question }.to change(@user.questions, :count).by(1)
       end
-
-      it 'redirects to #show view' do
-        post_question
-        expect(response).to redirect_to question_path(assigns(:question))
-        expect(flash[:notice]).to be_present
-      end
-
-      it 'shows :notice flash' do
-        post_question
-        expect(flash[:notice]).to be_present
-      end
     end
 
     context 'with invalid attributes' do
       it 'doesn\'t store the question' do
         expect { post_invalid_question }.to_not change(Question, :count)
       end
+    end
 
-      it 're-renders #new view' do
-        post_invalid_question
-        expect(response).to render_template :new
-      end
+    it 'renders #create template' do
+      post_invalid_question
+      expect(response).to render_template :create
     end
   end
 
   describe 'PATCH #update' do
     before { sign_in user }
 
-    context 'own question' do
+    context 'own Question' do
       it 'assigns question to edit to @question' do
         patch_question
         expect(assigns(:question)).to eq question
       end
 
-      it 'question assigned to @question do belongs to correct user' do
+      it 'Question assigned to @question do belongs to correct User' do
         patch_question
         expect(assigns(:question).user).to eq user
       end
 
-      it 'changes question attributes' do
+      it 'changes Question attributes' do
         edited_question = create(:question, user: user)
         patch :update, id: question, question: {
             topic: edited_question.topic, body: edited_question.body}, format: :js
@@ -129,7 +118,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq edited_question.body
       end
 
-      it 'doesn\'t change user the question belongs to' do
+      it 'doesn\'t change User the Question belongs to' do
         edited_question = create(:question, user: create(:user))
         patch :update, id: question, question: {
             topic: edited_question.topic, body: edited_question.body},
@@ -144,10 +133,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'other user\'s question' do
+    context 'other user\'s Question' do
       before { @alt_question = create(:question, user: create(:user)) }
 
-      it 'doesn\'t change question attributes' do
+      it 'doesn\'t change Question attributes' do
         edited_question = create(:question, user: user)
         patch :update, id: @alt_question, question: {
             topic: edited_question.topic, body: edited_question.body}, format: :js
@@ -178,19 +167,19 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'other user\'s question' do
+    context 'other User\'s Question' do
       before { @alt_question = create(:question, user: create(:user)) }
 
-      it 'doesn\'t delete question' do
+      it 'doesn\'t delete Question' do
         expect { delete :destroy, id: @alt_question }.to change(Question, :count).by(0)
       end
 
-      it 'keeps question in DB' do
+      it 'keeps Question in DB' do
         delete :destroy, id: @alt_question
         expect(Question.exists?(@alt_question.id)).to be true
       end
 
-      it 'redirects to not deleted question' do
+      it 'redirects to not deleted Question' do
         delete :destroy, id: @alt_question
         expect(response).to redirect_to @alt_question
       end
