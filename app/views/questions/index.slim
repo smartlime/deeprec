@@ -7,11 +7,10 @@ h2 Questions
 - unless @questions.any?
   p.lead.text-center No questions asked yet.
 
-.row#questions
-  .col-xs-12
-    hr
-      - @questions.each do |question|
-        = render partial: 'question', locals: {question: question}
+#questions
+  hr
+  - @questions.each do |question|
+    = render partial: 'question', locals: {question: question}
 
 - if user_signed_in?
   /= link_to new_question_path, class: "btn btn-primary pull-right"
@@ -37,6 +36,8 @@ h2 Questions
             .links
               = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
         button.btn.btn-primary.pull-right type="submit" Ask Question
+
+= subscribe_to '/questions'
 
 coffee:
   ready = ->
