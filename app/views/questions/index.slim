@@ -2,6 +2,8 @@
 /  = link_to new_question_path, class: "btn btn-primary pull-right"
 /    ' Ask a question
 
+= subscribe_to '/questions'
+
 h2 Questions
 
 - unless @questions.any?
@@ -26,18 +28,16 @@ h2 Questions
       = form_for @question, remote: true do |f|
         .form-group
           = f.label :topic, 'Question topic:'
-          = f.text_field :topic, class: 'form-control input', size: 200, placeholder: 'Briefly describe your question (no more than 200 characters)'
+          = f.text_field :topic, class: 'form-control input new-question-topic', size: 200, placeholder: 'Briefly describe your question (no more than 200 characters)'
           = f.label :body, 'Question:'
-          = f.text_area :body, class: 'form-control input', rows: 10, size: 50000, placeholder: 'Ask your question here'
+          = f.text_area :body, class: 'form-control input new-question-body', rows: 10, size: 50000, placeholder: 'Ask your question here'
           h4 Question attachments:
-          #attachments
+          #attachments-new
             = f.fields_for :attachments do |attachment|
               = render partial: 'attachment_fields', locals: {f: attachment}
-            .links
-              = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
+          .links
+            = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
         button.btn.btn-primary.pull-right type="submit" Ask Question
-
-= subscribe_to '/questions'
 
 coffee:
   ready = ->

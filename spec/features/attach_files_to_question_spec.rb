@@ -7,15 +7,22 @@ feature 'Attach files to Question', %q(
 ) do
   given(:user) { create(:user) }
 
+  let(:ask_question) do
+    click_on 'Ask Question'
+    expect(page).to have_link @question_topic
+    click_on @question_topic
+  end
+
   background do
     DatabaseCleaner.clean
     sign_in user
-    visit new_question_path
-    fill_in 'Question topic:', with: Faker::Lorem.sentence
+    visit questions_path
+    @question_topic = Faker::Lorem.sentence
+    fill_in 'Question topic:', with: @question_topic
     fill_in 'Question:', with: Faker::Lorem.paragraph(4, true, 8)
   end
 
-  scenario 'User attaches more than ont file when creates a Question', :js do
+  scenario 'User attaches more than one file when creates a Question', :js do
     file_names = %w(README.md Gemfile .ruby-version)
     file_names.each_with_index do |file_name, cnt|
       within page.all('.nested-fields').last do
@@ -23,7 +30,8 @@ feature 'Attach files to Question', %q(
       end
       click_on 'Add attachment'
     end
-    click_on 'Ask Question'
+
+    ask_question
 
     file_names.each_with_index do |file_name, cnt|
       expect(page).to have_link file_name,
@@ -31,10 +39,11 @@ feature 'Attach files to Question', %q(
     end
   end
 
-  scenario 'User attaches a file when creates a Question' do
+  scenario 'User attaches a file when creates a Question', :js do
     file_name = 'README.md'
     attach_file 'File', "#{Rails.root}/#{file_name}"
-    click_on 'Ask Question'
+
+    ask_question
 
     expect(page).to have_link file_name,
         href: "/uploads/attachment/file/1/#{file_name}"
