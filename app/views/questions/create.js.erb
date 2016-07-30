@@ -7,6 +7,9 @@
   $("<%= errors_selector %>").append("</ul>");
 <% else %>
   $("<%= errors_selector %>").html("");
+  $("#attachments-new").html("");
+  $(".new-question-topic").val("");
+  $(".new-question-body").val("");
   <% publish_to "/questions" do %>
     $("<%= j render partial: 'question', locals: {question: @question} %>").appendTo("#questions");
   <% end %>

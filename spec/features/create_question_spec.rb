@@ -19,10 +19,10 @@ feature 'Authenticated user can create question', %q(
     expect(current_path).to eq new_question_path
   end
 
-  scenario 'Authenticated user can create a question' do
+  scenario 'Authenticated user can create a question', :js do
     sign_in user
 
-    visit new_question_path
+    visit questions_path
 
     topic = Faker::Lorem.sentence
     body = Faker::Lorem.paragraph(4, true, 8)
@@ -30,10 +30,14 @@ feature 'Authenticated user can create question', %q(
     fill_in 'Question:', with: body
     find('#new_question').click_button('Ask Question')
 
-    expect(find('.alert')).to have_content 'Question asked.'
-    expect(page).to have_content topic
-    expect(page).to have_content body
-    expect(current_path).to start_with '/questions/'
+    expect(current_path).to eq questions_path
+
+    within '#questions' do
+      expect(page).to have_content topic
+    end
+
+    expect(find_field('Question topic:')).to have_content ''
+    expect(find_field('Question:')).to have_content ''
   end
 
   scenario 'Unauthenticated user cannot access new question button and new question form' do

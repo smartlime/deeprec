@@ -15,6 +15,6 @@ h3 Ask a Question
         #attachments
           = f.fields_for :attachments do |attachment|
             = render partial: 'attachment_fields', locals: {f: attachment}
-          .links
-            = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
+        .links
+          = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
       button.btn.btn-primary.pull-right type="submit" Ask Question

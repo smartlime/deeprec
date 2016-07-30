@@ -3,7 +3,7 @@ require 'tilt/coffee'
 
 RSpec.configure do |config|
   Capybara.javascript_driver = :webkit
-  Capybara.default_max_wait_time = 4
+  Capybara.default_max_wait_time = 10
 
   Capybara::Webkit.configure do |config|
     config.block_unknown_urls
