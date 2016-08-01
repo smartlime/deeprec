@@ -1,6 +1,7 @@
 require 'rails_helper'
+require 'support/shared_examples/rated'
 
-RSpec.describe Answer do
+describe Answer do
   it { is_expected.to belong_to :user }
   it { is_expected.to belong_to :question }
   it { is_expected.to have_many(:attachments).dependent(:destroy) }
@@ -33,44 +34,10 @@ RSpec.describe Answer do
     end
   end
 
-  let (:user) { create(:user) }
-  let (:answer) { create(:answer, user: user) }
-
-  describe '#rate_up! and #rating' do
-    it 'should store rate' do
-      expect { answer.rate_up!(user) }.to change(answer.ratings, :count).by(1)
-    end
-
-    it 'should increase rate' do
-      expect { answer.rate_up!(user) }.to change { answer.rating }.by(1)
-    end
-  end
-
-  describe '#rate_down! and #rating' do
-    it 'should store rate' do
-      expect { answer.rate_down!(user) }.to change(answer.ratings, :count).by(1)
-    end
-
-    it 'should decrease rate' do
-      expect { answer.rate_down!(user) }.to change { answer.rating }.by(-1)
-    end
-  end
-
-  describe '#revoke_rate! and #rating' do
-    it 'should revorke rate' do
-      answer.rate_up!(user)
-      expect { answer.revoke_rate!(user) }.to change { answer.rating }.to(0)
-    end
-  end
-
-  describe '#rated? and #rate_up!' do
-    it 'should have the answer not rated initially' do
-      expect(answer.rated?(answer, user)).to eq false
-    end
-
-    it 'should mark answer as rated after #change_rate' do
-      expect { answer.rate_up!(user) }
-          .to change { answer.rated?(answer, user) }.to(true)
+  describe 'acts as Rateable' do
+    include_examples :rateable do
+      let (:user) { create(:user) }
+      let (:rateable) { create(:answer, user: user) }
     end
   end
 end
