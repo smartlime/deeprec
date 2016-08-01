@@ -9,14 +9,14 @@ RSpec.describe AnswersController, type: :controller do
   let(:own_rating) { create(:answer_rating, user: user, rateable: answer) }
   let(:others_rating) { create(:answer_rating, user: other_user, rateable: others_answer) }
 
-  subject(:post_answer) { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
-  subject(:post_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
-  subject(:patch_answer) { patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
-  subject(:destroy_answer) { delete :destroy, question_id: question, id: answer, format: :js }
-  subject(:patch_star_answer) { patch :star, id: answer, question_id: question, format: :js }
-  subject(:post_rate_inc) { post :rate_inc, id: others_answer, question_id: question, js: true }
-  subject(:post_rate_dec) { post :rate_dec, id: others_answer, question_id: question, js: true }
-  subject(:post_rate_revoke) { post :rate_revoke, id: answer, question_id: question, js: true }
+  let(:post_answer) { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
+  let(:post_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
+  let(:patch_answer) { patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
+  let(:destroy_answer) { delete :destroy, question_id: question, id: answer, format: :js }
+  let(:patch_star_answer) { patch :star, id: answer, question_id: question, format: :js }
+  let(:post_rate_inc) { post :rate_inc, id: others_answer, question_id: question, js: true }
+  let(:post_rate_dec) { post :rate_dec, id: others_answer, question_id: question, js: true }
+  let(:post_rate_revoke) { post :rate_revoke, id: answer, question_id: question, js: true }
 
   describe 'POST #create' do
     sign_in_user
