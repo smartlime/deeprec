@@ -7,8 +7,8 @@ describe AttachmentsController do
   let!(:attachment) { create(:question_attachment, attachable: question) }
   let(:alt_attachment) { create(:question_attachment, attachable: alt_question) }
 
-  subject(:destroy_attachment) { delete :destroy, id: attachment, format: :js }
-  subject(:destroy_alt_attachment) { delete :destroy, id: alt_attachment, format: :js }
+  let(:destroy_attachment) { delete :destroy, id: attachment, format: :js }
+  let(:destroy_alt_attachment) { delete :destroy, id: alt_attachment, format: :js }
 
   describe 'DELETE #destroy' do
     before { sign_in user }

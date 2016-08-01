@@ -8,13 +8,13 @@ RSpec.describe QuestionsController, type: :controller do
   let(:own_rating) { create(:question_rating, user: user, rateable: question) }
   let(:others_rating) { create(:question_rating, user: other_user, rateable: others_question) }
 
-  subject(:post_question) { post :create, question: attributes_for(:question), format: :js }
-  subject(:post_invalid_question) { post :create, question: attributes_for(:invalid_question), format: :js }
-  subject(:patch_question) { patch :update, id: question, question: attributes_for(:question), format: :js }
-  subject(:destroy_question) { delete :destroy, id: question }
-  subject(:post_rate_inc) { post :rate_inc, id: others_question, format: :js }
-  subject(:post_rate_dec) { post :rate_dec, id: others_question, format: :js }
-  subject(:post_rate_revoke) { post :rate_revoke, id: question, format: :js }
+  let(:post_question) { post :create, question: attributes_for(:question), format: :js }
+  let(:post_invalid_question) { post :create, question: attributes_for(:invalid_question), format: :js }
+  let(:patch_question) { patch :update, id: question, question: attributes_for(:question), format: :js }
+  let(:destroy_question) { delete :destroy, id: question }
+  let(:post_rate_inc) { post :rate_inc, id: others_question, format: :js }
+  let(:post_rate_dec) { post :rate_dec, id: others_question, format: :js }
+  let(:post_rate_revoke) { post :rate_revoke, id: question, format: :js }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
