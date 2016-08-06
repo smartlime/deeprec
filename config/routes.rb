@@ -12,9 +12,11 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: :rateable do
+    resources :comments, only: :create, defaults: { commentable: 'questions' }
     resources :answers, only: [:new, :create, :edit, :update, :destroy],
         concerns: :rateable do
       member { patch :star }
+      resources :comments, only: :create, defaults: { commentable: 'answers' }
     end
   end
 
