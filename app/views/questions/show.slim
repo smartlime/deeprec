@@ -11,6 +11,11 @@
       = @question.body
     #question-attachments
       = render partial: 'attachments', locals: {attachable: @question}
+
+.row
+  .col-sm-12
+    = render partial: 'comments/list', locals: { commentable: @question }
+
 .row
   .col-sm-12
     hr
@@ -42,17 +47,34 @@
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 = subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/comments"
 
 coffee:
   ready = ->
     $(".edit-answer-link").click (e) ->
       $(this).hide()
-      answer_id = $(this).data('answerId')
+      answer_id = $(this).data("answerId")
       $("form#edit_answer_" + answer_id).show()
       e.preventDefault()
-    $(document).on 'ajax:success', '.rate', (e, data, status, xhr) ->
+
+    $(".comments-link").click (e) ->
+      commentable_id = $(this).data("commentableId")
+      commentable_type = $(this).data("commentableType")
+      $(this).hide()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-form").show()
+      e.preventDefault()
+
+    $(".comments-cancel-link").click (e) ->
+      commentable_id = $(this).data('commentableId')
+      commentable_type = $(this).data('commentableType')
+      $("#" + commentable_type + "-comments-" + commentable_id + "-form").hide()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-link").show()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-body").val("")
+      e.preventDefault()
+
+    $(document).on "ajax:success", ".rate", (e, data, status, xhr) ->
       updateRatingPanel(xhr.responseJSON)
 
   $ -> ready()
-  $(document).on('page:load', ready)
-  $(document).on('page:update', ready)
+  $(document).on("page:load", ready)
+  $(document).on("page:update", ready)

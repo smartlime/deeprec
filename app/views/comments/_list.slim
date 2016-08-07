@@ -1,0 +1,15 @@
+hr style="margin:2px 4px 0 4px"
+.comments
+  div id="#{commentable.entity}-comments-#{commentable.id}" style="margin-left:40px"
+    h4 Comments:
+    - commentable.comments.each do |comment|
+      = render partial: 'comments/comment', locals: { comment: comment }
+  
+  - if current_user
+    div id="#{commentable.entity}-comments-#{commentable.id}-errors"
+    div id="#{commentable.entity}-comments-#{commentable.id}-form" style="display:none"
+      = render partial: 'comments/form', locals: {commentable: commentable}
+    = link_to 'Add a comment', '', class: 'comments-link', \
+          id: "#{commentable.entity}-comments-#{commentable.id}-link", \
+          data: {commentable_type: commentable.entity, commentable_id: commentable.id}
+
