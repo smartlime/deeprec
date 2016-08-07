@@ -1,0 +1,5 @@
+= form_for [commentable, @comment || Comment.new], remote: true do |f|
+  = f.text_area :body, class: 'form-control', \
+      id: "#{commentable.entity}-#{commentable.id}-comment-body"
+  = f.submit 'Add comment', class: 'btn btn-primary btn-sm'
+  =< link_to 'Cancel', '', class: 'comments-cancel-link', data: {commentable_type: commentable.entity, commentable_id: commentable.id}

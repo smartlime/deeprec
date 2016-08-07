@@ -10,5 +10,7 @@ feature 'User can left a comment to any question', %q(
   include_examples :comment_commentable do
     let(:user) { create(:user) }
     let(:commentable) { create(:question, user: user) }
+
+    let(:visit_commentable_path) { visit question_path(commentable) }
   end
 end
