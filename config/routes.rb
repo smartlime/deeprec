@@ -16,8 +16,12 @@ Rails.application.routes.draw do
     resources :answers, only: [:new, :create, :edit, :update, :destroy],
         concerns: :rateable do
       member { patch :star }
-      resources :comments, only: :create, defaults: { commentable: 'answers' }
+      # resources :comments, only: :create, defaults: { commentable: 'answers' }
     end
+  end
+
+  resources :answers do
+    resources :comments, only: :create, defaults: { commentable: 'answers' }
   end
 
   resources :attachments, only: :destroy
