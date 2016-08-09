@@ -1,2 +1,9 @@
-p = comment.body
+p
+  = comment.body
+  span.little style="color:gray"
+    '
+    ' &mdash;
+    => comment.user.email
+    ' at
+    = l comment.created_at, format: :short
 hr style="margin:2px 4px 0 4px"
