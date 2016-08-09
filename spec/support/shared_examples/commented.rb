@@ -6,6 +6,10 @@ shared_examples :commented do
       expect(assigns(:commentable)).to eq commentable
     end
 
+    it 'assigns @comment' do
+      expect(assigns(:commentable)).to eq create(:comment)
+    end
+
     context 'with valid attributes' do
       it 'stores Comment in the database'
       it 'associates Comment with correct User'
