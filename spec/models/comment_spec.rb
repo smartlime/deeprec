@@ -1,5 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe Comment, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Comment do
+  it { is_expected.to belong_to :user }
+  it { is_expected.to belong_to :commentable }
+
+  it { is_expected.to validate_length_of(:body).is_at_least(2) }
+  it { is_expected.to validate_length_of(:body).is_at_most(2_000) }
 end
