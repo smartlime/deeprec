@@ -1,0 +1,16 @@
+<% errors_selector = "##{@commentable.entity}-comments-#{@commentable.id}-errors" %>
+<% if @comment.errors.present? %>
+  $("<%= errors_selector %>").html("<ul>");
+  <% @comment.errors.full_messages.each do |message| %>
+    $("<%= errors_selector %>").append("<div class=\"error\"><li><%= j message %></div>");
+  <% end %>
+  $("<%= errors_selector %>").append("</ul>");
+<% else %>
+  $("<%= errors_selector %>").html("");
+  $("#<%= "#{@commentable.entity}-comments-#{@commentable.id}-body" %>").val("");
+  $("#<%= "#{@commentable.entity}-comments-#{@commentable.id}-form" %>").hide();
+  $("#<%= "#{@commentable.entity}-comments-#{@commentable.id}-link" %>").show();
+  <% publish_to "/comments" do %>
+    $("<%= j render partial: 'comment', locals: {comment: @comment} %>").appendTo("#<%= "#{@commentable.entity}-comments-#{@commentable.id}" %>");
+  <% end %>
+<% end %>

@@ -14,18 +14,7 @@
 
 .row
   .col-sm-12
-    hr
-    div id="question-comments-#{@question.id}" style="margin-left:40px"
-      h4 Comments:
-      li kjfglsflkjgsjfgljfjgsljgslfgjsfjg
-      li jfsfijghsfgshgoshfoishgoishgod
-      - if current_user
-        div id="question-#{@question.id}-comments-errors"
-        div id="question-#{@question.id}-comments-form" style="display:none"
-          = render partial: 'comments/form', locals: { commentable: @question }
-        = link_to 'Add a comment', '', class: 'comments-link', \
-            id: "question-#{@question.id}-comments-link", \
-            data: { commentable_type: 'question', commentable_id: @question.id }
+    = render partial: 'comments/list', locals: { commentable: @question }
 
 .row
   .col-sm-12
@@ -58,6 +47,7 @@
         button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 = subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/comments"
 
 coffee:
   ready = ->
@@ -71,15 +61,15 @@ coffee:
       commentable_id = $(this).data("commentableId")
       commentable_type = $(this).data("commentableType")
       $(this).hide()
-      $("#" + commentable_type + "-" + commentable_id + "-comments-form").show()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-form").show()
       e.preventDefault()
 
     $(".comments-cancel-link").click (e) ->
       commentable_id = $(this).data('commentableId')
       commentable_type = $(this).data('commentableType')
-      $("#" + commentable_type + "-" + commentable_id + "-comments-form").hide()
-      $("#" + commentable_type + "-" + commentable_id + "-comments-link").show()
-      $("#" + commentable_type + "-" + commentable_id + "-comment-body").val("")
+      $("#" + commentable_type + "-comments-" + commentable_id + "-form").hide()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-link").show()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-body").val("")
       e.preventDefault()
 
     $(document).on "ajax:success", ".rate", (e, data, status, xhr) ->
