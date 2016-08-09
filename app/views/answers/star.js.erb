@@ -4,5 +4,5 @@
     $(".answer-starred").find(".best-answer").remove();
   }
   $("#answer-<%= @answer.id %>").remove();
-  $("#answers").prepend("<%= j render partial: 'questions/answer', locals: {answer: @answer} %>");
+  $("#answers").prepend("<%= j render 'questions/answer', answer: @answer %>");
 <% end %>

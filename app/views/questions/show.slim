@@ -10,11 +10,11 @@
     p
       = @question.body
     #question-attachments
-      = render partial: 'attachments', locals: {attachable: @question}
+      = render 'attachments', attachable: @question
 
 .row
   .col-sm-12
-    = render partial: 'comments/list', locals: { commentable: @question }
+    = render 'comments/list', commentable: @question
 
 .row
   .col-sm-12
@@ -28,7 +28,7 @@
 #answers
   - @question.answers.order(starred: :desc).each do |answer|
     - if answer.persisted?
-      = render partial: 'answer', locals: {answer: answer}
+      = render 'answer', answer: answer
 
 - if user_signed_in?
   .row#afterAnswers
@@ -41,7 +41,7 @@
           h4 Answer attachments:
           = f.fields_for :attachments do |attachment|
             #attachments
-              = render partial: 'attachment_fields', locals: {f: attachment}
+              = render 'attachment_fields', f: attachment
             .links
               = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
         button.btn.btn-primary.pull-right type="submit" Send an Answer

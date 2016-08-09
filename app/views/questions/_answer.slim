@@ -11,11 +11,11 @@ div id="answer-#{answer.id}" class="#{answer.starred ? 'answer-starred' : ''}"
             = link_to 'Edit', '#', id: "edit-answer-link-#{answer.id}", class: "btn btn-info btn-sm edit-answer-link", data: {answer_id: answer.id}
             - if answer.question.user_id == current_user.id
               =< link_to 'Star', star_question_answer_path(answer.question, answer), id: "star-answer-link-#{answer.id}", class: "btn btn-warning btn-sm star-answer-link", data: {answer_id: answer.id}, method: :patch, remote: true
-      = render partial: 'shared/rating', locals: {chain: [answer.question, answer]}
+      = render 'shared/rating', chain: [answer.question, answer]
       blockquote
         = answer.body
-        = render partial: 'questions/attachments', locals: {attachable: answer}
-        = render partial: 'comments/list', locals: {commentable: answer}
+        = render 'questions/attachments', attachable: answer
+        = render 'comments/list', commentable: answer
         - if user_signed_in? && answer.user_id == current_user.id
           div
             = form_for [answer.question, answer], remote: true do |f|

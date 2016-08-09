@@ -12,7 +12,7 @@ h2 Questions
 #questions
   hr
   - @questions.each do |question|
-    = render partial: 'question', locals: {question: question}
+    = render 'question', question: question
 
 - if user_signed_in?
   /= link_to new_question_path, class: "btn btn-primary pull-right"
@@ -34,7 +34,7 @@ h2 Questions
           h4 Question attachments:
           #attachments-new
             = f.fields_for :attachments do |attachment|
-              = render partial: 'attachment_fields', locals: {f: attachment}
+              = render 'attachment_fields', f: attachment
           .links
             = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
         button.btn.btn-primary.pull-right type="submit" Ask Question
