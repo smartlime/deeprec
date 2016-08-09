@@ -8,6 +8,6 @@
   <% else %>
   $("<%= errors_selector %>").html("");
   <% if @question&.id %>
-    $("#question-<%= @question.id %>").html("<%= j render partial: 'question', locals: {question: @question} %>");
+    $("#question-<%= @question.id %>").html("<%= j render 'question', question: @question %>");
   <% end %>
 <% end %>

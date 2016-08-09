@@ -12,6 +12,6 @@
   $("<%= "#{prefix}-form" %>").hide();
   $("<%= "#{prefix}-link" %>").show();
   <% publish_to "/comments" do %>
-    $("<%= j render partial: 'comment', locals: {comment: @comment} %>").appendTo("<%= prefix %>");
+    $("<%= j render 'comment', comment: @comment %>").appendTo("<%= prefix %>");
   <% end %>
 <% end %>

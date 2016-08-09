@@ -8,7 +8,7 @@
   $("#answerErrors").html("");
   <% if @answer&.id %>
     <% publish_to "/questions/#{@question.id}/answers" do %>
-      $("<%= j render partial: 'questions/answer', locals: {answer: @answer} %>").appendTo("#answers");
+      $("<%= j render 'questions/answer', answer: @answer %>").appendTo("#answers");
     <% end %>
     $(".new-answer-body").val("");
     $("#attachments").html("");

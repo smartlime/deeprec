@@ -1,7 +1,7 @@
 h3 Ask a Question
 .row
   .col-sm-12
-    = render partial: 'shared/form_errors', locals: {object: @question}
+    = render 'shared/form_errors', object: @question
 
 .row
   .col-sm-12
@@ -14,7 +14,7 @@ h3 Ask a Question
         h4 Question attachments:
         #attachments
           = f.fields_for :attachments do |attachment|
-            = render partial: 'attachment_fields', locals: {f: attachment}
+            = render 'attachment_fields', f: attachment
         .links
           = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'
       button.btn.btn-primary.pull-right type="submit" Ask Question

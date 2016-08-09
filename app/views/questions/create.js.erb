@@ -11,6 +11,6 @@
   $(".new-question-topic").val("");
   $(".new-question-body").val("");
   <% publish_to "/questions" do %>
-    $("<%= j render partial: 'question', locals: {question: @question} %>").appendTo("#questions");
+    $("<%= j render 'question', question: @question %>").appendTo("#questions");
   <% end %>
 <% end %>
