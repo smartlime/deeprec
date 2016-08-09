@@ -1,5 +1,5 @@
 require 'features_helper'
-require 'support/shared_examples/comment_commentable'
+require 'support/shared_examples/comments'
 
 feature 'User can left a comment to any question', %q(
   To clarify the question
@@ -7,10 +7,9 @@ feature 'User can left a comment to any question', %q(
   I want to left a comment to the question
 ) do
 
-  include_examples :comment_commentable do
+  include_examples :comments do
     let(:user) { create(:user) }
-    let(:commentable) { create(:question, user: user) }
-
-    let(:visit_commentable_path) { visit question_path(commentable) }
+    let(:question) { create(:question, user: user) }
+    let(:commentable) { question }
   end
 end
