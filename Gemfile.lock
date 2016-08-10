@@ -127,6 +127,11 @@ GEM
     git-version-bump (0.15.1)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    gon (6.1.0)
+      actionpack (>= 3.0)
+      json
+      multi_json
+      request_store (>= 1.0)
     guard (2.14.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -246,6 +251,7 @@ GEM
     rdoc (4.2.2)
       json (~> 1.4)
     remotipart (1.2.1)
+    request_store (1.3.1)
     require_all (1.3.3)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
@@ -292,6 +298,11 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
+    skim (0.10.0)
+      coffee-script
+      coffee-script-source (>= 1.2.0)
+      slim (>= 3.0)
+      sprockets (>= 2, < 4)
     slim (3.0.7)
       temple (~> 0.7.6)
       tilt (>= 1.3.3, < 2.1)
@@ -356,6 +367,7 @@ DEPENDENCIES
   devise
   factory_girl_rails (~> 4.0)
   faker
+  gon
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
@@ -376,6 +388,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   shoulda-matchers (~> 3.1)
+  skim
   slim-rails
   spring
   spring-commands-rspec
