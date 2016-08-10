@@ -19,6 +19,8 @@ gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
 gem 'private_pub'
+gem 'skim'
+gem 'gon'
 
 # gem 'unicorn'
 gem 'thin'
