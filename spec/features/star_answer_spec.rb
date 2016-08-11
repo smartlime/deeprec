@@ -16,7 +16,7 @@ feature 'User can star the best answer to his question', %q(
     end
 
     context 'for his own Answer to any Question' do
-      scenario 'can access star button' do
+      scenario 'can access star button', :js do
         within "#answer-#{answer.id}" do
           expect(page).to have_link 'Star'
         end

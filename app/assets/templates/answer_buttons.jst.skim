@@ -1,0 +1,8 @@
+- if gon.user_signed_in
+  - if parseInt(@answer_user_id) == gon.current_user.id
+    a.btn.btn-danger.btn-sm id="delete-answer-#{@answer_id}" href="/questions/#{@question_id}/answers/#{@answer_id}" data-remote="true" rel="nofollow" data-method="delete" Delete
+    '
+    a.btn.btn-info.btn-sm.edit-answer-link id="edit-answer-link-#{@answer_id}" href="" data-answer-id="#{@answer_id}" Edit
+    - if parseInt(@question_user_id) == gon.current_user.id
+      '
+      a.btn.btn-warning.btn-sm.star-answer-link id="star-answer-link-#{@answer_id}" href="/questions/#{@question_id}/answers/#{@answer_id}/star" data-answer-id="#{@answer_id}" data-remote="true" rel="nofollow" data-method="patch" Star
