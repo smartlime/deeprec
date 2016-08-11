@@ -16,7 +16,7 @@ feature 'Authenticated user can edit his own question', %q(
       visit questions_path
     end
 
-    scenario 'can access edit link for his own question' do
+    scenario 'can access edit link for his own question', :js do
       within "#question-#{question.id}" do
         expect(page).to have_link 'Edit'
       end

@@ -1,0 +1,2 @@
+- if parseInt(@question_user_id) == gon.current_user.id
+  a.btn.btn-info.btn-sm.edit-question-link id="edit-question-link-#{@question_id}" href="" data-question-id="#{@question_id}" Edit
