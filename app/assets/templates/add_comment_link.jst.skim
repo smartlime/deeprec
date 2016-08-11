@@ -1,0 +1,3 @@
+- if gon.current_user
+  a.comments-link id="#{@entity}-comments-#{@id}-link" data-commentable-type="#{@entity}" data-commentable-id="#{@id}" href=""
+    | Add a comment

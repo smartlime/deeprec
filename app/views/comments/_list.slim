@@ -9,7 +9,11 @@ hr style="margin:2px 4px 0 4px"
     div id="#{commentable.entity}-comments-#{commentable.id}-errors"
     div id="#{commentable.entity}-comments-#{commentable.id}-form" style="display:none"
       = render 'comments/form', commentable: commentable
-    = link_to 'Add a comment', '', class: 'comments-link', \
-          id: "#{commentable.entity}-comments-#{commentable.id}-link", \
-          data: {commentable_type: commentable.entity, commentable_id: commentable.id}
+  div id="#{commentable.entity}-comments-#{commentable.id}-link-container"
+  javascript:
+    $("##{commentable.entity}-comments-#{commentable.id}-link-container").
+        html(JST["add_comment_link"]({
+            entity: "#{commentable.entity}",
+            id: "#{commentable.id}"
+        }));
 
