@@ -4,13 +4,14 @@ div id="answer-#{answer.id}" class="#{answer.starred ? 'answer-starred' : ''}"
       - if answer.starred
         p.best-answer
           strong Best Answer:
-      .pull-right
-        - if user_signed_in?
-          - if answer.user_id == current_user.id
-            => link_to 'Delete', question_answer_path(answer.question, answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete, remote: true
-            = link_to 'Edit', '#', id: "edit-answer-link-#{answer.id}", class: "btn btn-info btn-sm edit-answer-link", data: {answer_id: answer.id}
-            - if answer.question.user_id == current_user.id
-              =< link_to 'Star', star_question_answer_path(answer.question, answer), id: "star-answer-link-#{answer.id}", class: "btn btn-warning btn-sm star-answer-link", data: {answer_id: answer.id}, method: :patch, remote: true
+      .pull-right id="answer-buttons-#{answer.id}"
+      javascript:
+        $("#answer-buttons-#{answer.id}").html(JST["answer_buttons"]({
+          question_id: "#{answer.question.id}",
+          question_user_id: "#{answer.question.user.id}",
+          answer_id: "#{answer.id}",
+          answer_user_id: "#{answer.user.id}"
+        }));
       = render 'shared/rating', chain: [answer.question, answer]
       blockquote
         = answer.body

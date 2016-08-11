@@ -17,7 +17,7 @@ feature 'User can edit own answer to any question', %q(
       visit question_path(question)
     end
 
-    context 'for his own Answer to any Question' do
+    context 'for his own Answer to any Question', :js do
       scenario 'can access edit link' do
         within "#answer-#{answer.id}" do
           expect(page).to have_link 'Edit'
