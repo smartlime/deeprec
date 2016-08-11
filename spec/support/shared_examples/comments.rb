@@ -5,7 +5,7 @@ shared_examples :comments do
       visit question_path(question)
     end
 
-    scenario 'can access new comment link' do
+    scenario 'can access new comment link', :js do
       within "##{commentable.entity}-comments-#{commentable.id}-container" do
         expect(page).to have_link 'Add a comment'
       end

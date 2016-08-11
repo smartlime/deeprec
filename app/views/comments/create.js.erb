@@ -10,7 +10,7 @@
   $("<%= errors_selector %>").html("");
   $("<%= "#{prefix}-body" %>").val("");
   $("<%= "#{prefix}-form" %>").hide();
-  $("<%= "#{prefix}-link" %>").show();
+  $("<%= "#{prefix}-link-container" %>").show();
   <% publish_to "/comments" do %>
     $("<%= j render 'comment', comment: @comment %>").appendTo("<%= prefix %>");
   <% end %>
