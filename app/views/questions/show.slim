@@ -60,15 +60,16 @@ coffee:
     $(".comments-link").click (e) ->
       commentable_id = $(this).data("commentableId")
       commentable_type = $(this).data("commentableType")
-      $(this).hide()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-link-container").hide()
       $("#" + commentable_type + "-comments-" + commentable_id + "-form").show()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-body").focus()
       e.preventDefault()
 
     $(".comments-cancel-link").click (e) ->
       commentable_id = $(this).data('commentableId')
       commentable_type = $(this).data('commentableType')
       $("#" + commentable_type + "-comments-" + commentable_id + "-form").hide()
-      $("#" + commentable_type + "-comments-" + commentable_id + "-link").show()
+      $("#" + commentable_type + "-comments-" + commentable_id + "-link-container").show()
       $("#" + commentable_type + "-comments-" + commentable_id + "-body").val("")
       e.preventDefault()
 
