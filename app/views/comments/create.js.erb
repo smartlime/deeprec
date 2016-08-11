@@ -12,6 +12,7 @@
   $("<%= "#{prefix}-form" %>").hide();
   $("<%= "#{prefix}-link-container" %>").show();
   <% publish_to "/comments" do %>
+    $("<%= "#{prefix}-header" %>").show();
     $("<%= j render 'comment', comment: @comment %>").appendTo("<%= prefix %>");
   <% end %>
 <% end %>
