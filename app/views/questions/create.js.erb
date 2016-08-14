@@ -11,6 +11,6 @@
   $(".new-question-topic").val("");
   $(".new-question-body").val("");
   <% publish_to "/questions" do %>
-    $("<%= j render 'question', question: @question %>").appendTo("#questions");
+    $("<%= j render 'question', question: @question, comet: true %>").appendTo("#questions");
   <% end %>
 <% end %>

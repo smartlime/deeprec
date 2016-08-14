@@ -14,7 +14,7 @@
 
 .row
   .col-sm-12
-    = render 'comments/list', commentable: @question
+    = render 'comments/list', commentable: @question, comet: false
 
 .row
   .col-sm-12
@@ -28,7 +28,7 @@
 #answers
   - @question.answers.order(starred: :desc).each do |answer|
     - if answer.persisted?
-      = render 'answer', answer: answer
+      = render 'answer', answer: answer, comet: false
 
 - if user_signed_in?
   .row#afterAnswers
