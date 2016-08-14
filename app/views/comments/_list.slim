@@ -11,10 +11,15 @@
     div id="#{commentable.entity}-comments-#{commentable.id}-form" style="display:none"
       = render 'comments/form', commentable: commentable
   div id="#{commentable.entity}-comments-#{commentable.id}-link-container"
-  javascript:
-    $("##{commentable.entity}-comments-#{commentable.id}-link-container").
-        html(JST["add_comment_link"]({
-            entity: "#{commentable.entity}",
-            id: "#{commentable.id}"
-        }));
-
+  - if comet
+    javascript:
+      $("##{commentable.entity}-comments-#{commentable.id}-link-container").
+          html(JST["add_comment_link"]({
+              entity: "#{commentable.entity}",
+              id: "#{commentable.id}"
+          }));
+  - else
+    - if user_signed_in?
+      = link_to 'Add a comment', '', class: 'comments-link', \
+          id: "#{commentable.entity}-comments-#{commentable.id}-link", \
+          data: {commentable_type: commentable.entity, commentable_id: commentable.id}

@@ -8,6 +8,6 @@
 <% else %>
   $("<%= errors_selector %>").html("");
   <% if @answer&.id %>
-    $("#answer-<%= @answer.id %>").html("<%= j render 'questions/answer', answer: @answer %>");
+    $("#answer-<%= @answer.id %>").html("<%= j render 'questions/answer', answer: @answer, comet: false %>");
   <% end %>
 <% end %>
