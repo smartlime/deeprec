@@ -156,11 +156,6 @@ describe QuestionsController do
         destroy_question
         expect(response).to redirect_to questions_path
       end
-
-      it 'shows :notice flash' do
-        destroy_question
-        expect(flash[:notice]).to be_present
-      end
     end
 
     context 'other User\'s Question' do
@@ -175,15 +170,8 @@ describe QuestionsController do
         expect(Question.exists?(@alt_question.id)).to be true
       end
 
-      it 'redirects to not deleted Question' do
-        delete :destroy, id: @alt_question
-        expect(response).to redirect_to @alt_question
-      end
-
-      it 'shows :alert flash' do
-        delete :destroy, id: @alt_question
-        expect(flash[:alert]).to be_present
-      end
+      subject { delete :destroy, id: @alt_question }
+      it { is_expected.to be_forbidden }
     end
   end
 
