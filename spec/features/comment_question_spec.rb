@@ -10,6 +10,6 @@ feature 'User can left a comment to any question', %q(
   include_examples :comments do
     let(:user) { create(:user) }
     let(:question) { create(:question, user: user) }
-    let(:commentable) { question }
+    let!(:commentable) { question }
   end
 end

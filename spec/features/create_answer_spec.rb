@@ -8,7 +8,7 @@ feature 'User can give an answer to particular question', %q(
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  describe 'Authenticated User' do
+    describe 'Authenticated User' do
     before do
       sign_in user
       visit question_path(question)

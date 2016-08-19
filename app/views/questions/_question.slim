@@ -24,7 +24,7 @@ div id="question-#{question.id}"
       - else
         - if user_signed_in? && question.user_id == current_user.id
           = link_to 'Edit', '#', id: "edit-question-link-#{question.id}", class: "btn btn-info btn-sm edit-question-link pull-right", data: {question_id: question.id}
-      = render 'shared/rating', chain: [question]
+      = render 'shared/rating', rateable: question
   row
     .col-xs-12
       hr

@@ -13,7 +13,7 @@ h3 Ask a Question
         = f.text_area :body, class: 'form-control input', rows: 10, size: 50000, placeholder: 'Ask your question here'
         h4 Question attachments:
         #attachments
-          = f.fields_for :attachments do |attachment|
+          = f.fields_for :attachments, @question.attachments.build do |attachment|
             = render 'attachment_fields', f: attachment
         .links
           = link_to_add_association 'Add attachment', f, :attachments, class: 'btn btn-sm btn-info'

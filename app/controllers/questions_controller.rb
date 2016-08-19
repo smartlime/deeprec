@@ -2,42 +2,38 @@ class QuestionsController < ApplicationController
   include Rated
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :destroy]
+  before_action :load_question, only: [:show, :update, :destroy]
+  before_action :build_answer, only: :show
+  before_action :check_owner!, only: [:update, :edit, :destroy]
+
+  respond_to :js
 
   def index
-    @questions = Question.all
-    @question = Question.new
-    @question.attachments.build
+    respond_with (@question = Question.new)
   end
 
   def show
-    @answer = @question.answers.build
-    @answer.attachments.build
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def create
-    @question = Question.new(question_params)
-    @question.user_id = current_user.id
-    @question.save
+    respond_with(@question = Question.create(question_params.merge({user_id: current_user.id})))
+  end
+
+  def edit
   end
 
   def update
-    @question = Question.find(params[:id])
     @question.update(question_params)
+    respond_with @question
   end
 
   def destroy
-    if @question.user_id == current_user.id
-      @question.destroy!
-      redirect_to questions_path, notice: 'Question deleted.'
-    else
-      redirect_to @question, alert: 'Cannot delete other user\'s question.'
-    end
+    respond_with(@question.destroy)
   end
 
   private
@@ -46,8 +42,16 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
   end
 
+  def build_answer
+    @answer = @question.answers.build
+  end
+
   def question_params
     params.require(:question).permit(:topic, :body,
                                      attachments_attributes: [:id, :file, :_destroy])
+  end
+
+  def check_owner!
+    return head :forbidden unless @question.user_id == current_user.id
   end
 end
