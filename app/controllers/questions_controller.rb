@@ -3,28 +3,22 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
+  before_action :build_answer, only: :show
   before_action :check_owner!, only: [:update, :edit, :destroy]
 
   respond_to :html, :js
 
 
   def index
-    @questions = Question.all
-    @question = Question.new
-    @question.attachments.build
-    respond_with @question, @questions
+    respond_with (@question = Question.new)
   end
 
   def show
-    @answer = @question.answers.build
-    @answer.attachments.build
     respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
-    respond_with @question
+    respond_with(@question = Question.new)
   end
 
   def create
@@ -54,6 +48,10 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find(params[:id])
+  end
+
+  def build_answer
+    @answer = @question.answers.build
   end
 
   def question_params

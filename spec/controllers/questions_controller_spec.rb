@@ -17,10 +17,6 @@ describe QuestionsController do
 
     before { get :index }
 
-    it 'populates an array of all Questions' do
-      expect(assigns(:questions)).to match_array(questions)
-    end
-
     it 'renders #index view' do
       expect(response).to render_template :index
     end
@@ -33,10 +29,6 @@ describe QuestionsController do
 
     it 'assings the requested Question to @question' do
       expect(assigns(:question)).to eq question
-    end
-
-    it 'binds Attachments array to @answer' do
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
     end
 
     it 'assigns new Answer for the Question' do
@@ -55,10 +47,6 @@ describe QuestionsController do
 
     it 'assigns new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
-    end
-
-    it 'binds Attachments array to @question' do
-      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
 
     it 'renders #new view' do

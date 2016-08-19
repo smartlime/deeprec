@@ -383,6 +383,7 @@ DEPENDENCIES
   rails_best_practices
   rb-fsevent
   remotipart
+  responders
   rspec-rails (~> 3.0)
   rubocop
   sass-rails (~> 5.0)

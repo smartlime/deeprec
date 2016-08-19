@@ -21,6 +21,7 @@ gem 'cocoon'
 gem 'private_pub'
 gem 'skim'
 gem 'gon'
+gem 'responders'
 
 # gem 'unicorn'
 gem 'thin'

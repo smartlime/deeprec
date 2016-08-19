@@ -39,7 +39,7 @@
           #answerErrors
           = f.text_area :body, class: 'form-control input new-answer-body', rows: 10, placeholder: 'Place your answer here'
           h4 Answer attachments:
-          = f.fields_for :attachments do |attachment|
+          = f.fields_for :attachments, @answer.attachments.build do |attachment|
             #attachments
               = render 'attachment_fields', f: attachment
             .links
