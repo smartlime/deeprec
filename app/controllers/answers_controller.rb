@@ -3,24 +3,30 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :load_answer, only: [:update, :destroy, :star]
+  before_action :check_owner!, only: [:update, :edit, :destroy]
+
+  respond_to :js
 
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.build(answer_params)
-    @answer.user_id = current_user.id
-    @answer.save
+    respond_with(@answer = @question.answers.create(answer_params.
+        merge({user_id: current_user.id})))
   end
 
   def update
-    @answer.update(answer_params) if @answer.user_id == current_user.id
+    @answer.update(answer_params)
+    respond_with @answer
+  end
+
+  def edit
   end
 
   def destroy
-    @answer.destroy! if @answer.user_id == current_user.id
+    respond_with(@answer.destroy)
   end
 
   def star
-    @answer.star!
+    respond_with(@answer.star!)
   end
 
   private
@@ -31,6 +37,10 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body,
-                                   attachments_attributes: [:file])
+        attachments_attributes: [:file])
+  end
+
+  def check_owner!
+    return head :forbidden unless @answer.user_id == current_user.id
   end
 end

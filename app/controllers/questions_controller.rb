@@ -6,8 +6,7 @@ class QuestionsController < ApplicationController
   before_action :build_answer, only: :show
   before_action :check_owner!, only: [:update, :edit, :destroy]
 
-  respond_to :html, :js
-
+  respond_to :js
 
   def index
     respond_with (@question = Question.new)
@@ -22,10 +21,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
-    @question.user_id = current_user.id
-    @question.save
-    respond_with @question
+    respond_with(@question = Question.create(question_params.merge({user_id: current_user.id})))
   end
 
   def edit
@@ -42,10 +38,6 @@ class QuestionsController < ApplicationController
 
   private
 
-  def check_owner!
-    return head :forbidden unless @question.user_id == current_user.id
-  end
-
   def load_question
     @question = Question.find(params[:id])
   end
@@ -57,5 +49,9 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:topic, :body,
                                      attachments_attributes: [:id, :file, :_destroy])
+  end
+
+  def check_owner!
+    return head :forbidden unless @question.user_id == current_user.id
   end
 end

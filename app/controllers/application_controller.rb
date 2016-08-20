@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_js_current_user
 
-  protected
+  private
 
   def set_js_current_user
     gon.current_user = current_user
