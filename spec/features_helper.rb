@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'tilt/coffee'
 
 RSpec.configure do |config|
+  config.include(OmniauthMacros)
+
   Capybara.javascript_driver = :webkit
   Capybara.default_max_wait_time = 10
 
@@ -33,3 +35,5 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 end
+
+OmniAuth.config.test_mode = true
