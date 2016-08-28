@@ -40,7 +40,7 @@ RSpec.describe User do
           expect(identity.uid).to eq auth.uid
         end
 
-        it 'ruturns User object' do
+        it 'returns User object' do
           expect(User.find_for_oauth(auth)).to eq user
         end
       end
