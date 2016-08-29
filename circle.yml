@@ -8,4 +8,4 @@ dependencies:
   pre:
     - gem install bundler --pre
   post:
-    - bin/comet &
+    - bin/comet

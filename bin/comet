@@ -1,5 +1,5 @@
 #!/bin/sh
 
 #rackup private_pub.ru -s thin -E development
-rackup private_pub.ru -s thin -E production
+rackup -D private_pub.ru -s thin -E production
 
