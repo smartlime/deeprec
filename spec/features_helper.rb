@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'tilt/coffee'
+require 'capybara/email/rspec'
 
 RSpec.configure do |config|
   config.include(OmniauthMacros)
