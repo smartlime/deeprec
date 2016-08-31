@@ -13,15 +13,21 @@ class User < ActiveRecord::Base
 
   class << self
     def find_for_oauth(auth)
+      return nil unless auth
+
       identity = Identity.where(provider: auth.provider, uid: auth.uid.to_s).first
       return identity.user if identity
 
-      email = auth.info[:email]
+      email = auth.info[:email] if auth.info
+      return nil unless email
+
       user = User.where(email: email).first
       unless user
         password = Devise.friendly_token(20)
-        user = User.create!(email: email, password: password, password_confirmation: password)
+        user = User.new(email: email, password: password, password_confirmation: password)
+        user.save
       end
+
       user.identities.create(provider: auth.provider, uid: auth.uid) if user
       user
     end

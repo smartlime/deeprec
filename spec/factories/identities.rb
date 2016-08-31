@@ -1,14 +1,16 @@
 FactoryGirl.define do
-  factory :identity do
-    user
-    provider 'deeprec'
-    uid 'eehieWijeshingaet8ch'
+  sequence :uid do |n|
+    "#{Time.now.to_i}-#{Faker::Lorem.word}-#{n}"
   end
 
-  factory :alt_identity, class: 'Identity' do
+  sequence :provider do |n|
+    "deeprec-provider-#{n}"
+  end
+
+  factory :identity do
     user
-    provider 'theotherprovider'
-    uid 'dengahpo4tae8Iew1eem'
+    provider
+    uid
   end
 
   factory :invalid_identity, class: 'Identity' do

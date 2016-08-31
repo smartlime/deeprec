@@ -12,6 +12,9 @@ RSpec.configure do |config|
     config.block_unknown_urls
   end
 
+  Capybara.server_port = 3001
+  Capybara.app_host = 'http://localhost:3001'
+
   config.include FeaturesMacros, type: :feature
 
   config.use_transactional_fixtures = false
