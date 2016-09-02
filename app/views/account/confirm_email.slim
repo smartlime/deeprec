@@ -1,0 +1,14 @@
+h2 Enter your email to proceed
+
+.row
+  .col-sm-12#email-errors
+
+.row
+  .col-sm-12
+    = form_for :user, url: account_confirm_email_path, method: :patch do |f|
+      .form-group
+        = f.label :email
+        = f.email_field :email, class: 'form-control', placeholder: 'enter@email.here'
+        /= email_field_tag :email, params[:email], class: 'form-control', placeholder: 'enter@email.here'
+      .form-group
+        = f.submit 'Validate Email', class: 'btn btn-primary pull-right'
