@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'questions#index'
 
   devise_for :users, controllers: { omniauth_callbacks: :omniauth_callbacks}
+  match 'account/confirm_email', via: [:get, :patch]
 
   concern :rateable do
     member do
