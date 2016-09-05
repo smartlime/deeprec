@@ -10,6 +10,12 @@ class ApplicationController < ActionController::Base
 
   before_action :set_js_current_user
 
+  protected
+
+  def set_flash(scope, message)
+    flash[scope] = message if is_navigational_format?
+  end
+
   private
 
   def set_js_current_user
