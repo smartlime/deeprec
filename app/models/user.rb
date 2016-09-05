@@ -17,11 +17,16 @@ class User < ActiveRecord::Base
       return identity.user if identity
 
       email = auth.info[:email]
+      return nil unless email
+
       user = User.where(email: email).first
       unless user
         password = Devise.friendly_token(20)
-        user = User.create!(email: email, password: password, password_confirmation: password)
+        user = User.new(email: email, password: password, password_confirmation: password)
+        # user.skip_confirmation! if auth.provider == 'facebook'
+        user.save
       end
+
       user.identities.create(provider: auth.provider, uid: auth.uid) if user
       user
     end
