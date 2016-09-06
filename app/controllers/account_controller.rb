@@ -4,7 +4,7 @@ class AccountController < ApplicationController
 
   def confirm_email
     if request.patch?
-      email = params[:email]
+      email = params[:user][:email]
       user = User.where(email: email).first
       provider = session['devise.oauth_provider']
       if user.present?

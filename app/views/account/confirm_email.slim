@@ -1,7 +1,8 @@
 h2 Enter your email to proceed
 
 .row
-  .col-sm-12#email-errors
+  .col-sm-12
+    = render 'shared/form_errors', object: @user
 
 .row
   .col-sm-12
