@@ -1,6 +1,6 @@
 FactoryGirl.define do
   sequence :uid do |n|
-    "#{Time.now.to_i}-#{rand(9000) + 1000}-#{n}"
+    "#{Time.now.to_i}-#{Faker::Lorem.word}-#{n}"
   end
 
   sequence :provider do |n|
