@@ -107,17 +107,12 @@ feature 'Signing in using OAuth', %q(
   I want to sign in using Facebook or Twitter
 ) do
 
-  context 'Logging in with Facebook OAuth' do
-    given!(:provider) { :facebook }
-    given!(:identity) { create(:identity, provider: provider) }
+  [:facebook, :twitter].each do |prov|
+    context "Logging in with #{prov.to_s.capitalize} OAuth" do
+      given!(:provider) { prov }
+      given!(:identity) { create(:identity, provider: provider) }
 
-    it_behaves_like :oauth_sign_in
-  end
-
-  context 'Logging in with Twitter OAuth' do
-    given!(:provider) { :twitter }
-    given!(:identity) { create(:identity, provider: provider) }
-
-    it_behaves_like :oauth_sign_in
+      it_behaves_like :oauth_sign_in
+    end
   end
 end
