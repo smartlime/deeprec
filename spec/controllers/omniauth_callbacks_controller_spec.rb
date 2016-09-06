@@ -34,7 +34,6 @@ shared_examples :oauth_callback do
     it 'assigns user to @user' do
       expect(assigns(:user)).to be_a(User)
     end
-    it 'expects to send confirmation email'
   end
 
   context 'nulled credentials' do
