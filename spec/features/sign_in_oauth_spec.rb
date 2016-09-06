@@ -1,12 +1,11 @@
 require 'features_helper'
 
-
 shared_examples :oauth_sign_in do
   given(:user) { create(:user) }
+  given(:provider_name) { provider.to_s.capitalize }
 
-  context 'with email' do
-    scenario 'do new registraion' do
-      provider_name = provider.to_s.capitalize
+  context 'with email given from OAuth provider' do
+    scenario 'sign up new user with OAuth' do
       link_text = "Sign in with #{provider_name}"
       visit new_user_session_path
       expect(page).to have_link link_text
@@ -32,7 +31,7 @@ feature 'Signing in using OAuth', %q(
   end
 
   # context 'Logging in with Twitter OAuth' do
-  #   given(:provider) { :twitter }
+  #   given!(:provider) { :twitter }
   #   given!(:identity) { create(:identity, provider: provider) }
   #
   #   it_behaves_like :oauth_sign_in
