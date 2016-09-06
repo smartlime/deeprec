@@ -10,10 +10,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   private
 
   def oauth
+    email = nil
+    email = params[:user][:email] if params[:user] && params[:user][:email]
     auth = request.env['omniauth.auth'] || OmniAuth::AuthHash.new(
         provider: session['oauth_provider'],
         uid: session['oauth_uid'],
-        info: {email: params[:email]})
+        info: {email: email})
     if auth
       @user = User.find_for_oauth(auth)
       if @user.nil? && auth && auth.provider && auth.uid

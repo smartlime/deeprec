@@ -5,13 +5,12 @@ shared_examples :oauth_callback do
   before { request.env['devise.mapping'] = Devise.mappings[:user] }
 
 
-  context 'empty call' do
+  context 'empty request' do
     subject { get provider }
     it { is_expected.to redirect_to new_user_registration_path }
-    # if { is_expected.to show_flas}
   end
 
-  context 'email is nil' do
+  context 'email not given' do
     before do
       request.env['omniauth.auth'] = OmniAuth::AuthHash.new(provider: provider.to_s, uid: '123456', info: {email: nil})
       get provider
@@ -38,20 +37,19 @@ shared_examples :oauth_callback do
     it 'expects to send confirmation email'
   end
 
-  context 'everything is nil' do
+  context 'nulled credentials' do
     before do
-      request.env['omniauth.auth'] = OmniAuth::AuthHash.new(provider: nil, uid: nil, info: {email: nil})
+      request.env['omniauth.auth'] = OmniAuth::AuthHash.new(provider: nil, uid: nil)
       get provider
     end
 
-    it 'redirect to registration' do
+    it 'redirects to registration' do
       expect(response).to redirect_to new_user_registration_path
     end
   end
 end
 
 describe OmniauthCallbacksController do
-
   [:facebook, :twitter].each do |provider|
     describe "GET ##{provider}" do
       include_examples :oauth_callback do

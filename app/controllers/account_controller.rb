@@ -4,7 +4,8 @@ class AccountController < ApplicationController
 
   def confirm_email
     if request.patch?
-      email = params[:user][:email]
+      email = nil
+      email = params[:user][:email] if params[:user] && params[:user][:email]
       user = User.where(email: email).first
       provider = session['devise.oauth_provider']
       if user.present?
@@ -19,7 +20,7 @@ class AccountController < ApplicationController
           end
         end
         if @user.persisted?
-          set_flash :notice, t(:success, kind: provider.to_s.capitalize)
+          set_flash :notice, t('devise.omniauth_callbacks.success', kind: provider.to_s.capitalize)
           sign_in_and_redirect @user, event: :authentication
         end
       end

@@ -45,7 +45,7 @@ describe AccountController do
 
   describe 'PATCH #confirm_email' do
     let(:email) { generate(:email) }
-    subject (:confirm_email) { patch :confirm_email, email: email }
+    subject (:confirm_email) { patch :confirm_email, user: {email: email} }
 
     context 'as unauthenticated user' do
       context 'with valid OAuth data in session' do
