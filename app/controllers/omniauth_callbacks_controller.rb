@@ -18,7 +18,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @user = User.find_for_oauth(auth)
       if @user.nil? && auth && auth.provider && auth.uid
         store_auth auth
-        redirect_to 'user/email'
+        redirect_to account_confirm_email_path
       elsif @user&.persisted?
         set_flash_message :notice, :success, kind: auth.provider.to_s.capitalize if is_navigational_format?
         sign_in_and_redirect @user, event: :authentication

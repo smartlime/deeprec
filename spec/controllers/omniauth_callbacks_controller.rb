@@ -23,7 +23,7 @@ shared_examples :oauth_callback do
     end
 
     it { should_not be_user_signed_in }
-    it { expect(response).to redirect_to 'user/email' }
+    it { expect(response).to redirect_to account_confirm_email_path }
   end
 
   context 'user does not exist' do
