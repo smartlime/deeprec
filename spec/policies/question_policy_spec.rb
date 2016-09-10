@@ -10,38 +10,26 @@ RSpec.describe QuestionPolicy do
 
   permissions :show? do
     it('allow guest') { is_expected.to permit(nil, any_question) }
+  end
+
+  permissions :show?, :create?, :rate? do
     it('allow user') { is_expected.to permit(user, any_question) }
+  end
+
+  permissions :show?, :create?, :update?, :destroy?, :rate?, :rate_revoke? do
     it('allow admin') { is_expected.to permit(admin, any_question) }
   end
 
-  permissions :create? do
-    it('allow user') { is_expected.to permit(user, any_question) }
-    it('allow admin') { is_expected.to permit(admin, any_question) }
-
+  permissions :create?, :update?, :destroy?, :rate?, :rate_revoke? do
     it('deny guest') { is_expected.not_to permit(nil, any_question) }
   end
 
-  permissions :update?, :destroy? do
+  permissions :update?, :destroy?, :rate_revoke? do
     it('allow author') { is_expected.to permit(user, users_question) }
-    it('allow admin') { is_expected.to permit(admin, any_question) }
-
-    it('deny guest') { is_expected.not_to permit(nil, any_question) }
     it('deny user') { is_expected.not_to permit(user, any_question) }
   end
 
   permissions :rate? do
-    it('allow user') { is_expected.to permit(user, any_question) }
-    it('allow admin') { is_expected.to permit(admin, any_question) }
-
-    it('deny guest') { is_expected.not_to permit(nil, any_question) }
     it('deny author') { is_expected.not_to permit(user, users_question) }
-  end
-
-  permissions :rate_revoke? do
-    it('allow author') { is_expected.to permit(user, users_question) }
-    it('allow admin') { is_expected.to permit(admin, any_question) }
-
-    it('deny guest') { is_expected.not_to permit(nil, any_question) }
-    it('deny user') { is_expected.not_to permit(user, any_question) }
   end
 end
