@@ -26,6 +26,7 @@ gem 'responders'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
+gem 'pundit'
 
 # gem 'unicorn'
 gem 'thin'

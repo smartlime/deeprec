@@ -14,18 +14,18 @@ div id="answer-#{answer.id}" class="#{answer.starred ? 'answer-starred' : ''}"
             answer_user_id: "#{answer.user.id}"
           }));
       - else
-        - if user_signed_in?
-          - if answer.user_id == current_user.id
-            => link_to 'Delete', answer_path(answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete, remote: true
-            = link_to 'Edit', '#', id: "edit-answer-link-#{answer.id}", class: "btn btn-info btn-sm edit-answer-link", data: {answer_id: answer.id}
-          - if answer.question.user_id == current_user.id
-            =< link_to 'Star', star_answer_path(answer), id: "star-answer-link-#{answer.id}", class: "btn btn-warning btn-sm star-answer-link", data: {answer_id: answer.id}, method: :patch, remote: true
+        - if policy(answer).destroy?
+          => link_to 'Delete', answer_path(answer), id: "delete-answer-#{answer.id}", class: "btn btn-danger btn-sm", method: :delete, remote: true
+        - if policy(answer).edit?
+          => link_to 'Edit', '#', id: "edit-answer-link-#{answer.id}", class: "btn btn-info btn-sm edit-answer-link", data: {answer_id: answer.id}
+        - if policy(answer).star?
+          = link_to 'Star', star_answer_path(answer), id: "star-answer-link-#{answer.id}", class: "btn btn-warning btn-sm star-answer-link", data: {answer_id: answer.id}, method: :patch, remote: true
       = render 'shared/rating', rateable: answer
       blockquote
         = answer.body
         = render 'questions/attachments', attachable: answer
         = render 'comments/list', commentable: answer, comet: false
-        - if user_signed_in? && answer.user_id == current_user.id
+        - if policy(answer).update?
           div
             = form_for answer, remote: true do |f|
               = f.label :body, 'Answer'

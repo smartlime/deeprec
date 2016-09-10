@@ -10,7 +10,7 @@ nav.navbar.navbar-default role="navigation"
     #navbar-collapse.collapse.navbar-collapse
       ul.nav.navbar-nav
         = navbar_item 'Questions List', questions_path
-        - if user_signed_in?
+        - if policy(Question).new?
           = navbar_item 'Ask a Question', new_question_path
       ul.nav.navbar-nav.navbar-right
         li

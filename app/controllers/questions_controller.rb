@@ -4,7 +4,6 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
   before_action :build_answer, only: :show
-  before_action :check_owner!, only: [:update, :edit, :destroy]
 
   respond_to :js
 
@@ -17,14 +16,13 @@ class QuestionsController < ApplicationController
   end
 
   def new
+    authorize Question
     respond_with(@question = Question.new)
   end
 
   def create
+    authorize Question
     respond_with(@question = Question.create(question_params.merge({user_id: current_user.id})))
-  end
-
-  def edit
   end
 
   def update
@@ -40,6 +38,7 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find(params[:id])
+    authorize @question
   end
 
   def build_answer
@@ -48,10 +47,6 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:topic, :body,
-                                     attachments_attributes: [:id, :file, :_destroy])
-  end
-
-  def check_owner!
-    return head :forbidden unless @question.user_id == current_user.id
+        attachments_attributes: [:id, :file, :_destroy])
   end
 end

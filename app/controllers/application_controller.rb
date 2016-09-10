@@ -1,6 +1,8 @@
 require "application_responder"
 
 class ApplicationController < ActionController::Base
+  include Pundit
+
   self.responder = ApplicationResponder
   respond_to :html
 
@@ -9,6 +11,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :set_js_current_user
+
+  rescue_from Pundit::NotAuthorizedError do |exception|
+    if is_navigational_format?
+      redirect_to root_url, alert: exception.message
+    else
+      head :forbidden
+    end
+  end
 
   protected
 

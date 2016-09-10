@@ -6,16 +6,19 @@ module Rated
   end
 
   def rate_inc
+    authorize @rateable, :rate?
     @rateable.rate_up!(current_user)
     render json: json_data(false)
   end
 
   def rate_dec
+    authorize @rateable, :rate?
     @rateable.rate_down!(current_user)
     render json: json_data(false)
   end
 
   def rate_revoke
+    authorize @rateable, :rate_revoke?
     return head :forbidden unless current_user? || rate_exists?
     @rateable.revoke_rate!(current_user)
     render json: json_data(true)

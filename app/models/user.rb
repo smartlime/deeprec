@@ -33,3 +33,12 @@ class User < ActiveRecord::Base
     end
   end
 end
+
+class User::Guest < User
+  def id
+    0
+  end
+  def admin?
+    false
+  end
+end
