@@ -31,7 +31,7 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    update?
   end
 
   def scope
@@ -49,5 +49,15 @@ class ApplicationPolicy
     def resolve
       scope
     end
+  end
+
+  protected
+
+  def allow_user(condition = true)
+    user and user.admin? || condition
+  end
+
+  def allow_owner
+    allow_user(user.id == record.user_id)
   end
 end
