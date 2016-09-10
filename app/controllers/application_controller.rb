@@ -13,7 +13,11 @@ class ApplicationController < ActionController::Base
   before_action :set_js_current_user
 
   rescue_from Pundit::NotAuthorizedError do |exception|
-    redirect_to root_url, alert: exception.message if is_navigational_format?
+    if is_navigational_format?
+      redirect_to root_url, alert: exception.message
+    else
+      head :forbidden
+    end
   end
 
   protected

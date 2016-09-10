@@ -15,7 +15,7 @@ class ApplicationPolicy
   end
 
   def create?
-    false
+    !!user
   end
 
   def new?
@@ -58,6 +58,6 @@ class ApplicationPolicy
   end
 
   def allow_owner
-    allow_user(user.id == record.user_id)
+    allow_user(user&.id == record.user_id)
   end
 end

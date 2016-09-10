@@ -1,28 +1,47 @@
 require 'rails_helper'
 
 RSpec.describe QuestionPolicy do
-
-  let(:user) { User.new }
-
   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
+  let(:user) { create(:user) }
+  let(:admin) { create(:user, admin: true) }
+  let(:any_question) { create(:question) }
+  let(:users_question) { create(:question, user: user) }
 
   permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it('allow guest') { is_expected.to permit(nil, any_question) }
+    it('allow user') { is_expected.to permit(user, any_question) }
+    it('allow admin') { is_expected.to permit(admin, any_question) }
   end
 
   permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it('allow user') { is_expected.to permit(user, any_question) }
+    it('allow admin') { is_expected.to permit(admin, any_question) }
+
+    it('deny guest') { is_expected.not_to permit(nil, any_question) }
   end
 
-  permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  permissions :update?, :destroy? do
+    it('allow author') { is_expected.to permit(user, users_question) }
+    it('allow admin') { is_expected.to permit(admin, any_question) }
+
+    it('deny guest') { is_expected.not_to permit(nil, any_question) }
+    it('deny user') { is_expected.not_to permit(user, any_question) }
   end
 
-  permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+  permissions :rate? do
+    it('allow user') { is_expected.to permit(user, any_question) }
+    it('allow admin') { is_expected.to permit(admin, any_question) }
+
+    it('deny guest') { is_expected.not_to permit(nil, any_question) }
+    it('deny author') { is_expected.not_to permit(user, users_question) }
+  end
+
+  permissions :rate_revoke? do
+    it('allow author') { is_expected.to permit(user, users_question) }
+    it('allow admin') { is_expected.to permit(admin, any_question) }
+
+    it('deny guest') { is_expected.not_to permit(nil, any_question) }
+    it('deny user') { is_expected.not_to permit(user, any_question) }
   end
 end

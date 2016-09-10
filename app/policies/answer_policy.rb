@@ -1,11 +1,13 @@
 class AnswerPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
-    end
+  def update?
+    allow_owner
   end
 
-  def update?
-    user and user.admin? || user == record.user
+  def rate?
+    allow_user(user&.id != record.user_id)
+  end
+
+  def rate_revoke?
+    allow_owner
   end
 end

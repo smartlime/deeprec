@@ -159,7 +159,8 @@ describe QuestionsController do
       end
 
       subject { delete :destroy, id: @alt_question }
-      it { is_expected.to be_forbidden }
+      it { is_expected.to redirect_to root_path }
+      it('shows :alert flash') { is_expected { flash[:alert] }.to be_present }
     end
   end
 
