@@ -30,6 +30,7 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3001 }
 
   # Randomize the order test cases are executed.
@@ -40,4 +41,10 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Enable stdout logger
+  config.logger = Logger.new(STDOUT)
+
+  # Set log level
+  config.log_level = :DEBUG
 end

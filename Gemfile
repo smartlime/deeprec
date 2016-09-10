@@ -45,8 +45,9 @@ group :test do
   gem 'launchy'
   gem 'database_cleaner'
   gem 'capybara-webkit'
-  gem 'capybara-email'
 end
+
+gem 'capybara-email'
 
 group :development do
   gem 'web-console', '~> 2.0'
