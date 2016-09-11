@@ -2,7 +2,7 @@ class ApplicationPolicy
   attr_reader :user, :record
 
   def initialize(user, record)
-    @user = user
+    @user = user || User::Guest.new
     @record = record
   end
 
@@ -54,14 +54,14 @@ class ApplicationPolicy
   protected
 
   def user?
-    !!user
+    user.id > 0
   end
 
   def admin?
-    user? && user.admin?
+    user.admin?
   end
 
   def owner?(target = record)
-    user? && target.user_id == user.id
+    target.user_id == user.id
   end
 end
