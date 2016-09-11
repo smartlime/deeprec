@@ -5,6 +5,7 @@ class CommentsController < ApplicationController
   respond_to :js
 
   def create
+    authorize Comment
     respond_with(@comment = @commentable.comments.create(comment_params))
   end
 
