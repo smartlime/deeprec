@@ -4,7 +4,6 @@ RSpec.describe QuestionPolicy do
   subject { described_class }
 
   let(:user) { create(:user) }
-  let(:admin) { create(:user, admin: true) }
   let(:any_question) { create(:question) }
   let(:users_question) { create(:question, user: user) }
 
@@ -17,7 +16,7 @@ RSpec.describe QuestionPolicy do
   end
 
   permissions :show?, :create?, :update?, :destroy?, :rate?, :rate_revoke? do
-    it('allow admin') { is_expected.to permit(admin, any_question) }
+    it('allow admin') { is_expected.to permit(create(:user, admin: true), any_question) }
   end
 
   permissions :create?, :update?, :destroy?, :rate?, :rate_revoke? do

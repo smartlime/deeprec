@@ -3,11 +3,11 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :load_answer, only: [:update, :destroy, :star]
-  before_action :check_owner!, only: [:update, :edit, :destroy]
 
   respond_to :js
 
   def create
+    authorize Answer
     @question = Question.find(params[:question_id])
     respond_with(@answer = @question.answers.create(answer_params.
         merge({user_id: current_user.id})))
@@ -20,13 +20,16 @@ class AnswersController < ApplicationController
   end
 
   def edit
+    authorize @answer
   end
 
   def destroy
+    authorize @answer
     respond_with(@answer.destroy)
   end
 
   def star
+    authorize @answer
     respond_with(@answer.star!)
   end
 
@@ -39,9 +42,5 @@ class AnswersController < ApplicationController
   def answer_params
     params.require(:answer).permit(:body,
         attachments_attributes: [:file])
-  end
-
-  def check_owner!
-    return head :forbidden unless @answer.user_id == current_user.id
   end
 end
