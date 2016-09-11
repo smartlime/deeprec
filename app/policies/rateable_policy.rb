@@ -1,9 +1,9 @@
 module RateablePolicy
   def rate?
-    allow_user(user&.id != record.user_id)
+    admin? || user? && !owner?
   end
 
   def rate_revoke?
-    allow_owner
+    admin? || owner?
   end
 end

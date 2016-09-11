@@ -15,7 +15,7 @@ class ApplicationPolicy
   end
 
   def create?
-    !!user
+    user?
   end
 
   def new?
@@ -23,7 +23,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    admin? || owner?
   end
 
   def edit?
@@ -53,11 +53,15 @@ class ApplicationPolicy
 
   protected
 
-  def allow_user(condition = true)
-    user and user.admin? || condition
+  def user?
+    !!user
   end
 
-  def allow_owner
-    allow_user(user&.id == record.user_id)
+  def admin?
+    user? && user.admin?
+  end
+
+  def owner?(target = record)
+    user? && target.user_id == user.id
   end
 end
