@@ -12,7 +12,6 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    authorize @question
     respond_with @question
   end
 
@@ -27,13 +26,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    authorize @question
     @question.update(question_params)
     respond_with @question
   end
 
   def destroy
-    authorize @question
     respond_with(@question.destroy)
   end
 
@@ -41,6 +38,7 @@ class QuestionsController < ApplicationController
 
   def load_question
     @question = Question.find(params[:id])
+    authorize @question
   end
 
   def build_answer
@@ -49,6 +47,6 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:topic, :body,
-                                     attachments_attributes: [:id, :file, :_destroy])
+        attachments_attributes: [:id, :file, :_destroy])
   end
 end

@@ -14,22 +14,15 @@ class AnswersController < ApplicationController
   end
 
   def update
-    authorize @answer
     @answer.update(answer_params)
     respond_with @answer
   end
 
-  def edit
-    authorize @answer
-  end
-
   def destroy
-    authorize @answer
     respond_with(@answer.destroy)
   end
 
   def star
-    authorize @answer
     respond_with(@answer.star!)
   end
 
@@ -37,6 +30,7 @@ class AnswersController < ApplicationController
 
   def load_answer
     @answer = Answer.find(params[:id])
+    authorize @answer
   end
 
   def answer_params
