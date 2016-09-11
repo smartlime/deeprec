@@ -4,7 +4,7 @@ div id="question-#{question.id}"
       p.lead
         = link_to question_path(question)
           = question.topic
-        - if user_signed_in? && question.user_id == current_user.id
+        - if policy(question).update?
         div
           = form_for question, remote: true do |f|
             .little id="question-errors-#{question.id}"
@@ -22,7 +22,7 @@ div id="question-#{question.id}"
             question_user_id: "#{question.user.id}"
           }));
       - else
-        - if user_signed_in? && question.user_id == current_user.id
+        - if policy(question).edit?
           = link_to 'Edit', '#', id: "edit-question-link-#{question.id}", class: "btn btn-info btn-sm edit-question-link pull-right", data: {question_id: question.id}
       = render 'shared/rating', rateable: question
   row

@@ -18,7 +18,7 @@ module Rated
   end
 
   def rate_revoke
-    authorize @rateable
+    authorize @rateable, :rate_revoke?
     return head :forbidden unless current_user? || rate_exists?
     @rateable.revoke_rate!(current_user)
     render json: json_data(true)

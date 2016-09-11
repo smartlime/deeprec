@@ -20,17 +20,16 @@
   .col-sm-12
     hr
       p.lead.pull-left Answers:
-      - if user_signed_in?
+      - if policy(@question).destroy?
         .pull-right
-          - if @question.user_id == current_user.id
-            => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
-              ' Delete Question
+          => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
+            ' Delete Question
 #answers
   - @question.answers.order(starred: :desc).each do |answer|
     - if answer.persisted?
       = render 'answer', answer: answer, comet: false
 
-- if user_signed_in?
+- if policy(@answer).create?
   .row#afterAnswers
     .col-sm-12
       = form_for [@question, @answer], remote: true do |f|
