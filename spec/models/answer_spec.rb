@@ -27,7 +27,6 @@ describe Answer do
       answer3 = create(:answer, question: question)
       question.save!
       answer3.star!
-      expect(question.reload.answers).to eq([answer1, answer2, answer3])
       expect(answer1.reload.starred).to eq(false)
       expect(answer2.reload.starred).to eq(false)
       expect(answer3.reload.starred).to eq(true)
