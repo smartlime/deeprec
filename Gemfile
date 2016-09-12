@@ -27,6 +27,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'pundit'
+gem 'doorkeeper'
 
 # gem 'unicorn'
 gem 'thin'
