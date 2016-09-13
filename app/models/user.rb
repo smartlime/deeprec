@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :answers, dependent: :destroy
   has_many :comments, dependent: :destroy
 
+  scope :all_except, -> (user_id) { where.not(id: user_id) }
+
   class << self
     def find_for_oauth(auth)
       return nil unless auth
@@ -38,6 +40,7 @@ class User::Guest < User
   def id
     0
   end
+
   def admin?
     false
   end
