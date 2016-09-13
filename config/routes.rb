@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   root 'questions#index'
 
-  devise_for :users, controllers: { omniauth_callbacks: :omniauth_callbacks}
+  devise_for :users, controllers: {omniauth_callbacks: :omniauth_callbacks}
   match 'account/confirm_email', via: [:get, :patch]
 
   concern :rateable do
@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:rateable, :commentable], shallow: true do
-    # resources :comments, only: :create, defaults: { commentable: 'questions' }
     resources :answers, only: [:new, :create, :edit, :update, :destroy],
         concerns: [:rateable, :commentable] do
       member { patch :star }
@@ -27,7 +26,7 @@ Rails.application.routes.draw do
   end
 
   resources :answers do
-    resources :comments, only: :create, defaults: { commentable: 'answers' }
+    resources :comments, only: :create, defaults: {commentable: 'answers'}
   end
 
   resources :attachments, only: :destroy
@@ -37,6 +36,10 @@ Rails.application.routes.draw do
       resource :profiles do
         get :me, on: :collection
         get :all, on: :collection
+      end
+
+      resources :questions, only: [:index, :show, :create] do
+        resources :answers, only: [:index, :show, :create], shallow: true
       end
     end
   end
