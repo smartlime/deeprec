@@ -28,6 +28,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'pundit'
 gem 'doorkeeper'
+gem 'active_model_serializers'
 
 # gem 'unicorn'
 gem 'thin'
