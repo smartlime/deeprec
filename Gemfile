@@ -48,6 +48,7 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara-webkit'
   gem 'capybara-email'
+  gem 'json_spec'
 end
 
 group :development do

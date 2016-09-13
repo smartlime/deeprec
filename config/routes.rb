@@ -31,4 +31,12 @@ Rails.application.routes.draw do
   end
 
   resources :attachments, only: :destroy
+
+  namespace :api do
+    namespace :v1 do
+      resource :profiles do
+        get :me, on: :collection
+      end
+    end
+  end
 end
