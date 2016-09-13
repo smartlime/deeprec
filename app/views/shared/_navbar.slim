@@ -12,6 +12,8 @@ nav.navbar.navbar-default role="navigation"
         = navbar_item 'Questions List', questions_path
         - if policy(Question).new?
           = navbar_item 'Ask a Question', new_question_path
+        - if current_user.admin?
+          = navbar_item 'Applications', oauth_applications_path
       ul.nav.navbar-nav.navbar-right
         li
           - if user_signed_in?
