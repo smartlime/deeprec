@@ -31,14 +31,20 @@ shared_examples :has_json_attributes do |object, methods, json_path = nil|
   end
 end
 
-shared_examples :show_body do
-  it('is for debug') { ap JSON.parse(body) }
-end
-
 def at_merged_path(json_path, json_merge_path = nil)
   at_path([json_merge_path, fix_underscores(json_path)].compact * '/')
 end
 
 def fix_underscores(string)
   string.gsub('_', '-')
+end
+
+## -- Just for debugging
+
+shared_examples :show_body do
+  it('is for debug') { ap JSON.parse(body) }
+end
+
+def _sb
+  include_examples :show_body
 end
