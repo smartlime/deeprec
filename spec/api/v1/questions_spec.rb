@@ -1,19 +1,5 @@
 require 'rails_helper'
 
-shared_examples :unauthorized do |method|
-  context 'when not authorized' do
-    context 'status when no access_token' do
-      subject { get "/api/v1/#{method.to_s}", format: :json }
-      it { is_expected { response.status }.to be 401 }
-    end
-
-    context 'status when access_token is invalid' do
-      subject { get "/api/v1/#{method.to_s}", format: :json, access_token: '00000' }
-      it { is_expected { response.status }.to be 401 }
-    end
-  end
-end
-
 describe 'Questions API' do
   describe 'GET /index' do
     include_examples :unauthorized, :questions
@@ -22,34 +8,35 @@ describe 'Questions API' do
       let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }
-      let!(:answer) { create(:answer, question: question)}
+      let!(:answer) { create(:answer, question: question) }
 
       before { get '/api/v1/questions', format: :json, access_token: access_token.token }
+      subject { response }
 
-      it 'return 200' do
-        puts response.body
-        exit
-        expect(response).to be_success
-      end
+      it { is_expected.to be_success }
 
-      it 'returns list' do
-        expect(response.body).to have_json_size(2).at_path('questions')
-      end
+      context 'response body' do
+        subject(:body) { response.body }
 
-      %w(id topic body created_at updated_at).each do |attr|
-        it "Q object has #{attr}" do
-          expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("questions/0/#{attr}")
-        end
-      end
+        include_examples :conform_common_json_api_format
 
-      context 'answers' do
-        it 'included in Q' do
-          expect(response.body).to have_json_size(1).at_path('questions/0/answers')
-        end
+        context 'is a Question' do
+          it('should return Questions') { is_expected.to be_json_eql('"questions"').at_path('data/0/type') }
 
-        %w(id body created_at updated_at).each do |attr|
-          it "A object has #{attr}" do
-            expect(response.body).to be_json_eql(answer.send(attr.to_sym).to_json).at_path("questions/0/answers/0/#{attr}")
+          %w(topic body created_at updated_at).each do |attr|
+            it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
+                at_path("data/0/attributes/#{attr.gsub('_', '-')}") }
+          end
+
+          context 'with an Answers' do
+            it('should relate to Answers') { is_expected.to have_json_path('data/0/relationships/answers') }
+
+            # include_examples :conform_common_json_api_format, 'data/0/relationships/answers'
+
+            %w(id body created_at updated_at).each do |attr|
+              it { is_expected.to be_json_eql(answer.send(attr.to_sym).to_json).
+                  at_path("data/0/relationships/answers/data/0/#{fix_underscores(attr)}") }
+            end
           end
         end
       end
