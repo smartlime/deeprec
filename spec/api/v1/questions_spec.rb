@@ -27,7 +27,8 @@ describe 'Questions API' do
       before { get '/api/v1/questions', format: :json, access_token: access_token.token }
 
       it 'return 200' do
-        p response.body
+        puts response.body
+        exit
         expect(response).to be_success
       end
 
