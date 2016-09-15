@@ -1,9 +1,11 @@
 class Api::V1::ProfilesController < Api::V1::ApiController
   def me
-    respond_with current_resource_owner
+    authorize :profile
+    respond_with current_user
   end
 
   def all
-    respond_with User.all_except(current_resource_owner.id)
+    authorize :profile
+    respond_with User.all_except(current_user.id)
   end
 end

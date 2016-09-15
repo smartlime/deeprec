@@ -1,12 +1,13 @@
-shared_examples :unauthorized do |method|
-  context 'when not authorized' do
+shared_examples :unauthenticated do |ez_path|
+  let(:uri) { "/api/v1/#{(path || ez_path).to_s}" }
+  context 'when not authenticated' do
     context 'status when no access_token' do
-      subject { get "/api/v1/#{method.to_s}", format: :json }
+      subject { get uri, format: :json }
       it { is_expected { response.status }.to be 401 }
     end
 
     context 'status when access_token is invalid' do
-      subject { get "/api/v1/#{method.to_s}", format: :json, access_token: '00000' }
+      subject { get uri, format: :json, access_token: '00000' }
       it { is_expected { response.status }.to be 401 }
     end
   end
@@ -42,7 +43,7 @@ end
 ## -- Just for debugging
 
 shared_examples :show_body do
-  it('is for debug') { ap JSON.parse(body) }
+  it('...is for debug') { ap JSON.parse(body) }
 end
 
 def _sb
