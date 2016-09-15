@@ -1,4 +1,4 @@
-class AnswerSerializer < ActiveModel::Serializer
+class SingleAnswerSerializer < ActiveModel::Serializer
   attributes :id, :body, :created_at, :updated_at
 
   has_many :attachments

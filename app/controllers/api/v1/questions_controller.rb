@@ -7,7 +7,7 @@ class Api::V1::QuestionsController < Api::V1::ApiController
   def show
     @question = Question.find(params[:id])
     authorize @question
-    respond_with @question, serializer: SingleQuestionSerializer
+    respond_with @question, serializer: SingleQuestionSerializer #, include:  [:answers, :attachments, :comments]
   end
 
   def create
