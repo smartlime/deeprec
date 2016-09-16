@@ -15,21 +15,16 @@ describe 'Questions API' do
 
       it { is_expected.to be_success }
 
-      context 'response body' do
+      context 'is a valid list of 2 Questions' do
         subject(:body) { response.body }
 
-        context 'is a valid list of Questions' do
-          it('should have root "questions" element') { is_expected.to have_json_path('questions') }
-          it('should return array of 2 Questions') { is_expected.to have_json_size(2).at_path('questions') }
+        include_examples :has_valid_json_object_at, nil, %w(topic body created_at updated_at) do
+          let!(:object) { questions }
+          #before { @object = questions }
+        end
 
-          %w(id topic body created_at updated_at).each do |attr|
-            it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
-                at_path("questions/0/#{attr}") }
-          end
-
-          it 'question object contains short_title' do
-            is_expected.to be_json_eql(question.topic.truncate(10).to_json).at_path('questions/0/short_title')
-          end
+        it 'showld have valid attribute "short_title"' do
+          is_expected.to be_json_eql(question.topic.truncate(10).to_json).at_path('questions/0/short_title')
         end
       end
     end
@@ -41,37 +36,42 @@ describe 'Questions API' do
     include_examples(:unauthenticated) { let(:path) { "questions/#{question.id}" } }
 
     context 'when authenticated' do
-      let!(:answer) { create(:answer, question: question) }
-      let!(:attachment) { create(:question_attachment, attachable: question) }
-      let!(:comment) { create(:comment, commentable: question) }
+      let!(:answers) { [create(:answer, question: question)] }
+      let!(:attachments) { [create(:question_attachment, attachable: question)] }
+      let!(:comments) { [create(:comment, commentable: question)] }
 
       before { get "/api/v1/questions/#{question.id}", format: :json, access_token: access_token.token }
       subject { response }
 
       it { is_expected.to be_success }
 
-      context 'response body' do
+      context 'is a valid single Question' do
         subject(:body) { response.body }
-        _sb
 
-        include_examples :has_valid_json_object_at do
+        include_examples :has_valid_json_object_at, nil, %w(id topic body created_at updated_at) do
           let!(:object) { question }
         end
 
-        context 'is a valid single Question' do
-          it('should have root "question" element') { is_expected.to have_json_path('question') }
+        context 'has valid Answers' do
+          include_examples :has_valid_json_object_at, 'question', %w(id body created_at updated_at) do
+            let!(:object) { answers }
+          end
+        end
 
-          %w(topic body created_at updated_at).each do |attr|
-            it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
-                at_path("question/#{attr}") }
+        context 'has valid Attachments' do
+          _sb
+          include_examples :has_valid_json_object_at, 'question', %w(id created_at updated_at) do
+            let!(:object) { attachments }
           end
 
-          context 'with an Answers' do
-            it('should return Answers') { is_expected.to have_json_path('question/answers') }
-            it('should have an array of 1 Answers') { is_expected.to have_json_size(1).at_path('question/answers') }
-            %w(id body created_at updated_at).each do |attr|
-              it { is_expected.to be_json_eql(answer.send(attr.to_sym).to_json).at_path("question/answers/0/#{attr}") }
-            end
+          it 'should have valid attribute "url"' do
+            is_expected.to be_json_eql(attachments.first.file.url.to_json).at_path('question/attachments/0/url')
+          end
+        end
+
+        context 'has valid Comments' do
+          include_examples :has_valid_json_object_at, 'question', %w(id body created_at updated_at) do
+            let!(:object) { comments }
           end
         end
       end
