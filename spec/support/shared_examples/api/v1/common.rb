@@ -13,14 +13,16 @@ shared_examples :unauthenticated do |ez_path|
   end
 end
 
-shared_examples :conform_common_json_api_format do |json_path = nil, has_relationships = true|
-  context 'conform Common JSON API format' do
-    it { is_expected.to have_json_size(1) }
-    it { is_expected.to have_json_path('data') }
+shared_examples :has_valid_json_object_at do # |json_path, *fields|
+  ap object
+  context 'va' do
+    size = object.try(:size)
+    name = (size ? object.first : object).class.name.downcase
+    it("should have #{name.capitalize} element") { is_expected.to have_json_path(name) }
 
-    # TODO: add 'attributes'
-    (%w(id type) + (has_relationships ? [] : %w(relationships))).each do |attr|
-      it { is_expected.to have_json_path([json_path, "data/0/#{attr}"].compact * '/') }
+    fields.each do |attr|
+      it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
+          at_path("#{name}/#{attr}") }
     end
   end
 end

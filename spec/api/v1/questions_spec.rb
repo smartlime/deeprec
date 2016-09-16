@@ -18,32 +18,18 @@ describe 'Questions API' do
       context 'response body' do
         subject(:body) { response.body }
 
-        include_examples :conform_common_json_api_format
-
         context 'is a valid list of Questions' do
-          it('should return Questions') { is_expected.to be_json_eql('"questions"').at_path('data/0/type') }
-          it('should return array of 2 Questions') { is_expected.to have_json_size(2).at_path('data') }
+          it('should have root "questions" element') { is_expected.to have_json_path('questions') }
+          it('should return array of 2 Questions') { is_expected.to have_json_size(2).at_path('questions') }
 
-          %w(topic body created_at updated_at).each do |attr|
+          %w(id topic body created_at updated_at).each do |attr|
             it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
-                at_path("data/0/attributes/#{attr.gsub('_', '-')}") }
+                at_path("questions/0/#{attr}") }
           end
 
           it 'question object contains short_title' do
-            is_expected.to be_json_eql(question.topic.truncate(10).to_json).at_path('data/0/attributes/short-title')
+            is_expected.to be_json_eql(question.topic.truncate(10).to_json).at_path('questions/0/short_title')
           end
-
-          # context 'with an Answers' do
-          #   it('should relate to Answers') { is_expected.to have_json_path('data/0/relationships/answers/data') }
-          #   it('should relate to array of 1 Answers')  { is_expected.to have_json_size(1).at_path('data/0/relationships/answers/data') }
-          #
-          #   # include_examples :conform_common_json_api_format, 'data/0/relationships/answers'
-          #
-          #   %w(id body created_at updated_at).each do |attr|
-          #     it { is_expected.to be_json_eql(answer.send(attr.to_sym).to_json).
-          #         at_path("data/0/relationships/answers/data/0/#{fix_underscores(attr)}") }
-          #   end
-          # end
         end
       end
     end
@@ -68,30 +54,26 @@ describe 'Questions API' do
         subject(:body) { response.body }
         _sb
 
-        context 'is a valid single Question' do
-          it('temporary check') { is_expected.to be_json_eql('').at_path('') }
-
-          it('should return Question') { is_expected.to be_json_eql('"questions"').at_path('data/id') }
-          # it('should return array of single Question') { is_expected.to have_json_size(1).at_path('data') }
-          #
-          # %w(topic body created_at updated_at).each do |attr|
-          #   it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
-          #       at_path("data/0/attributes/#{attr.gsub('_', '-')}") }
-          # end
-          #
-          # # context 'with an Answers' do
-          # #   it('should relate to Answers') { is_expected.to have_json_path('data/0/relationships/answers/data') }
-          # #   it('should relate to array of 1 Answers')  { is_expected.to have_json_size(1).at_path('data/0/relationships/answers/data') }
-          # #
-          # #   # include_examples :conform_common_json_api_format, 'data/0/relationships/answers'
-          # #
-          # #   %w(id body created_at updated_at).each do |attr|
-          # #     it { is_expected.to be_json_eql(answer.send(attr.to_sym).to_json).
-          # #         at_path("data/0/relationships/answers/data/0/#{fix_underscores(attr)}") }
-          # #   end
-          # # end
+        include_examples :has_valid_json_object_at do
+          let!(:object) { question }
         end
 
+        context 'is a valid single Question' do
+          it('should have root "question" element') { is_expected.to have_json_path('question') }
+
+          %w(topic body created_at updated_at).each do |attr|
+            it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
+                at_path("question/#{attr}") }
+          end
+
+          context 'with an Answers' do
+            it('should return Answers') { is_expected.to have_json_path('question/answers') }
+            it('should have an array of 1 Answers') { is_expected.to have_json_size(1).at_path('question/answers') }
+            %w(id body created_at updated_at).each do |attr|
+              it { is_expected.to be_json_eql(answer.send(attr.to_sym).to_json).at_path("question/answers/0/#{attr}") }
+            end
+          end
+        end
       end
     end
   end
