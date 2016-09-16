@@ -13,41 +13,28 @@ shared_examples :unauthenticated do |ez_path|
   end
 end
 
-shared_examples :has_valid_json_object_at do # |json_path, *fields|
-  ap object
-  context 'va' do
-    size = object.try(:size)
-    name = (size ? object.first : object).class.name.downcase
-    it("should have #{name.capitalize} element") { is_expected.to have_json_path(name) }
+shared_examples :has_valid_json_object_at do |json_path = nil, fields = []|
+  let(:size) { object.try(:size).to_i }
+  let(:name) { (size > 0 ? object.first.class.name.downcase.pluralize : object.class.name.downcase) }
+  let(:path) { [json_path, name].compact * '/' }
 
-    fields.each do |attr|
-      it { is_expected.to be_json_eql(question.send(attr.to_sym).to_json).
-          at_path("#{name}/#{attr}") }
+  it { is_expected.to have_json_path(path) }
+
+  it do
+    if size > 0
+      is_expected.to have_json_type(Array).at_path(path)
+      is_expected.to have_json_size(size).at_path(path)
+    else
+      is_expected.to have_json_type(Hash).at_path(path)
     end
   end
-end
 
-shared_examples :has_json_attributes do |object, methods, json_path = nil|
-  methods.each do |attr|
-    it { is_expected.to be_json_eql(object.send(attr.to_sym).to_json).
-        at_merged_path("data/0/attributes/#{attr}", json_path) }
+  fields.each do |attr|
+    it { is_expected.to be_json_eql((size > 0 ? object.first : object).send(attr.to_sym).to_json).
+        at_path("#{path}#{size > 0 ? '/0' : ''}/#{attr}") }
   end
-end
-
-def at_merged_path(json_path, json_merge_path = nil)
-  at_path([json_merge_path, fix_underscores(json_path)].compact * '/')
-end
-
-def fix_underscores(string)
-  string.gsub('_', '-')
 end
 
 ## -- Just for debugging
-
-shared_examples :show_body do
-  it('...is for debug') { ap JSON.parse(body) }
-end
-
-def _sb
-  include_examples :show_body
-end
+shared_examples(:show_body) { it('...is for debug') { ap JSON.parse(body) } }
+def _sb; include_examples :show_body; end
