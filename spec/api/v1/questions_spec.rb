@@ -19,12 +19,11 @@ describe 'Questions API' do
         context 'is a valid list of 2 Questions' do
           subject(:body) { response.body }
 
-          include_examples :has_valid_json_object_at, nil, %w(topic body created_at updated_at) do
+          include_examples :has_valid_json_object_at, nil, %w(id topic body created_at updated_at) do
             let!(:object) { questions }
-            #before { @object = questions }
           end
 
-          it 'showld have valid attribute "short_title"' do
+          it 'should have valid attribute "short_title"' do
             is_expected.to be_json_eql(question.topic.truncate(10).to_json).at_path('questions/0/short_title')
           end
         end
@@ -120,7 +119,7 @@ describe 'Questions API' do
           context 'response status' do
             before { create_question }
             subject { response }
-            
+
             it { is_expected.to be_unprocessable }
           end
         end
