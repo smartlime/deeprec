@@ -2,7 +2,7 @@ class Api::V1::AnswersController < Api::V1::ApiController
   before_action :set_question
 
   def index
-    respond_with @question.answers
+    respond_with @question.answers, include: nil
   end
 
   def create
