@@ -19,6 +19,6 @@ class Api::V1::QuestionsController < Api::V1::ApiController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body).merge(user: current_user)
+    params.require(:question).permit(:topic, :body).merge(user: current_user)
   end
 end
