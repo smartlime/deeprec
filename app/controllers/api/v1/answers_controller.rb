@@ -20,7 +20,7 @@ class Api::V1::AnswersController < Api::V1::ApiController
   private
 
   def set_question
-    @question = Question.find(params[:question_id])
+    @question = Question.find(params[:question_id] || Answer.find(params[:id]).question_id)
     authorize @question, :show?
   end
 
