@@ -2,56 +2,40 @@ require 'rails_helper'
 
 describe 'Profile API' do
   let(:me) { create(:user) }
+  let!(:json_path) { nil }
   let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-  describe 'GET /me' do
-    include_examples :unauthenticated, 'profiles/me'
+  describe 'GET #me' do
+    let(:path) { me_api_v1_profiles_path }
+
+    include_examples :unauthenticated, :get
 
     context 'when authenticated' do
-      before { get '/api/v1/profiles/me', format: :json, access_token: access_token.token }
+      let(:object) { me }
+      subject { response.body }
 
-      subject { response }
-      it { is_expected.to be_success }
+      before { get path, format: :json, access_token: access_token.token }
 
-      context 'for authenticated user' do
-        subject { response.body }
-
-        %w(id email created_at updated_at admin).each do |attr|
-          it { is_expected.to be_json_eql(me.send(attr.to_sym).to_json).at_path(attr) }
-        end
-
-        %w(password encrypted_password).each do |attr|
-          it { is_expected.to_not have_json_path(attr) }
-        end
-      end
+      it_behaves_like 'returns correct user(s) data'
     end
   end
 
-  describe 'GET /all' do
-    include_examples :unauthenticated, 'profiles/all'
+  describe 'GET #all' do
+    let(:path) { all_api_v1_profiles_path }
+
+    include_examples :unauthenticated, :get
 
     context 'when authenticated' do
       let!(:other_user) { create(:user) }
+      let(:object) { [other_user] }
+      subject { response.body }
 
-      before { get '/api/v1/profiles/all', format: :json, access_token: access_token.token }
+      before { get path, format: :json, access_token: access_token.token }
 
-      subject { response }
-      it { is_expected.to be_success }
+      it_behaves_like 'returns correct user(s) data'
 
-      context 'for authenticated user' do
-        subject { response.body }
-
-        it { is_expected.not_to include_json(me.to_json) }
-        it { is_expected.to have_json_size(1) }
-
-        %w(id email created_at updated_at admin).each do |attr|
-          it { is_expected.to be_json_eql(other_user.send(attr.to_sym).to_json).at_path("0/#{attr}") }
-        end
-
-        %w(password encrypted_password).each do |attr|
-          it { is_expected.to_not have_json_path("0/#{attr}") }
-        end
-      end
+      it { is_expected.not_to include_json(me.to_json) }
+      it { is_expected.to have_json_size(1) }
     end
   end
 end
