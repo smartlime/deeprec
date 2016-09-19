@@ -1,5 +1,4 @@
 require 'features_helper'
-require 'support/shared_examples/comments'
 
 feature 'User can left a comment to any question', %q(
   To clarify the question

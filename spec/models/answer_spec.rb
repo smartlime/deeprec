@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'support/shared_examples/rated'
 
 describe Answer do
   it { is_expected.to belong_to :question }

@@ -26,6 +26,7 @@ shared_examples :commented do
       end
 
       subject { post_comment }
+
       it { is_expected.to render_template :create }
     end
 

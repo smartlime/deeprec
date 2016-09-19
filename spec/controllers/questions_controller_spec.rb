@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'support/shared_examples/rated'
 
 describe QuestionsController do
   let(:user) { create(:user) }
@@ -106,7 +105,7 @@ describe QuestionsController do
         edited_question = create(:question, user: create(:user))
         patch :update, id: question, question: {
             topic: edited_question.topic, body: edited_question.body},
-            user: edited_question.user, format: :js
+              user: edited_question.user, format: :js
         question.reload
         expect(question.user).not_to eq edited_question.user
       end
@@ -164,17 +163,15 @@ describe QuestionsController do
     end
   end
 
-  describe 'acts as Rated' do
-    include_examples :rated do
-      let(:rateable) { question }
-      let(:others_rateable) { others_question }
+  it_behaves_like :rated do
+    let(:rateable) { question }
+    let(:others_rateable) { others_question }
 
-      let(:own_rating) { create(:question_rating, user: user, rateable: question) }
-      let(:others_rating) { create(:question_rating, user: other_user, rateable: others_question) }
+    let(:own_rating) { create(:question_rating, user: user, rateable: question) }
+    let(:others_rating) { create(:question_rating, user: other_user, rateable: others_question) }
 
-      let(:post_rate_inc) { post :rate_inc, id: others_question, format: :js }
-      let(:post_rate_dec) { post :rate_dec, id: others_question, format: :js }
-      let(:post_rate_revoke) { post :rate_revoke, id: question, format: :js }
-    end
+    let(:post_rate_inc) { post :rate_inc, id: others_question, format: :js }
+    let(:post_rate_dec) { post :rate_dec, id: others_question, format: :js }
+    let(:post_rate_revoke) { post :rate_revoke, id: question, format: :js }
   end
 end

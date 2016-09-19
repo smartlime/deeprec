@@ -1,4 +1,4 @@
-shared_examples :rated do
+shared_examples_for :rated do
   before { sign_in user }
 
   describe 'POST #rate_inc' do

@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'support/shared_examples/rated'
 
 describe AnswersController do
   let(:user) { create(:user) }
@@ -189,17 +188,15 @@ describe AnswersController do
     end
   end
 
-  describe 'acts as Rated' do
-    include_examples :rated do
-      let(:rateable) { answer }
-      let(:others_rateable) { others_answer }
+  it_behaves_like :rated do
+    let(:rateable) { answer }
+    let(:others_rateable) { others_answer }
 
-      let(:own_rating) { create(:answer_rating, user: user, rateable: answer) }
-      let(:others_rating) { create(:answer_rating, user: other_user, rateable: others_answer) }
+    let(:own_rating) { create(:answer_rating, user: user, rateable: answer) }
+    let(:others_rating) { create(:answer_rating, user: other_user, rateable: others_answer) }
 
-      let(:post_rate_inc) { post :rate_inc, id: others_answer, question_id: question, js: true }
-      let(:post_rate_dec) { post :rate_dec, id: others_answer, question_id: question, js: true }
-      let(:post_rate_revoke) { post :rate_revoke, id: answer, question_id: question, js: true }
-    end
+    let(:post_rate_inc) { post :rate_inc, id: others_answer, question_id: question, js: true }
+    let(:post_rate_dec) { post :rate_dec, id: others_answer, question_id: question, js: true }
+    let(:post_rate_revoke) { post :rate_revoke, id: answer, question_id: question, js: true }
   end
 end
