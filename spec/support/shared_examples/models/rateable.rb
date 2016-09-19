@@ -1,4 +1,8 @@
-shared_examples :rateable do
+shared_examples_for :rateable do
+  let (:user) { create(:user) }
+
+  it { is_expected.to have_many(:ratings).dependent(:destroy) }
+
   describe '#rate_up! and #rating' do
     it 'should store rate' do
       expect { rateable.rate_up!(user) }

@@ -2,14 +2,8 @@ require 'rails_helper'
 require 'support/shared_examples/rated'
 
 describe Answer do
-  it { is_expected.to belong_to :user }
   it { is_expected.to belong_to :question }
-  it { is_expected.to have_many(:attachments).dependent(:destroy) }
-  it { is_expected.to have_many(:ratings).dependent(:destroy) }
 
-  it { is_expected.to accept_nested_attributes_for :attachments }
-
-  it { is_expected.to validate_presence_of :user_id }
   it { is_expected.to validate_presence_of :question_id }
   it { is_expected.to validate_presence_of :body }
 
@@ -33,10 +27,10 @@ describe Answer do
     end
   end
 
-  describe 'acts as Rateable' do
-    include_examples :rateable do
-      let (:user) { create(:user) }
-      let (:rateable) { create(:answer, user: user) }
-    end
+  it_behaves_like :user_related
+  it_behaves_like :attachable
+
+  it_behaves_like :rateable do
+    let (:rateable) { create(:answer, user: user) }
   end
 end

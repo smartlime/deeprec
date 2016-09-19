@@ -1,14 +1,8 @@
 require 'rails_helper'
 
 describe Question do
-  it { is_expected.to belong_to :user }
   it { is_expected.to have_many(:answers).dependent(:destroy) }
-  it { is_expected.to have_many(:attachments).dependent(:destroy) }
-  it { is_expected.to have_many(:ratings).dependent(:destroy) }
 
-  it { is_expected.to accept_nested_attributes_for :attachments }
-
-  it { is_expected.to validate_presence_of :user_id }
   it { is_expected.to validate_presence_of :topic }
   it { is_expected.to validate_presence_of :body }
 
@@ -19,10 +13,10 @@ describe Question do
 
   it { is_expected.to have_db_index :user_id }
 
-  describe 'acts as Rateable' do
-    include_examples :rateable do
-      let (:user) { create(:user) }
-      let (:rateable) { create(:question, user: user) }
-    end
+  it_behaves_like :user_related
+  it_behaves_like :attachable
+
+  it_behaves_like :rateable do
+    let (:rateable) { create(:question, user: user) }
   end
 end
