@@ -6,7 +6,8 @@ describe QuestionsController do
   let(:other_user) { create(:user) }
   let(:others_question) { create(:question, user: other_user) }
 
-  let(:post_question) { post :create, question: attributes_for(:question), format: :js }
+  let(:post_question_attributes) { attributes_for(:question) }
+  let(:post_question) { post :create, question: post_question_attributes, format: :js }
   let(:post_invalid_question) { post :create, question: attributes_for(:invalid_question), format: :js }
   let(:patch_question) { patch :update, id: question, question: attributes_for(:question), format: :js }
   let(:destroy_question) { delete :destroy, id: question }
@@ -75,6 +76,13 @@ describe QuestionsController do
     it 'renders #create template' do
       post_invalid_question
       expect(response).to render_template :create
+    end
+
+    it_behaves_like :comet_publisher do
+      let(:pub_channel) { '/questions' }
+      let(:valid_request) { post_question }
+      let(:invalid_request) { post_invalid_question }
+      let(:valid_response_entry) { post_question_attributes[:body] }
     end
   end
 

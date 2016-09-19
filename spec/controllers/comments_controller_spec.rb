@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 shared_examples :commented do
+  let(:comment_attributes) { attributes_for(:comment) }
   let(:post_comment) { post :create, commentable: commentable.entity.pluralize,
       "#{commentable.entity}_id": commentable.id,
-      comment: attributes_for(:comment), format: :js }
+      comment: comment_attributes, format: :js }
   let(:post_invalid_comment) { post :create, commentable: commentable.entity.pluralize,
       "#{commentable.entity}_id": commentable.id,
       comment: attributes_for(:invalid_comment), format: :js }
@@ -37,6 +38,13 @@ shared_examples :commented do
 
       subject { post_invalid_comment }
       it { is_expected.to render_template :create }
+    end
+
+    it_behaves_like :comet_publisher do
+      let(:pub_channel) { '/comments' }
+      let(:valid_request) { post_comment }
+      let(:invalid_request) { post_invalid_comment }
+      let(:valid_response_entry) { comment_attributes[:body] }
     end
   end
 end

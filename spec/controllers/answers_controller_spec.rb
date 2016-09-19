@@ -7,7 +7,8 @@ describe AnswersController do
   let(:other_user) { create(:user) }
   let(:others_answer) { create(:answer, question: question, user: other_user) }
 
-  let(:post_answer) { post :create, question_id: question.id, answer: attributes_for(:answer), format: :js }
+  let(:post_answer_attributes) { attributes_for(:answer) }
+  let(:post_answer) { post :create, question_id: question.id, answer: post_answer_attributes, format: :js }
   let(:post_invalid_answer) { post :create, question_id: question.id, answer: attributes_for(:invalid_answer), format: :js }
   let(:patch_answer) { patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js }
   let(:destroy_answer) { delete :destroy, question_id: question, id: answer, format: :js }
@@ -44,6 +45,13 @@ describe AnswersController do
         post_invalid_answer
         expect(response).to render_template :create
       end
+    end
+
+    it_behaves_like :comet_publisher do
+      let(:pub_channel) { "/questions/#{question.id}/answers" }
+      let(:valid_request) { post_answer }
+      let(:invalid_request) { post_invalid_answer }
+      let(:valid_response_entry) { post_answer_attributes[:body] }
     end
   end
 
