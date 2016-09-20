@@ -1,7 +1,13 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   use_doorkeeper
 
   root 'questions#index'
+
+  authenticate :user, -> (user) { user.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   devise_for :users, controllers: {omniauth_callbacks: :omniauth_callbacks}
   match 'account/confirm_email', via: [:get, :patch]
