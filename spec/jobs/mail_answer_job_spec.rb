@@ -3,9 +3,9 @@ require 'rails_helper'
 describe MailAnswerJob do
   DatabaseCleaner.clean!
   let(:user) { create(:user) }
-  # let(:question) { create(:question, user: user) }
-  # let(:answer) { create(:answer, question:question, user: user) }
-  let(:answer) { create(:answer) }
+  let(:question) { create(:question) }
+  let!(:subscription) { create(:subscription, user: user, question: question) }
+  let(:answer) { create(:answer, question:question) }
   let(:message) { double(CustomMailer.delay) }
 
   it 'should send new Answer notifications' do

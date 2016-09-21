@@ -2,9 +2,8 @@ class MailAnswerJob < ActiveJob::Base
   queue_as :mailers
 
   def perform(answer)
-    # users = User.where('id=1')
-    # ap users
-    # users.find_each do |user|
-    CustomMailer.answer(User.first, answer).deliver_later
+    Subscription.where(question_id: answer.question_id).find_each do |subscription|
+      CustomMailer.answer(subscription.user, answer).deliver_later
+    end
   end
 end
