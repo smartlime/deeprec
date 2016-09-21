@@ -65,11 +65,19 @@ describe QuestionsController do
       it 'associates new Question with correct User' do
         expect { post_question }.to change(@user.questions, :count).by(1)
       end
+
+      it 'creates Subscription to the Question' do
+        expect { post_question }.to change(Subscription, :count).by(1)
+      end
     end
 
     context 'with invalid attributes' do
       it 'doesn\'t store the question' do
         expect { post_invalid_question }.to_not change(Question, :count)
+      end
+
+      it 'shouldn\'t create Subscription to the Question' do
+        expect { post_invalid_question }.to_not change(Subscription, :count)
       end
     end
 

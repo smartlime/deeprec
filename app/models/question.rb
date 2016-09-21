@@ -12,4 +12,12 @@ class Question < ActiveRecord::Base
   validates :user_id, presence: true
   validates :topic, presence: true, length: (10..200)
   validates :body, presence: true, length: (20..50_000)
+
+  after_create :subscribe!
+
+  private
+
+  def subscribe!
+    subscriptions.create!(user_id: user_id)
+  end
 end

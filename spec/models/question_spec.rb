@@ -20,4 +20,17 @@ describe Question do
   it_behaves_like :rateable do
     let (:rateable) { create(:question, user: user) }
   end
+
+  context 'Subscription' do
+    let(:question) { build(:question) }
+
+    it 'should be invoked to create bu #subscribe! call after Question creation' do
+      expect(question).to receive(:subscribe!)
+      question.save
+    end
+
+    it 'should be created after Question creation' do
+      expect { question.save }.to change(question.subscriptions, :count).by(1)
+    end
+  end
 end
