@@ -7,8 +7,8 @@ class CustomMailer < ApplicationMailer
     mail to: user.email, subject: t('custom_mailer.digest.subject', date: @date)
   end
 
-  def answer(user, answer)
-    @answer = answer
+  def answer(user, answer_id)
+    @answer = Answer.find(answer_id)
     @question = answer.question
 
     mail to: user.email, subject: t('custom_mailer.answer.subject', topic: @question.topic)

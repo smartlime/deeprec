@@ -1,7 +1,10 @@
 class MailAnswerJob < ActiveJob::Base
-  queue_as :default
+  queue_as :mailers
 
-  def perform(*args)
-    # Do something later
+  def perform(answer)
+    # users = User.where('id=1')
+    # ap users
+    # users.find_each do |user|
+    CustomMailer.answer(User.first, answer).deliver_later
   end
 end
