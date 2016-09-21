@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe QuestionPolicy do
+describe QuestionPolicy do
   subject { described_class }
 
   let(:user) { create(:user) }
