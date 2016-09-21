@@ -46,7 +46,7 @@ class QuestionsController < ApplicationController
   end
 
   def load_subscription
-    @subscription = Subscription.where(question: @question, user: current_user)
+    @subscription = Subscription.find_by(question_id: @question.id, user_id: current_user.id) if current_user
   end
 
   def question_params
