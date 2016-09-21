@@ -12,4 +12,6 @@ describe MailDigestJob do
     end
     MailDigestJob.perform_now
   end
+
+  it_behaves_like(:delayed_job) { let(:args) {} }
 end

@@ -29,6 +29,11 @@ Rails.application.routes.draw do
         concerns: [:rateable, :commentable] do
       member { patch :star }
     end
+
+    member do
+      post :subscribe, to: 'subscriptions#create'
+      delete :unsubscribe, to: 'subscriptions#destroy'
+    end
   end
 
   resources :answers do
