@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe SubscriptionController do
+describe SubscriptionsController do
   let(:question) { create(:question) }
 
   describe "POST #create" do

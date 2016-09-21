@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'features_helper'
 
 feature 'Authenticated User can (un)subscribe to any Question', %q(
   To be able to be notified about new Answers
@@ -12,47 +12,19 @@ feature 'Authenticated User can (un)subscribe to any Question', %q(
     before { sign_in user }
 
     context 'as not a Question author' do
-      scenario 'can subscribe if not subscribed', :js do
-        visit question_path(question)
-
-        expect(page).to have_button 'Subscribe'
-        expect(page).not_to have_button 'Unubscribe'
-
-        click_on 'Subscribe'
-
-        expect(page).to have_button 'Unsubscribe'
-        expect(page).not_to have_button 'Subscribe'
+      context 'if not subscribed' do
+        include_examples :can_subscribe_unsubscribe, true
       end
 
-      scenario 'can unsubscribe if subscribed', :js do
-        create(:subscription, user: user, question: question)
-
-        visit question_path(question)
-
-        expect(page).not_to have_button 'Subscribe'
-        expect(page).to have_button 'Unubscribe'
-
-        click_on 'Unsubscribe'
-
-        expect(page).not_to have_button 'Unsubscribe'
-        expect(page).to have_button 'Subscribe'
+      context 'if subscribed' do
+        before { create(:subscription, user: user, question: question) }
+        include_examples :can_subscribe_unsubscribe, false
       end
     end
 
     context 'as a Question author' do
       given!(:question) { create(:question, user: user) }
-
-      scenario 'can unsubscribe', :js do
-        visit question_path(question)
-
-        expect(page).not_to have_button 'Subscribe'
-        expect(page).to have_button 'Unubscribe'
-
-        click_on 'Unsubscribe'
-
-        expect(page).not_to have_button 'Unsubscribe'
-        expect(page).to have_button 'Subscribe'
-      end
+      include_examples :can_subscribe_unsubscribe, false
     end
   end
 
