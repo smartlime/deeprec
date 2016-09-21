@@ -22,7 +22,11 @@
       p.lead.pull-left Answers:
       - if policy(@question).destroy?
         .pull-right
-          => link_to question_path(@question.id), id: 'delete-question', class: "btn btn-danger", method: :delete
+          => link_to question_path(@question.id), id: 'delete-question', class: 'btn btn-danger', method: :delete
+            ' Delete Question
+      - if policy(@question).subscribe?
+        .pull-right
+          => link_to question_path(@question.id), id: 'subscribe-question', class: 'btn btn-info', method: :delete
             ' Delete Question
 #answers
   - @question.answers.order(starred: :desc).each do |answer|
