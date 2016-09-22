@@ -1,4 +1,13 @@
 h2 Search Results
 
-.well
-  p results should be here!
+h4 #{pluralize(@found.count, 'entry')} found:
+
+- @found.each_with_index do |entry, cnt|
+  .well
+    .row
+      .col-xs-1
+        p.lead
+          = cnt + 1
+          | .
+      .col-xs-11
+        = render entry.class.name.downcase, entry: entry
