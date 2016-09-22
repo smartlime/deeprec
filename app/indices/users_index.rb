@@ -1,3 +1,3 @@
-ThinkingSphinx::Index.define :answer, with: :active_record do
-  indexes body
+ThinkingSphinx::Index.define :user, with: :active_record do
+  indexes user.email
 end
