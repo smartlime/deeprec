@@ -11,12 +11,8 @@ class Answer < ActiveRecord::Base
   validates :user_id, :question_id, presence: true
   validates :body, presence: true, length: (20..50_000)
 
-  if Rails.env.test?
-    after_create :invoke_subscriptions_delivery
-  else
-    after_commit :invoke_subscriptions_delivery, on: :create
-  end
-  
+  after_commit :invoke_subscriptions_delivery, on: :create
+
   def star!
     question.transaction do
       question.answers.where(starred: true).update_all(starred: false)
