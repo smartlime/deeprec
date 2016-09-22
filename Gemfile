@@ -56,6 +56,7 @@ group :test do
   gem 'capybara-webkit'
   gem 'capybara-email'
   gem 'json_spec'
+  gem 'test_after_commit'
 end
 
 group :development do

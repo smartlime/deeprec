@@ -25,7 +25,7 @@ describe Question do
     let(:question) { build(:question) }
 
     it 'should be invoked to create bu #subscribe! call after Question creation' do
-      expect(question).to receive(:subscribe!)
+      expect(question).to receive(:subscribe_author!)
       question.save
     end
 
