@@ -35,6 +35,9 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever'
 
+gem 'mysql2' # Don't worry, it's for Sphinx only!
+gem 'thinking-sphinx'
+
 # gem 'unicorn'
 gem 'thin'
 
