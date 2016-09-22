@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {omniauth_callbacks: :omniauth_callbacks}
   match 'account/confirm_email', via: [:get, :patch]
 
+  get :search, to: 'search#search'
+
   concern :rateable do
     member do
       post :rate_inc

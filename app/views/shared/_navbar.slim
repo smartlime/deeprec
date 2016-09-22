@@ -6,14 +6,14 @@ nav.navbar.navbar-default role="navigation"
         span.icon-bar
       = link_to root_path, class: 'navbar-brand'
         = image_tag 'logo.png', size: '24x24', alt: 'Deep Recursion', class: 'pull-left'
-        | &nbsp;&nbsp;Deep Recursion
+        | &nbsp;&nbsp;D/R
     #navbar-collapse.collapse.navbar-collapse
       ul.nav.navbar-nav
-        = navbar_item 'Questions List', questions_path
+        = navbar_item 'Questions', questions_path
         - if policy(Question).new?
           = navbar_item 'Ask a Question', new_question_path
         - if current_user&.admin?
-          = navbar_item 'Applications', oauth_applications_path
+          = navbar_item 'Apps', oauth_applications_path
       ul.nav.navbar-nav.navbar-right
         li
           - if user_signed_in?
@@ -27,3 +27,10 @@ nav.navbar.navbar-default role="navigation"
             = navbar_item new_user_session_path
               => glyph 'log-in'
               | Sign In
+      = form_tag search_path, method: :get, class: 'navbar-form navbar-right'
+        .form-group
+          .input-group#global-search
+            = search_field_tag :q, @search_query, class: 'form-control', size: 30, placeholder: 'Search for...'
+            span.input-group-btn
+              = select_tag :t, options_for_select({questions: :q, answers: :a, comments: :c, users: :u}, @search_type), prompt: 'anything  ▾', class: 'form-control'
+              button.btn.btn-default type="submit" Go!
