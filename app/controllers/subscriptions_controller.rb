@@ -5,13 +5,13 @@ class SubscriptionsController < ApplicationController
   respond_to :json
 
   def create
-    authorize Subscription
+    authorize Question, :subscribe?
     respond_with @question.subscriptions.create(user: current_user), location: @question
   end
 
   def destroy
     @subscription = @question.subscriptions.find_by(user: current_user)
-    authorize @subscription
+    authorize @question, :subscribe?
     respond_with @subscription.destroy, location: @question
   end
 
