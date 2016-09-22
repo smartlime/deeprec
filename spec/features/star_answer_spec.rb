@@ -41,8 +41,9 @@ feature 'User can star the best answer to his question', %q(
       second_answer = create(:answer, question: question, user: user)
       visit question_path(question)
       within("#answer-#{second_answer.id}") { click_on 'Star' }
+      sleep 0.1
       within "#answers" do
-        expect(page.first('div')[:id]).to eq "answer-#{second_answer.id}"
+        expect(page.first('div')).to have_content second_answer.body
       end
     end
 

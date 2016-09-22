@@ -11,6 +11,8 @@ class Answer < ActiveRecord::Base
   validates :user_id, :question_id, presence: true
   validates :body, presence: true, length: (20..50_000)
 
+  default_scope { order({starred: :desc}, :created_at) }
+
   after_commit :invoke_subscriptions_delivery, on: :create
 
   def star!

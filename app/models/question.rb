@@ -13,6 +13,8 @@ class Question < ActiveRecord::Base
   validates :topic, presence: true, length: (10..200)
   validates :body, presence: true, length: (20..50_000)
 
+  default_scope { order(:created_at) }
+
   after_create :subscribe_author!
 
   private

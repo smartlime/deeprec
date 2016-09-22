@@ -1,0 +1,7 @@
+p
+  ' Answer to the Question
+  i
+    = link_to "\"#{entry.question.topic}\"", entry.question
+  | :
+p.lead
+  = link_to entry.body, question_path(entry.question, anchor: "answer-#{entry.id}")

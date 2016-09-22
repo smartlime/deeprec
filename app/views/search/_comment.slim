@@ -1,0 +1,13 @@
+- commentable = entry.commentable
+- question = commentable.kind_of?(Question) ? commentable : commentable.question
+p
+  ' Comment to the
+  => commentable.class.name
+  i
+    - if commentable.kind_of?(Question)
+      = link_to "\"#{commentable.topic}\"", commentable
+    - else
+      = link_to "\"#{commentable.body}\"", question_path(question, anchor: "answer-#{commentable.id}")
+  | :
+p.lead
+  = link_to entry.body, question_path(question, anchor: "comment-#{entry.id}")
