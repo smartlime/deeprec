@@ -46,7 +46,7 @@ class QuestionsController < ApplicationController
   end
 
   def load_subscription
-    @subscription = current_user&.subscriptions&.find_by(question_id: @question.id)
+    @subscription = @question.subscriptions.find_by(user_id: current_user.id) if user_signed_in?
   end
 
   def question_params
