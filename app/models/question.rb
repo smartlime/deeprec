@@ -13,11 +13,11 @@ class Question < ActiveRecord::Base
   validates :topic, presence: true, length: (10..200)
   validates :body, presence: true, length: (20..50_000)
 
-  after_create :subscribe!
+  after_create :subscribe_author!
 
   private
 
-  def subscribe!
+  def subscribe_author!
     subscriptions.create!(user_id: user_id)
   end
 end
