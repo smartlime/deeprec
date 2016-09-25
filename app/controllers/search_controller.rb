@@ -11,7 +11,7 @@ class SearchController < ApplicationController
   def get_search_params
     @search_query = params[:q]
     @search_type = params[:t].to_s
-    unless @search_type.blank? || %w(q a c u).include?(@search_type)
+    unless @search_type.blank? || SearchService::ALLOWED_TYPES.include?(@search_type)
       @search_type = nil
       render nothing: true, status: :not_implemented
     end

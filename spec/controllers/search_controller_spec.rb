@@ -45,7 +45,7 @@ end
 
 shared_examples :sphinx_search_controller do |entity, attribute = :body|
   context 'with type in query' do
-    include_examples :sphinx_search_controller_with_params, entity, attribute, entity.to_s.first
+    include_examples :sphinx_search_controller_with_params, entity, attribute, entity.to_s
   end
 
   context 'without type in query' do

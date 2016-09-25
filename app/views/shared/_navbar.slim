@@ -32,5 +32,5 @@ nav.navbar.navbar-default role="navigation"
           .input-group#global-search
             = search_field_tag :q, @search_query, class: 'form-control', size: 30, placeholder: 'Search for...'
             span.input-group-btn
-              = select_tag :t, options_for_select({questions: :q, answers: :a, comments: :c, users: :u}, @search_type), prompt: 'anything  ▾', class: 'form-control'
+              = select_tag :t, options_for_select({questions: :question, answers: :answer, comments: :comment, users: :user}, @search_type), prompt: 'anything  ▾', class: 'form-control'
               button.btn.btn-default type="submit" Go!

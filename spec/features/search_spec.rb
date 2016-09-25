@@ -10,7 +10,7 @@ shared_examples :sphinx_search_feature do |attribute = :body|
 
   before { visit new_question_path }
 
-  scenario "search with type in query" do
+  scenario 'search with type in query' do
     within '#global-search' do
       fill_in 'q', with: text
       select object.class.name.downcase, from: 't'

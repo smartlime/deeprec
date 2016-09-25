@@ -1,4 +1,6 @@
 class SearchService
+  ALLOWED_TYPES = %w(question answer comment user)
+
   class << self
     def search(params)
       query = ThinkingSphinx::Query.escape(params[:query] || '')
@@ -6,23 +8,10 @@ class SearchService
       klass(type)&.search(query)
     end
 
-    private
-
     def klass(type)
-      case type
-        when '' then
-          ThinkingSphinx
-        when 'q' then
-          Question
-        when 'a' then
-          Answer
-        when 'c' then
-          Comment
-        when 'u' then
-          User
-        else
-          nil
-      end
+      return ThinkingSphinx if type == ''
+      return nil unless ALLOWED_TYPES.include?(type)
+      type.classify.constantize
     end
   end
 end
