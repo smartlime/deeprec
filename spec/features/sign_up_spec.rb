@@ -14,6 +14,8 @@ feature 'Signing up', %q(
     fill_in 'Password confirmation', with: password
     click_on 'Sign up'
 
-    expect(page.find('.alert')).to have_content 'Welcome! You have signed up successfully.'
+    expect(page.find('.alert')).to have_content Devise.allow_unconfirmed_access_for > 0 ?
+        'Welcome! You have signed up successfully.' :
+        'A message with a confirmation link has been sent to your email address.'
   end
 end
