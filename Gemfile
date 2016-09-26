@@ -47,8 +47,14 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'spring-commands-rspec'
   gem 'guard-rspec'
-  gem 'rb-fsevent' if `uname` =~ /Darwin/
+
+  # Have to remove it because of error:
+  # "You have deleted from the Gemfile * rb-fsevent
+  # Run 'bundle install' elsewhere and add the updated Gemfile.lock to version control."
+  ## gem 'rb-fsevent' if `uname` =~ /Darwin/
+
   gem 'awesome_print'
+  gem 'colorize'
 end
 
 group :test do

@@ -46,7 +46,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     arel (6.0.3)
     ast (2.3.0)
-    autoprefixer-rails (6.4.1.1)
+    autoprefixer-rails (6.5.0)
       execjs
     awesome_print (1.7.0)
     bcrypt (3.1.11)
@@ -109,6 +109,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    colorize (0.8.1)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     cookiejar (0.3.3)
@@ -474,6 +475,7 @@ DEPENDENCIES
   carrierwave
   cocoon
   coffee-rails (~> 4.1.0)
+  colorize
   database_cleaner
   devise
   doorkeeper
@@ -502,7 +504,6 @@ DEPENDENCIES
   quiet_assets
   rails (= 4.2.6)
   rails_best_practices
-  rb-fsevent
   remotipart
   responders
   rspec-rails (~> 3.0)
