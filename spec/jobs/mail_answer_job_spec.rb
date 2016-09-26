@@ -8,7 +8,7 @@ describe MailAnswerJob do
   let(:answer) { create(:answer, question: question) }
   let(:message) { double(CustomMailer.delay) }
 
-  it 'should send new Answer notifications for both User and question author' do
+  it 'sends new Answer notifications for both User and Question author' do
     [user, alt_user].each do |u|
       expect(CustomMailer).to receive(:answer).with(u, answer).and_return(message)
       expect(message).to receive(:deliver_later)

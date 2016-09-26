@@ -45,7 +45,7 @@ describe QuestionsController do
       sign_in_user
       let!(:new_subscription) { create(:subscription, user: @user, question: question) }
 
-      it 'should load subscription' do
+      it 'loads subscription' do
         get :show, id: question
         expect(assigns(:subscription)).to eq new_subscription
       end
@@ -88,7 +88,7 @@ describe QuestionsController do
         expect { post_invalid_question }.to_not change(Question, :count)
       end
 
-      it 'shouldn\'t create Subscription to the Question' do
+      it 'doesn\'t create Subscription to the Question' do
         expect { post_invalid_question }.to_not change(Subscription, :count)
       end
     end

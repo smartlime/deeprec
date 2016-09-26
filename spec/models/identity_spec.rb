@@ -6,7 +6,7 @@ describe Identity do
 
   it_behaves_like :user_related
 
-  describe 'should validate uniqueness of uid for the provider' do
+  describe 'validates uniqueness of uid in context of the provider' do
     subject { create(:identity) }
     it { is_expected.to validate_uniqueness_of(:uid).scoped_to(:provider) }
   end

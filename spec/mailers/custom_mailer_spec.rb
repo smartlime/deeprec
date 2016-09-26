@@ -19,11 +19,11 @@ RSpec.describe CustomMailer, type: :mailer do
     context 'renders the body' do
       subject { mail.body.encoded }
 
-      it('should match title') { is_expected.to match('Deep Recursion') }
-      it('should match letter type') { is_expected.to match('Digest') }
-      it('should match date') { is_expected.to match(Regexp.quote(date)) }
+      it('has matched title') { is_expected.to match('Deep Recursion') }
+      it('has matched letter type') { is_expected.to match('Digest') }
+      it('has matched date') { is_expected.to match(Regexp.quote(date)) }
 
-      it 'should match questions topics and URLs' do
+      it 'matches questions topics and URLs' do
         questions.each do |question|
           is_expected.to match(Regexp.quote(question.topic))
           is_expected.to match(Regexp.quote(url_for(question)))
@@ -48,15 +48,15 @@ RSpec.describe CustomMailer, type: :mailer do
     context 'renders the body' do
       subject { mail.body.encoded }
 
-      it('should match title') { is_expected.to match('Deep Recursion') }
-      it('should match letter type') { is_expected.to match('New Answer to the Question') }
+      it('has matched title') { is_expected.to match('Deep Recursion') }
+      it('has matched letter type') { is_expected.to match('New Answer to the Question') }
 
-      it('should match question topic') { is_expected.to match(Regexp.quote(question.topic)) }
-      it('should match question body') { is_expected.to match(Regexp.quote(question.body)) }
-      it('should match question URL') { is_expected.to match(Regexp.quote(url_for(question))) }
+      it('has matched question topic') { is_expected.to match(Regexp.quote(question.topic)) }
+      it('has matched question body') { is_expected.to match(Regexp.quote(question.body)) }
+      it('has matched question URL') { is_expected.to match(Regexp.quote(url_for(question))) }
 
-      it('should match answer author email') { is_expected.to match(Regexp.quote(answer_author.email)) }
-      it('should match answer body') { is_expected.to match(Regexp.quote(answer.body)) }
+      it('has matched answer author email') { is_expected.to match(Regexp.quote(answer_author.email)) }
+      it('has matched answer body') { is_expected.to match(Regexp.quote(answer.body)) }
     end
   end
 end

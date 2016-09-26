@@ -57,21 +57,21 @@ describe AccountController do
         context 'with correct email' do
           it { is_expected.to have_http_status :redirect }
 
-          it 'should assign User object to @user' do
+          it 'assigns User object to @user' do
             confirm_email
             expect(assigns(:user)).to be_a User
           end
 
           context 'for new user' do
-            it 'should create new User instance' do
+            it 'creates new User instance' do
               expect { confirm_email }.to change(User, :count).by(1)
             end
 
-            it 'should create new Identity for the User' do
+            it 'creates new Identity for the User' do
               expect { confirm_email }.to change(Identity, :count).by(1)
             end
 
-            it 'should set given email for new User' do
+            it 'sets given email for new User' do
               confirm_email
               expect(assigns(:user).email).to eq email
             end
@@ -80,11 +80,11 @@ describe AccountController do
           context 'for existing user' do
             subject(:confirm_email) { patch :confirm_email, email: user.email }
 
-            it 'shouldn\'t create new User instance' do
+            it 'doesn\'t create new User instance' do
               expect { confirm_email }.not_to change(User, :count)
             end
 
-            it 'shouldn\'t create new Identitities' do
+            it 'doesn\'t create new Identitities' do
               expect { confirm_email }.not_to change(Identity, :count)
             end
           end
@@ -96,7 +96,7 @@ describe AccountController do
           it { is_expected.to have_http_status :success }
           it { is_expected.to render_template :confirm_email }
 
-          it 'shouldn\'t create new Identitities' do
+          it 'doesn\'t create new Identitities' do
             expect { confirm_email }.not_to change(Identity, :count)
           end
         end

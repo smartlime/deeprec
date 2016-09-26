@@ -46,7 +46,7 @@ describe 'Answers API' do
           let!(:object) { attachments }
         end
 
-        it 'should have valid attribute "url"' do
+        it 'has valid attribute "url"' do
           is_expected.to be_json_eql(attachments.first.file.url.to_json).at_path('answer/attachments/0/url')
         end
       end
@@ -69,7 +69,7 @@ describe 'Answers API' do
         let(:create_answer) { post path, format: :json,
             access_token: access_token.token, answer: attributes_for(:answer) }
 
-        it 'should store new Answer in the database' do
+        it 'stores new Answer in the database' do
           expect { create_answer }.to change(Answer, :count).by(1)
         end
 
@@ -94,7 +94,7 @@ describe 'Answers API' do
         let(:create_answer) { post path, format: :json,
             access_token: access_token.token, answer: attributes_for(:invalid_answer) }
 
-        it 'shouldn\'t store new Answer in the database' do
+        it 'doesn\'t store new Answer in the database' do
           expect { create_answer }.to_not change(Answer, :count)
         end
 
@@ -106,7 +106,7 @@ describe 'Answers API' do
         let(:create_answer) { post path, format: :json,
             access_token: access_token.token, answer: attributes_for(:invalid_answer) }
 
-        it 'shouldn\'t store new Answer in the database' do
+        it 'doesn\'t store new Answer in the database' do
           expect { create_answer }.to_not change(Answer, :count)
         end
 

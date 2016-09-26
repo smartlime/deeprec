@@ -13,7 +13,7 @@ describe Answer do
   it { is_expected.to have_db_index :question_id }
 
   describe '#star!' do
-    it 'should star the selected answer' do
+    it 'stars the selected Answer' do
       question = create(:question)
       answer1 = create(:answer, question: question)
       answer2 = create(:answer, question: question, starred: true)
@@ -28,7 +28,7 @@ describe Answer do
 
   describe '#invoke_subscriptions_delivery' do
     let(:answer) { build(:answer) }
-    it 'should invoke MailAnswerJob' do
+    it 'invokes MailAnswerJob' do
       expect(MailAnswerJob).to receive(:perform_later).with(answer)
       answer.save!
     end

@@ -24,12 +24,12 @@ describe Question do
   context 'Subscription' do
     let(:question) { build(:question) }
 
-    it 'should be invoked to create bu #subscribe! call after Question creation' do
+    it 'invokes #subscribe! call after Question creation' do
       expect(question).to receive(:subscribe_author!)
       question.save
     end
 
-    it 'should be created after Question creation' do
+    it 'creates after Question creation' do
       expect { question.save }.to change(question.subscriptions, :count).by(1)
     end
   end

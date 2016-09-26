@@ -4,31 +4,31 @@ shared_examples_for :rateable do
   it { is_expected.to have_many(:ratings).dependent(:destroy) }
 
   describe '#rate_up! and #rating' do
-    it 'should store rate' do
+    it 'stores rate' do
       expect { rateable.rate_up!(user) }
           .to change(rateable.ratings, :count).by(1)
     end
 
-    it 'should increase rate' do
+    it 'increases rate' do
       expect { rateable.rate_up!(user) }
           .to change { rateable.rating }.by(1)
     end
   end
 
   describe '#rate_down! and #rating' do
-    it 'should store rate' do
+    it 'stores rate' do
       expect { rateable.rate_down!(user) }
           .to change(rateable.ratings, :count).by(1)
     end
 
-    it 'should decrease rate' do
+    it 'decreases rate' do
       expect { rateable.rate_down!(user) }
           .to change { rateable.rating }.by(-1)
     end
   end
 
   describe '#revoke_rate! and #rating' do
-    it 'should revorke rate' do
+    it 'revorkes rate' do
       rateable.rate_up!(user)
       expect { rateable.revoke_rate!(user) }
           .to change { rateable.rating }.to(0)
@@ -36,11 +36,11 @@ shared_examples_for :rateable do
   end
 
   describe '#rated? and #rate_up!' do
-    it 'should have the rateable not rated initially' do
+    it 'has the rateable not rated initially' do
       expect(rateable.rated?(rateable, user)).to eq false
     end
 
-    it 'should mark rateable as rated after #change_rate' do
+    it 'marks rateable as rated after #change_rate' do
       expect { rateable.rate_up!(user) }
           .to change { rateable.rated?(rateable, user) }.to(true)
     end

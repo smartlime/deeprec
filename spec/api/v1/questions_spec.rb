@@ -22,7 +22,7 @@ describe 'Questions API' do
           let!(:object) { questions }
         end
 
-        it 'should have valid attribute "short_title"' do
+        it 'has valid attribute "short_title"' do
           is_expected.to be_json_eql(question.topic.truncate(10).to_json).at_path('questions/0/short_title')
         end
       end
@@ -60,7 +60,7 @@ describe 'Questions API' do
           let!(:object) { attachments }
         end
 
-        it 'should have valid attribute "url"' do
+        it 'has valid attribute "url"' do
           is_expected.to be_json_eql(attachments.first.file.url.to_json).at_path('question/attachments/0/url')
         end
       end
@@ -83,7 +83,7 @@ describe 'Questions API' do
         let(:create_question) { post path, format: :json,
             access_token: access_token.token, question: attributes_for(:question) }
 
-        it 'should store new Question in the database' do
+        it 'stores new Question in the database' do
           expect { create_question }.to change(Question, :count).by(1)
         end
 
@@ -109,7 +109,7 @@ describe 'Questions API' do
         let(:create_question) { post path, format: :json,
             access_token: access_token.token, question: attributes_for(:invalid_question) }
 
-        it 'shouldn\'t store new Question in the database' do
+        it 'doesn\'t store new Question in the database' do
           expect { create_question }.to_not change(Question, :count)
         end
 
