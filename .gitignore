@@ -41,6 +41,9 @@ pickle-email-*.html
 # Ignore Byebug command history file.
 .byebug_history
 
-# Ignore Sphinx generadet config and database
+# Ignore Sphinx generated config and database
 /config/*.sphinx.conf
 /db/sphinx
+
+# Private Pub config
+config/private_pub.yml
