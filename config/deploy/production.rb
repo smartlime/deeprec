@@ -1,4 +1,4 @@
-server 'deeprec.davelabs.ru', port: 4242, roles: %w{app db web}, primary: true
+server 'deeprec.davelabs.ru', port: 4242, user: 'deploy', roles: %w{app db web}, primary: true
 
 set :rails_env, :production
 set :enable_ssl, false

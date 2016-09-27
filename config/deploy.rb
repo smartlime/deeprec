@@ -8,5 +8,5 @@ set :branch, ENV['BRANCH'] if ENV['BRANCH']
 set :deploy_to, '/www/deeprec'
 set :format, :airbrussh
 
-append :linked_files, 'config/database.yml', 'config/private_pub.yml', 'config/secrets.yml'
+append :linked_files, 'config/database.yml', 'config/private_pub.yml', 'config/secrets.yml', '.ruby-gemset'
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
