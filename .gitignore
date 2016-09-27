@@ -47,6 +47,7 @@ pickle-email-*.html
 # Ignore Sphinx generated config and database
 /config/*.sphinx.conf
 /db/sphinx
+/config/thinking_sphinx.yml
 
 # Private Pub config
 config/private_pub.yml
