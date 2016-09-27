@@ -109,6 +109,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    colorize (0.8.1)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     cookiejar (0.3.3)
@@ -474,6 +475,7 @@ DEPENDENCIES
   carrierwave
   cocoon
   coffee-rails (~> 4.1.0)
+  colorize
   database_cleaner
   devise
   doorkeeper

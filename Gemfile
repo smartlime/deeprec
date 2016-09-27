@@ -49,6 +49,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'rb-fsevent' if `uname` =~ /Darwin/
   gem 'awesome_print'
+  gem 'colorize'
 end
 
 group :test do
