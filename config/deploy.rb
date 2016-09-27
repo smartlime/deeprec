@@ -11,3 +11,9 @@ set :format, :airbrussh
 
 append :linked_files, 'config/database.yml', 'config/private_pub.yml', 'config/secrets.yml', '.env', '.ruby-gemset'
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
+
+namespace :deploy do
+  after :finishing, 'deploy:cleanup'
+  after 'deploy:cleanup', 'deploy:restart'
+  after 'deploy:restart', 'unicorn:restart'
+end
