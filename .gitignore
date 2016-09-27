@@ -35,6 +35,9 @@ pickle-email-*.html
 /.bundle
 /vendor/bundle
 
+# Ignore .env
+.env
+
 # Ignore pow environment settings
 .powenv
 
