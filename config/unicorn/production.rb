@@ -6,7 +6,7 @@ pid "/www/#{@wwwname}/shared/tmp/pids/unicorn.pid"
 stdout_path "/www/#{@wwwname}/shared/log/unicorn.stdout.log"
 stderr_path "/www/#{@wwwname}/shared/log/unicorn.stderr.log"
 
-listen "/tmp/unicorn.#{@wwwname}.sock"
+listen "/tmp/unicorn.#{@wwwname}.sock", backlog: 16
 
 worker_processes 8
 timeout 20
