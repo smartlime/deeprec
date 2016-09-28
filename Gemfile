@@ -50,10 +50,9 @@ group :development, :test do
   gem 'spring-commands-rspec'
   gem 'guard-rspec'
 
-  # Have to remove it because of error:
-  # "You have deleted from the Gemfile * rb-fsevent
-  # Run 'bundle install' elsewhere and add the updated Gemfile.lock to version control."
-  ## gem 'rb-fsevent' if `uname` =~ /Darwin/
+  install_if -> { RUBY_PLATFORM =~ /darwin/ } do
+    gem "rb-fsevent"
+  end
 
   gem 'awesome_print'
   gem 'colorize'

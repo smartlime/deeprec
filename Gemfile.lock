@@ -523,6 +523,7 @@ DEPENDENCIES
   rack-handlers
   rails (= 4.2.6)
   rails_best_practices
+  rb-fsevent
   remotipart
   responders
   rspec-rails (~> 3.0)
