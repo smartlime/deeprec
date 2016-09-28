@@ -51,7 +51,7 @@ group :development, :test do
   gem 'guard-rspec'
 
   install_if -> { RUBY_PLATFORM =~ /darwin/ } do
-    gem "rb-fsevent"
+    gem 'rb-fsevent'
   end
 
   gem 'awesome_print'
