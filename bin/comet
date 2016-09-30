@@ -1,5 +1,5 @@
 #!/bin/sh
 
-#rackup private_pub.ru -s thin -E development
+[ ! -e 'config/private_pub.yml' ] && cp config/private_pub.yml.sample config/private_pub.yml
 rackup -D private_pub.ru -s thin -E production
 
