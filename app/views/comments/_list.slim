@@ -4,12 +4,14 @@
     h4 Comments:
   div id="#{commentable.entity}-comments-#{commentable.id}" style="margin-left:40px"
     - commentable.comments.each do |comment|
-      = render 'comments/comment', comment: comment
+      - cache comment do
+        = render 'comments/comment', comment: comment
   
   - if policy(Comment).create?
     div id="#{commentable.entity}-comments-#{commentable.id}-errors"
     div id="#{commentable.entity}-comments-#{commentable.id}-form" style="display:none"
-      = render 'comments/form', commentable: commentable
+      - cache [:comment_form, commentable] do
+        = render 'comments/form', commentable: commentable
   div id="#{commentable.entity}-comments-#{commentable.id}-link-container"
   - if comet
     javascript:
