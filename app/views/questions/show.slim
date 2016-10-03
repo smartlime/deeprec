@@ -1,4 +1,4 @@
-- cache @question do
+- cache [@question, policy(@question).edit?, policy(@question).destroy?, policy(@answer).create?] do
   .row
     .col-sm-12
       = link_to questions_path, class: 'btn btn-info btn-sm pull-right'
@@ -25,12 +25,13 @@
           .pull-right#delete-question-container
             => link_to question_path(@question.id), id: 'delete-question', class: 'btn btn-danger', method: :delete, style: 'margin-left:1em'
               ' Delete Question
-        - if policy(@question).subscribe?
-          .pull-right#subscribe-question-container
-            => button_to \
-                @subscription ? unsubscribe_question_path(@question.id) : subscribe_question_path(@question.id), \
-                method: @subscription ? :delete : :post, id: 'subscribe-question', class: 'btn btn-info'
-              ' #{@subscription ? 'Uns' : 'S' }ubscribe
+        - cache [@subscription, policy(@question).subscribe?] do
+          - if policy(@question).subscribe?
+            .pull-right#subscribe-question-container
+              => button_to \
+                  @subscription ? unsubscribe_question_path(@question.id) : subscribe_question_path(@question.id), \
+                  method: @subscription ? :delete : :post, id: 'subscribe-question', class: 'btn btn-info'
+                ' #{@subscription ? 'Uns' : 'S' }ubscribe
   #answers
     - @question.answers.order(starred: :desc).each do |answer|
       - if answer.persisted?
@@ -55,7 +56,7 @@
           button.btn.btn-primary.pull-right type="submit" Send an Answer
 
 = subscribe_to "/questions/#{@question.id}/answers"
-= subscribe_to "/comments"
+= subscribe_to '/comments'
 
 coffee:
   ready = ->
