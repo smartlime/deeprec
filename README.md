@@ -37,6 +37,6 @@ Though it is sligtly outdated (today we can use Rails 5 with ActionCable, for ex
 
 ## Evolution
 
-You can see how Deep Recursion grows using numbered branches aimed to implement separate features like API, Comet, JS RSpec and so on.
+You can see how Deep Recursion grown using numbered branches aimed to implement separate features like API, Comet, JS RSpec and so on.
 
 Of course, the final version is in **master** branch.
