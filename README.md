@@ -1,3 +1,7 @@
+# Project is toooooo old (2016!), keep it in mind! ;) This is far away from my current style and skills!
+
+-----
+
 # Deep Recusion
 
 This is a demo project to show my Ruby and RoR code examples and technology vision. 
@@ -36,7 +40,3 @@ Though it is sligtly outdated (today we can use Rails 5 with ActionCable, for ex
 You can see how Deep Recursion grows using numbered branches aimed to implement separate features like API, Comet, JS RSpec and so on.
 
 Of course, the final version is in **master** branch.
-
-## A few words more
-
-If you need my CV, ask me directly or in case you have an access to hh.ru, you can found it here: https://hh.ru/applicant/resumes/view?resume=2e90430cff020bdca50039ed1f574772796331
