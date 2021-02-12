@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
+gem 'rails', '6.0.3.5'
 gem 'pg', '~> 0.15'
 gem 'sprockets', '3.6.3'
 gem 'sass-rails', '~> 5.0'
