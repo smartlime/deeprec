@@ -19,7 +19,7 @@ gem 'faker'
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
-gem 'private_pub'
+gem 'private_pub', '>= 1.0.3'
 gem 'skim'
 gem 'gon'
 gem 'responders'
@@ -60,11 +60,11 @@ end
 
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'capybara'
-  gem 'launchy'
+  gem 'capybara', '>= 2.7.1'
+  gem 'launchy', '>= 2.4.3'
   gem 'database_cleaner'
-  gem 'capybara-webkit'
-  gem 'capybara-email'
+  gem 'capybara-webkit', '>= 1.11.1'
+  gem 'capybara-email', '>= 2.5.0'
   gem 'json_spec'
   gem 'test_after_commit'
 end
@@ -84,7 +84,7 @@ group :development do
 
   gem 'spring'
 
-  gem 'letter_opener'
+  gem 'letter_opener', '>= 1.4.1'
 
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
