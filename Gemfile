@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
+gem 'rails', '5.0.0'
 gem 'pg', '~> 0.15'
 gem 'sprockets', '3.6.3'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 5.0', '>= 5.0.6'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '~> 4.1.1'
 gem 'jquery-rails'
 gem 'slim-rails'
 gem 'turbolinks'
@@ -32,7 +32,7 @@ gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'sidekiq'
-gem 'sinatra', require: false
+gem 'sinatra', '>= 2.0.0', require: false
 gem 'whenever'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
@@ -45,8 +45,8 @@ gem 'thin'
 
 group :development, :test do
   gem 'byebug', '~>8.0'
-  gem 'rspec-rails', '~> 3.0'
-  gem 'factory_girl_rails', '~> 4.0'
+  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
+  gem 'factory_girl_rails', '~> 4.7', '>= 4.7.0'
   gem 'spring-commands-rspec'
   gem 'guard-rspec'
 
@@ -70,12 +70,12 @@ group :test do
 end
 
 group :development do
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 2.3', '>= 2.3.0'
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'better_errors'
-  gem 'meta_request'
+  gem 'meta_request', '>= 0.4.3'
 
   gem 'quiet_assets'
 
