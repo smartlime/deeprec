@@ -32,7 +32,7 @@ gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'sidekiq'
-gem 'sinatra', require: false
+gem 'sinatra', '>= 2.2.3', require: false
 gem 'whenever'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
