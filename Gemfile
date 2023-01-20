@@ -1,20 +1,20 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
+gem 'rails', '6.1.7.1'
 gem 'pg', '~> 0.15'
 gem 'sprockets', '3.6.3'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 5.0', '>= 5.0.8'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails', '~> 4.2.2'
 gem 'jquery-rails'
 gem 'slim-rails'
 gem 'turbolinks'
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '~> 2.6', '>= 2.6.4'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
-gem 'devise'
+gem 'devise', '>= 4.7.0'
 gem 'faker'
 gem 'carrierwave'
 gem 'remotipart'
@@ -22,17 +22,17 @@ gem 'cocoon'
 gem 'private_pub'
 gem 'skim'
 gem 'gon'
-gem 'responders'
+gem 'responders', '>= 3.0.0'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'pundit'
 gem 'doorkeeper'
-gem 'active_model_serializers'
+gem 'active_model_serializers', '>= 0.10.12'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'sidekiq'
-gem 'sinatra', require: false
+gem 'sinatra', '>= 2.0.0', require: false
 gem 'whenever'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
@@ -45,8 +45,8 @@ gem 'thin'
 
 group :development, :test do
   gem 'byebug', '~>8.0'
-  gem 'rspec-rails', '~> 3.0'
-  gem 'factory_girl_rails', '~> 4.0'
+  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
+  gem 'factory_girl_rails', '~> 4.7', '>= 4.7.0'
   gem 'spring-commands-rspec'
   gem 'guard-rspec'
 
@@ -59,7 +59,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'shoulda-matchers', '~> 3.1'
+  gem 'shoulda-matchers', '~> 3.1', '>= 3.1.1'
   gem 'capybara'
   gem 'launchy'
   gem 'database_cleaner'
@@ -70,12 +70,12 @@ group :test do
 end
 
 group :development do
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 2.3', '>= 2.3.0'
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'better_errors'
-  gem 'meta_request'
+  gem 'meta_request', '>= 0.7.0'
 
   gem 'quiet_assets'
 
