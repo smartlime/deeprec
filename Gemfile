@@ -31,7 +31,7 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
-gem 'sidekiq'
+gem 'sidekiq', '>= 7.0.8'
 gem 'sinatra', require: false
 gem 'whenever'
 gem 'dotenv'
