@@ -31,7 +31,7 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
-gem 'sidekiq'
+gem 'sidekiq', '>= 7.1.3'
 gem 'sinatra', require: false
 gem 'whenever'
 gem 'dotenv'
@@ -90,7 +90,7 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
-  gem 'capistrano-sidekiq', require: false
+  gem 'capistrano-sidekiq', '>= 0.10.0', require: false
   gem 'capistrano3-unicorn', require: false
 end
 
