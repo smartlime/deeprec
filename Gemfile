@@ -75,7 +75,7 @@ group :development do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'better_errors'
-  gem 'meta_request'
+  gem 'meta_request', '>= 0.8.0'
 
   gem 'quiet_assets'
 
