@@ -1,52 +1,52 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
+gem 'rails', '7.1.0'
 gem 'pg', '~> 0.15'
-gem 'sprockets', '3.6.3'
+gem 'sprockets', '4.2.0'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.1.0'
-gem 'jquery-rails'
-gem 'slim-rails'
+gem 'coffee-rails', '~> 4.2.2'
+gem 'jquery-rails', '>= 4.2.2'
+gem 'slim-rails', '>= 3.1.2'
 gem 'turbolinks'
-gem 'jbuilder', '~> 2.0'
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'jbuilder', '~> 2.6', '>= 2.6.4'
+gem 'sdoc', '~> 1.0.0', group: :doc
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
-gem 'devise'
+gem 'devise', '>= 4.7.0'
 gem 'faker'
-gem 'carrierwave'
+gem 'carrierwave', '>= 1.0.0'
 gem 'remotipart'
 gem 'cocoon'
 gem 'private_pub'
-gem 'skim'
-gem 'gon'
-gem 'responders'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-twitter'
-gem 'pundit'
-gem 'doorkeeper'
-gem 'active_model_serializers'
+gem 'skim', '>= 0.11.0'
+gem 'gon', '>= 6.2.0'
+gem 'responders', '>= 3.0.0'
+gem 'omniauth', '>= 2.1.0'
+gem 'omniauth-facebook', '>= 5.0.0'
+gem 'omniauth-twitter', '>= 1.3.0'
+gem 'pundit', '>= 2.0.0'
+gem 'doorkeeper', '>= 4.2.5'
+gem 'active_model_serializers', '>= 0.10.14'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'sidekiq'
-gem 'sinatra', require: false
+gem 'sinatra', '>= 2.0.0', require: false
 gem 'whenever'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 gem 'mysql2' # Don't worry, it's for Sphinx only!
-gem 'thinking-sphinx'
+gem 'thinking-sphinx', '>= 3.3.0'
 
 # gem 'unicorn'
-gem 'thin'
+gem 'thin', '>= 1.7.1'
 
 group :development, :test do
   gem 'byebug', '~>8.0'
-  gem 'rspec-rails', '~> 3.0'
-  gem 'factory_girl_rails', '~> 4.0'
+  gem 'rspec-rails', '~> 3.6', '>= 3.6.0'
+  gem 'factory_girl_rails', '~> 4.8', '>= 4.8.0'
   gem 'spring-commands-rspec'
   gem 'guard-rspec'
 
@@ -59,38 +59,38 @@ group :development, :test do
 end
 
 group :test do
-  gem 'shoulda-matchers', '~> 3.1'
-  gem 'capybara'
+  gem 'shoulda-matchers', '~> 3.1', '>= 3.1.2'
+  gem 'capybara', '>= 2.8.0'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'capybara-webkit'
-  gem 'capybara-email'
+  gem 'capybara-webkit', '>= 1.12.0'
+  gem 'capybara-email', '>= 3.0.1'
   gem 'json_spec'
-  gem 'test_after_commit'
+  gem 'test_after_commit', '>= 1.2.1'
 end
 
 group :development do
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.0', '>= 3.0.0'
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-byebug'
-  gem 'better_errors'
-  gem 'meta_request'
+  gem 'better_errors', '>= 2.2.0'
+  gem 'meta_request', '>= 0.8.0'
 
   gem 'quiet_assets'
 
   gem 'rubocop', require: false
-  gem 'rails_best_practices'
+  gem 'rails_best_practices', '>= 1.18.0'
 
   gem 'spring'
 
-  gem 'letter_opener'
+  gem 'letter_opener', '>= 1.5.0'
 
-  gem 'capistrano', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rails', require: false
+  gem 'capistrano', '>= 3.7.0', require: false
+  gem 'capistrano-bundler', '>= 1.2.0', require: false
+  gem 'capistrano-rails', '>= 1.2.0', require: false
   gem 'capistrano-rvm', require: false
-  gem 'capistrano-sidekiq', require: false
+  gem 'capistrano-sidekiq', '>= 0.10.0', require: false
   gem 'capistrano3-unicorn', require: false
 end
 
