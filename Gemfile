@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
+gem 'rails', '7.0.0'
 gem 'pg', '~> 0.15'
 gem 'sprockets', '3.6.3'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails', '~> 6.0', '>= 6.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
@@ -28,7 +28,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'pundit'
 gem 'doorkeeper'
-gem 'active_model_serializers'
+gem 'active_model_serializers', '>= 0.10.3'
 gem 'oj'
 gem 'oj_mimic_json'
 gem 'sidekiq'
@@ -70,7 +70,7 @@ group :test do
 end
 
 group :development do
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 3.0', '>= 3.0.0'
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-byebug'
