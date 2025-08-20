@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
+gem 'rails', '7.1.5.2'
 gem 'pg', '~> 0.15'
 gem 'sprockets', '3.6.3'
 gem 'sass-rails', '~> 5.0'
@@ -38,7 +38,7 @@ gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 gem 'mysql2' # Don't worry, it's for Sphinx only!
-gem 'thinking-sphinx'
+gem 'thinking-sphinx', '>= 3.3.0'
 
 # gem 'unicorn'
 gem 'thin'
